@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Fonts */
+  --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* HSL Color System (Light Theme Default) */
+  --bg-primary: #f5f7fb;
+  --bg-secondary: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.45);
+  --bg-glass-hover: rgba(255, 255, 255, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.3);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-inverse: #ffffff;
+
+  --primary: #1d4ed8;       /* FIFA Blue */
+  --primary-hover: #1e40af;
+  --primary-glow: rgba(29, 78, 216, 0.15);
+  
+  --accent: #d97706;        /* Gold for Specials */
+  --accent-hover: #b45309;
+  --accent-glow: rgba(217, 119, 6, 0.15);
+
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --success: #10b981;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.06);
+
+  /* Sticker specific states (Light mode) */
+  --sticker-bg-empty: #e2e8f0;
+  --sticker-bg-owned: #334155;
+  --sticker-text-empty: #475569;
+  --sticker-text-owned: #ffffff;
+  
+  --sticker-special-bg-empty: #fef3c7;
+  --sticker-special-bg-owned: #d97706;
+  --sticker-special-text-empty: #b45309;
+  --sticker-special-text-owned: #ffffff;
+  
+  --glass-blur: blur(12px);
+}
+
+[data-theme="dark"] {
+  /* HSL Color System (Dark Theme) */
+  --bg-primary: #0b0f19;
+  --bg-secondary: #131b2e;
+  --bg-glass: rgba(19, 27, 46, 0.45);
+  --bg-glass-hover: rgba(19, 27, 46, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.05);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-inverse: #0f172a;
+
+  --primary: #3b82f6;       /* Radiant Blue */
+  --primary-hover: #60a5fa;
+  --primary-glow: rgba(59, 130, 246, 0.25);
+  
+  --accent: #fbbf24;        /* Radiant Gold */
+  --accent-hover: #fcd34d;
+  --accent-glow: rgba(251, 191, 36, 0.25);
+
+  --danger: #f87171;
+  --danger-hover: #ef4444;
+  --success: #34d399;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+  /* Sticker specific states (Dark mode) */
+  --sticker-bg-empty: #1e293b;
+  --sticker-bg-owned: #64748b;
+  --sticker-text-empty: #94a3b8;
+  --sticker-text-owned: #0f172a;
+  
+  --sticker-special-bg-empty: #2e250f;
+  --sticker-special-bg-owned: #fbbf24;
+  --sticker-special-text-empty: #fcd34d;
+  --sticker-special-text-owned: #0f172a;
+}
+
+/* Global Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection in inputs, textareas, and other form elements */
+input, textarea, select, option, [contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Scrollbar Custom Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  opacity: 0.3;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Scrollbar support for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-secondary) var(--bg-primary);
+}
+
+/* Glassmorphism card utility */
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: var(--bg-glass-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Glassmorphism input styling */
+.input {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.65;
+}
+
+.input:hover {
+  background: var(--bg-glass-hover);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .input:hover {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.input:focus {
+  background: var(--bg-secondary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+[data-theme="dark"] .input:focus {
+  background: #17223b;
+  border-color: var(--primary);
+}
+
+/* Utility buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-inverse);
+  background: var(--primary);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-glass-hover);
+  transform: translateY(-1px);
+}

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: album-helper
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - album_data:/app/prisma
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    restart: always
+
+volumes:
+  album_data:

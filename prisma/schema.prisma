@@ -1,0 +1,111 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+model User {
+  id               String               @id @default(uuid())
+  email            String               @unique
+  passwordHash     String?              // Nullable for OAuth-only users
+  role             String               @default("USER") // "ADMIN" | "USER"
+  twoFactorSecret  String?              // For 2FA (TOTP)
+  twoFactorEnabled Boolean              @default(false)
+  avatarType       String               @default("GRAVATAR") // "GRAVATAR" | "UPLOAD"
+  avatarUrl        String?              // Custom base64 image data URI
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  
+  // Relations
+  authenticators   Authenticator[]      // For WebAuthn Passkeys
+  memberships      FamilyGroupMember[]
+}
+
+model Authenticator {
+  id                   String   @id @default(uuid())
+  credentialID         String   @unique
+  credentialPublicKey  String
+  counter              BigInt
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String   // JSON string array
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SystemConfig {
+  key         String   @id // e.g., "GOOGLE_CLIENT_ID", "SMTP_HOST"
+  value       String
+  isEncrypted Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}
+
+model FamilyGroup {
+  id          String              @id @default(uuid())
+  name        String
+  inviteCode  String              @unique
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  
+  // Relations
+  members     FamilyGroupMember[]
+  stickers    StickerState[]
+  logs        ActivityLog[]
+}
+
+model FamilyGroupMember {
+  id            String      @id @default(uuid())
+  familyGroupId String
+  userId        String
+  role          String      @default("GUEST") // "PRINCIPAL" | "GUEST"
+  joinedAt      DateTime    @default(now())
+  
+  familyGroup   FamilyGroup @relation(fields: [familyGroupId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([familyGroupId, userId])
+}
+
+// Global catalog of all 980 stickers + 12 Coke promos = 992 total items
+model StickerCatalog {
+  code        String    @id // e.g. "FWC 1", "MEX 1", "C1"
+  sectionCode String    // e.g. "FWC-S" (Specials), "FWC-H" (Stadiums), "MEX", "COKE"
+  number      Int       // 1-20 (or 1-12 for Coke)
+  name        String    // Player name, stadium name, badge name
+  position    String?   // "Goalkeeper", "Defender", "Midfielder", "Forward", "Badge", "Stadium", etc.
+  imageUrl    String?   // Public domain URL or local SVG template path
+  isSpecial   Boolean   @default(false) // True for FWC, team badges, and Coke shinies
+}
+
+model StickerState {
+  id            String      @id @default(uuid())
+  familyGroupId String
+  stickerCode   String      // e.g. "FWC 1", "MEX 1"
+  quantity      Int         @default(0)
+  updatedAt     DateTime    @updatedAt
+  
+  familyGroup   FamilyGroup @relation(fields: [familyGroupId], references: [id], onDelete: Cascade)
+
+  @@unique([familyGroupId, stickerCode])
+}
+
+model ActivityLog {
+  id            String      @id @default(uuid())
+  familyGroupId String
+  userEmail     String
+  stickerCode   String
+  action        String      // "ADD" | "REMOVE"
+  quantity      Int
+  timestamp     DateTime    @default(now())
+
+  familyGroup   FamilyGroup @relation(fields: [familyGroupId], references: [id], onDelete: Cascade)
+}
+
+model FifaIsoMap {
+  fifaCode  String @id
+  isoCode   String
+}
+

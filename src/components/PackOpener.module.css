@@ -1,0 +1,299 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  padding-bottom: 6rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  line-height: 1.4;
+}
+
+/* Foil Pack Wrapper Styling */
+.packWrapper {
+  position: relative;
+  width: 260px;
+  height: 380px;
+  cursor: pointer;
+  perspective: 1000px;
+  margin: 2rem 0;
+}
+
+.pack {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6, #0b1f50);
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.pack:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px var(--primary-glow);
+}
+
+/* Shiny wrapper details */
+.packShiny {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  animation: packShine 4s infinite linear;
+}
+
+.packText {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.packLogo {
+  font-size: 3rem;
+}
+
+.packTitle {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.packSub {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #93c5fd;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.packTearLine {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  border-top: 2px dashed rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+}
+
+/* Tearing Animation States */
+.packTornTop {
+  animation: tearTop 0.8s forwards ease;
+}
+
+.packTornBottom {
+  animation: tearBottom 0.8s forwards ease;
+}
+
+/* Revealed Cards Row */
+.cardsRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.cardItem {
+  width: 150px;
+  height: 210px;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1.5px solid var(--border-glass);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: cardDeal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: translateY(30px) scale(0.8);
+}
+
+.cardItem:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+}
+
+.cardItemSpecial {
+  border: 2px solid #fbbf24;
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.2);
+}
+
+.cardItemSpecial:hover {
+  box-shadow: 0 0 25px rgba(217, 119, 6, 0.45);
+}
+
+/* Status overlays: NEW / DUP */
+.cardStatus {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  color: white;
+  z-index: 5;
+}
+
+.statusNew {
+  background: var(--success);
+}
+
+.statusDup {
+  background: var(--text-secondary);
+}
+
+/* Stylized visual content */
+.cardVisual {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cardStarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shirt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 70px;
+}
+
+.shirtNum {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.cardInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.cardName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardPos {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.cardCode {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+/* Actions Row */
+.actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+}
+
+@keyframes packShine {
+  0% { transform: translate(-30%, -30%) rotate(0deg); }
+  100% { transform: translate(30%, 30%) rotate(360deg); }
+}
+
+@keyframes tearTop {
+  0% { transform: translateY(0) rotate(0); }
+  100% { transform: translateY(-300px) rotate(-15deg); opacity: 0; }
+}
+
+@keyframes tearBottom {
+  0% { transform: translateY(0) rotate(0); }
+  100% { transform: translateY(300px) rotate(15deg); opacity: 0; }
+}
+
+@keyframes cardDeal {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.7) rotate(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
