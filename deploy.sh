@@ -3,12 +3,23 @@ echo "============================================="
 echo "   AlbumHelper - Despliegue con Docker"
 echo "============================================="
 
+# Cargar puerto anterior desde .env si existe
+DEFAULT_PORT=3000
+if [ -f .env ]; then
+  # Buscar PORT en el archivo .env
+  SAVED_PORT=$(grep -E "^PORT=" .env | cut -d= -f2)
+  if [ ! -z "$SAVED_PORT" ]; then
+    DEFAULT_PORT=$SAVED_PORT
+    echo "Se detectó configuración previa. Puerto por defecto: $DEFAULT_PORT"
+  fi
+fi
+
 # Preguntar puerto
-read -p "Ingresa el puerto en el que correrá la aplicación [Default: 3000]: " PORT
-PORT=${PORT:-3000}
+read -p "Ingresa el puerto en el que correrá la aplicación [Default: $DEFAULT_PORT]: " PORT
+PORT=${PORT:-$DEFAULT_PORT}
 
 # Guardar variables en .env para docker-compose
-echo "Creando archivo .env..."
+echo "Guardando configuración en archivo .env..."
 echo "PORT=$PORT" > .env
 
 # Levantar contenedores
