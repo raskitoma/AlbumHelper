@@ -3,21 +3,33 @@ Write-Host "   AlbumHelper - Despliegue con Docker" -ForegroundColor Cyan
 Write-Host "=============================================" -ForegroundColor Cyan
 
 $defaultPort = "3000"
+$defaultDbDir = "./data"
+
 if (Test-Path .env) {
     $envContent = Get-Content .env
     foreach ($line in $envContent) {
         if ($line -match "^PORT=(.*)$") {
             $defaultPort = $Matches[1].Trim()
-            Write-Host "Se detectó configuración previa. Puerto por defecto: $defaultPort" -ForegroundColor Yellow
+        }
+        if ($line -match "^DB_DIR=(.*)$") {
+            $defaultDbDir = $Matches[1].Trim()
         }
     }
+    Write-Host "Se detectó configuración previa:" -ForegroundColor Yellow
+    Write-Host "  Puerto: $defaultPort" -ForegroundColor Yellow
+    Write-Host "  Ruta DB: $defaultDbDir" -ForegroundColor Yellow
+    Write-Host "=============================================" -ForegroundColor Yellow
 }
 
 $port = Read-Host "Ingresa el puerto en el que correrá la aplicación [Default: $defaultPort]"
 if (-not $port) { $port = $defaultPort }
 
+$dbDir = Read-Host "Ingresa la ruta de la carpeta donde se guardará la DB y backups [Default: $defaultDbDir]"
+if (-not $dbDir) { $dbDir = $defaultDbDir }
+
 Write-Host "Guardando configuración en archivo .env..." -ForegroundColor Yellow
-"PORT=$port" | Out-File -FilePath .env -Encoding utf8
+$envLines = @("PORT=$port", "DB_DIR=$dbDir")
+$envLines | Out-File -FilePath .env -Encoding utf8
 
 Write-Host "Construyendo y levantando el contenedor de Docker..." -ForegroundColor Yellow
 docker compose up -d --build
@@ -25,4 +37,5 @@ docker compose up -d --build
 Write-Host "=============================================" -ForegroundColor Green
 Write-Host "¡Despliegue completado con éxito!" -ForegroundColor Green
 Write-Host "La aplicación está corriendo en http://localhost:$port" -ForegroundColor Green
+Write-Host "Base de datos y respaldos mapeados en: $dbDir" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Green

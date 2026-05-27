@@ -9,11 +9,8 @@ services:
     ports:
       - "${PORT:-3000}:3000"
     volumes:
-      - album_data:/app/prisma
+      - "${DB_DIR:-./data}:/app/prisma"
     environment:
       - PORT=3000
       - NODE_ENV=production
     restart: always
-
-volumes:
-  album_data:
