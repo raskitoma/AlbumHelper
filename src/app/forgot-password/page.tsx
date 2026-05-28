@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "../auth.module.css";
+import AlbumLogo from "@/components/AlbumLogo";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -36,7 +37,10 @@ export default function ForgotPasswordPage() {
     <main className={styles.container}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <div className={styles.logo}>⚽ AlbumHelper</div>
+          <div className={styles.logoContainer}>
+            <AlbumLogo />
+            <span className={styles.logoText}>AlbumHelper</span>
+          </div>
           <h1 className={styles.title}>Restablecer Contraseña</h1>
           <p className={styles.subtitle}>
             Ingresa tu correo electrónico para recibir un enlace seguro para redefinir tu contraseña.

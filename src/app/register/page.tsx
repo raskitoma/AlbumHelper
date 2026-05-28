@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import RegisterForm from "./RegisterForm";
 import styles from "../auth.module.css";
 import { Suspense } from "react";
+import AlbumLogo from "@/components/AlbumLogo";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +30,10 @@ export default async function RegisterPage() {
     <main className={styles.container}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <div className={styles.logo}>⚽ AlbumHelper</div>
+          <div className={styles.logoContainer}>
+            <AlbumLogo />
+            <span className={styles.logoText}>AlbumHelper</span>
+          </div>
           <h1 className={styles.title}>Crear Cuenta</h1>
           <p className={styles.subtitle}>
             Regístrate con tu correo para empezar a registrar y compartir tus cromos del Mundial Fifa 2026.

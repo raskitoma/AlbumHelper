@@ -22,17 +22,23 @@
 }
 
 .header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 2rem;
 }
 
-.logo {
-  font-size: 2.5rem;
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.logoText {
+  font-size: 2rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
 }
 
 .title {

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import SetupForm from "./SetupForm";
 import styles from "../auth.module.css";
+import AlbumLogo from "@/components/AlbumLogo";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,10 @@ export default async function SetupPage() {
     <main className={styles.container}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <div className={styles.logo}>⚽ AlbumHelper</div>
+          <div className={styles.logoContainer}>
+            <AlbumLogo />
+            <span className={styles.logoText}>AlbumHelper</span>
+          </div>
           <h1 className={styles.title}>Inicializar Tracker</h1>
           <p className={styles.subtitle}>
             Crea la cuenta del administrador principal del sistema para configurar las opciones de álbum, OAuth y SMTP.

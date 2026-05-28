@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "../auth.module.css";
+import AlbumLogo from "@/components/AlbumLogo";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -124,7 +125,10 @@ export default function ResetPasswordPage() {
     <main className={styles.container}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <div className={styles.logo}>⚽ AlbumHelper</div>
+          <div className={styles.logoContainer}>
+            <AlbumLogo />
+            <span className={styles.logoText}>AlbumHelper</span>
+          </div>
           <h1 className={styles.title}>Nueva Contraseña</h1>
           <p className={styles.subtitle}>
             Ingresa tu nueva contraseña para recuperar el acceso a tu cuenta.
