@@ -67,28 +67,28 @@ export default function AlbumLogo({ width = 36, height = 36, className, style }:
         {/* Top to center */}
         <line x1="24" y1="4" x2="24" y2="15" stroke="#1e293b" strokeWidth="1.5"/>
         <line x1="27.5" y1="4" x2="33.5" y2="9.5" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="20.5" y1="4" x2="14.5" y2="9.5" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="20.5" y1="4" x2="14.5" y2="9.5" stroke="#1e293b" strokeWidth="1.5"/>
         
         {/* Center to sides */}
         <line x1="29.7" y1="19.1" x2="37" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="18.3" y1="19.1" x2="11" y2="14" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="18.3" y1="19.1" x2="11" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
         
         {/* Sides to boundary */}
-        <line x1="33.5" y1="9.5" x2="37" y2="14" stroke="#1e293b" stroke-width="1.5"/>
-        <line x1="14.5" y1="9.5" x2="11" y2="14" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="33.5" y1="9.5" x2="37" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
+        <line x1="14.5" y1="9.5" x2="11" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
         
         {/* Center to bottom */}
-        <line x1="27.5" y1="26" x2="32" y2="32" stroke="#1e293b" stroke-width="1.5"/>
-        <line x1="20.5" y1="26" x2="16" y2="32" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="27.5" y1="26" x2="32" y2="32" stroke="#1e293b" strokeWidth="1.5"/>
+        <line x1="20.5" y1="26" x2="16" y2="32" stroke="#1e293b" strokeWidth="1.5"/>
         
         {/* Bottom connections */}
-        <line x1="32" y1="32" x2="24" y2="38" stroke="#1e293b" stroke-width="1.5"/>
-        <line x1="16" y1="32" x2="24" y2="38" stroke="#1e293b" stroke-width="1.5"/>
-        <line x1="24" y1="38" x2="24" y2="48.5" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="32" y1="32" x2="24" y2="38" stroke="#1e293b" strokeWidth="1.5"/>
+        <line x1="16" y1="32" x2="24" y2="38" stroke="#1e293b" strokeWidth="1.5"/>
+        <line x1="24" y1="38" x2="24" y2="48.5" stroke="#1e293b" strokeWidth="1.5"/>
         
         {/* Mid side connections */}
-        <line x1="39" y1="20.5" x2="37.5" y2="27.5" stroke="#1e293b" stroke-width="1.5"/>
-        <line x1="9" y1="20.5" x2="10.5" y2="27.5" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="39" y1="20.5" x2="37.5" y2="27.5" stroke="#1e293b" strokeWidth="1.5"/>
+        <line x1="9" y1="20.5" x2="10.5" y2="27.5" stroke="#1e293b" strokeWidth="1.5"/>
       </g>
 
       {/* 3D spherical shade overlay */}
