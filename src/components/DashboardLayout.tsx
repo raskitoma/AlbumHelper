@@ -148,6 +148,11 @@ export default function DashboardLayout({ children, userEmail, groupName, userRo
             🎒
           </Link>
           
+          {/* Quick link to Help Guide */}
+          <Link href="/help" style={{ textDecoration: "none", fontSize: "1.2rem", cursor: "pointer", display: "flex", alignItems: "center" }} title={t("helpTitle")}>
+            ❓
+          </Link>
+          
           <button onClick={toggleTheme} className={styles.themeToggle} aria-label={theme === "light" ? "Modo Oscuro" : "Modo Claro"}>
             {theme === "light" ? "🌙" : "☀️"}
           </button>

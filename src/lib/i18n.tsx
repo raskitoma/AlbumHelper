@@ -185,7 +185,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     atTime: "a las",
     tradeInvalidQr: "Código QR no válido. Por favor escanea un código QR de AlbumHelper.",
     aboutTitle: "ℹ️ Acerca de",
-    aboutDesc: "Tu compañero inteligente para coleccionar, gestionar y comparar cromos del Mundial de Fútbol. Comparte repetidos con tu grupo familiar y calcula intercambios ideales con tus amigos al instante."
+    aboutDesc: "Tu compañero inteligente para coleccionar, gestionar y comparar cromos del Mundial de Fútbol. Comparte repetidos con tu grupo familiar y calcula intercambios ideales con tus amigos al instante.",
+    helpTitle: "Ayuda",
+    helpHeader: "Guía de Ayuda",
+    helpDesc: "Aprende a coleccionar, intercambiar y colaborar en tu álbum en tiempo real."
   },
   en: {
     album: "Album",
@@ -352,7 +355,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     atTime: "at",
     tradeInvalidQr: "Invalid QR Code. Please scan an AlbumHelper QR Code.",
     aboutTitle: "ℹ️ About",
-    aboutDesc: "Your smart companion to collect, manage and compare soccer stickers. Share swaps with your family group and calculate ideal trades with friends instantly."
+    aboutDesc: "Your smart companion to collect, manage and compare soccer stickers. Share swaps with your family group and calculate ideal trades with friends instantly.",
+    helpTitle: "Help",
+    helpHeader: "Help Guide",
+    helpDesc: "Learn how to collect, trade, and collaborate on your album in real-time."
   },
   it: {
     album: "Album",
@@ -519,7 +525,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     atTime: "alle",
     tradeInvalidQr: "Codice QR non valido. Scansiona un codice QR di AlbumHelper.",
     aboutTitle: "ℹ️ Informazioni su",
-    aboutDesc: "Il tuo compagno intelligente per collezionare, gestire e confrontare le figurine dei Mondiali di calcio. Condividi i doppioni con il tuo gruppo familiare e calcola all'istante gli scambi ideali con i tuoi amici."
+    aboutDesc: "Il tuo compagno intelligente per collezionare, gestire e confrontare le figurine dei Mondiali di calcio. Condividi i doppioni con il tuo gruppo familiare e calcola all'istante gli scambi ideali con i tuoi amici.",
+    helpTitle: "Aiuto",
+    helpHeader: "Guida di Aiuto",
+    helpDesc: "Scopri come collezionare, scambiare e collaborare sul tuo album in tempo reale."
   },
   pt: {
     album: "Álbum",
@@ -686,7 +695,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     atTime: "às",
     tradeInvalidQr: "Código QR inválido. Escaneie um código QR do AlbumHelper.",
     aboutTitle: "ℹ️ Sobre",
-    aboutDesc: "Seu companheiro inteligente para colecionar, gerenciar e comparar figurinhas da Copa do Mundo. Compartilhe repetidas com seu grupo familiar e calcule trocas ideais com seus amigos instantaneamente."
+    aboutDesc: "Seu companheiro inteligente para colecionar, gerenciar e comparar figurinhas da Copa do Mundo. Compartilhe repetidas com seu grupo familiar e calcule trocas ideais com seus amigos instantaneamente.",
+    helpTitle: "Ajuda",
+    helpHeader: "Guia de Ajuda",
+    helpDesc: "Aprenda a colecionar, trocar e colaborar em seu álbum em tempo real."
   },
   fr: {
     album: "Album",
@@ -853,7 +865,10 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     atTime: "à",
     tradeInvalidQr: "Code QR invalide. Veuillez scanner un code QR d'AlbumHelper.",
     aboutTitle: "ℹ️ À propos de",
-    aboutDesc: "Votre compagnon intelligent pour collectionner, gérer et comparer les stickers de la Coupe du Monde de football. Partagez vos doubles avec votre groupe familial et calculez instantanément des échanges idéaux avec vos amis."
+    aboutDesc: "Votre compagnon intelligent pour collectionner, gérer et comparer les stickers de la Coupe du Monde de football. Partagez vos doubles avec votre groupe familial et calculez instantanément des échanges idéaux avec vos amis.",
+    helpTitle: "Aide",
+    helpHeader: "Guide d'aide",
+    helpDesc: "Découvrez comment collectionner, échanger et collaborer sur votre album en temps réel."
   }
 };
 

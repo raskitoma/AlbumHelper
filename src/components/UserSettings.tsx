@@ -754,6 +754,19 @@ export default function UserSettings({
         </div>
       )}
 
+      {/* Help Section */}
+      <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(147, 51, 234, 0.2)", background: "rgba(147, 51, 234, 0.03)", flexWrap: "wrap", gap: "1rem" }}>
+        <div>
+          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>❓ {t("helpHeader")}</h2>
+          <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
+            {t("helpDesc")}
+          </p>
+        </div>
+        <button onClick={() => router.push("/help")} className="btn-secondary" style={{ padding: "0.65rem 1.5rem", margin: 0 }}>
+          {t("helpTitle")}
+        </button>
+      </div>
+
       {/* 6. About Section */}
       <div className={`${styles.section} glass-card`} style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
         <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("aboutTitle")}</h2>

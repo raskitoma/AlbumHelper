@@ -1,0 +1,547 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 5rem; /* Space for bottom nav */
+}
+
+.headerCard {
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(59, 130, 246, 0.03) 100%);
+  border: 1px solid var(--border-glass);
+}
+
+.headerTitle {
+  font-size: 2.2rem;
+  font-weight: 850;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.headerDesc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Glassmorphic Tab Navigation */
+.tabsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.4rem;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+}
+
+[data-theme="dark"] .tabsContainer {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tabBtn {
+  border: none;
+  background: transparent;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tabBtnActive {
+  background: var(--bg-secondary);
+  color: var(--primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.tabBtn:hover:not(.tabBtnActive) {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .tabBtn:hover:not(.tabBtnActive) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Content Layout */
+.contentCard {
+  padding: 2rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Steps Illustration */
+.stepsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .stepsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.stepItem {
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.015);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .stepItem {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.stepItem:hover {
+  transform: translateY(-2px);
+  border-color: rgba(147, 51, 234, 0.2);
+}
+
+.stepNum {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(147, 51, 234, 0.1);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.stepTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stepDesc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Interactive Sticker Sandbox Section */
+.sandboxCard {
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
+  border: 1.5px dashed rgba(147, 51, 234, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .sandboxCard {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+.sandboxInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 500px;
+}
+
+.sandboxTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.sandboxDesc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.sandboxGestures {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  margin-top: 0.25rem;
+}
+
+.gestureGuide {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gestureKey {
+  font-family: monospace;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-weight: bold;
+}
+
+.sandboxInteractiveArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
+/* Interactive Mock Sticker Nodes */
+.mockStickerList {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.mockStickerContainer {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sticker {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 850;
+  border-radius: 50%;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: var(--shadow-md);
+  border: 2px solid transparent;
+}
+
+.sticker:active {
+  transform: scale(0.92);
+}
+
+.stickerEmpty {
+  background: var(--sticker-bg-empty);
+  color: var(--sticker-text-empty);
+}
+
+.stickerOwned {
+  background: var(--sticker-bg-owned);
+  color: var(--sticker-text-owned);
+}
+
+.stickerSpecialEmpty {
+  background: var(--sticker-special-bg-empty);
+  color: var(--sticker-special-text-empty);
+  border: 2px dashed rgba(217, 119, 6, 0.3);
+}
+
+.stickerSpecialOwned {
+  background: linear-gradient(135deg, #fcd34d, #d97706, #fbbf24);
+  color: var(--sticker-special-text-owned);
+  border: 2px solid #fbbf24;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+  animation: shine 2.5s infinite alternate;
+}
+
+.duplicateTag {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--danger);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 1.5px solid var(--bg-secondary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Feedback message */
+.feedbackMsg {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  height: 18px;
+  margin-top: 0.25rem;
+  transition: opacity 0.2s ease;
+}
+
+/* Sub-card section spacing */
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 0.5rem;
+}
+
+.exampleBox {
+  padding: 1.25rem;
+  border-radius: 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.exampleHeader {
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.codeExample {
+  font-family: monospace, Courier, monospace;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: block;
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .codeExample {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.actionsRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Mock Details Modal Styling */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modalCard {
+  width: 100%;
+  max-width: 350px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  animation: scaleUp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.jerseyContainer {
+  width: 120px;
+  height: 150px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 3px solid var(--border-glass);
+}
+
+.jerseyShirt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 80px;
+  position: relative;
+}
+
+.jerseyNum {
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.jerseyCode {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  z-index: 2;
+}
+
+.modalName {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.modalPos {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--border-subtle);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.modalMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.modalQtyRow {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.modalQtyBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalQtyVal {
+  font-size: 1.8rem;
+  font-weight: 800;
+  width: 30px;
+}
+
+/* Animations */
+@keyframes shine {
+  from {
+    filter: brightness(1);
+  }
+  to {
+    filter: brightness(1.15) contrast(1.05);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
