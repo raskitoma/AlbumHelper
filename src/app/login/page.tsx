@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import LoginForm from "./LoginForm";
 import styles from "../auth.module.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Iniciar Sesión - AlbumHelper",
   description: "Accede a tu cuenta de AlbumHelper para ver tu colección del álbum del Mundial de Fútbol.",

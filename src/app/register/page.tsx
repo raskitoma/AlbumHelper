@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import RegisterForm from "./RegisterForm";
 import styles from "../auth.module.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Registro - AlbumHelper",
   description: "Crea tu cuenta para comenzar a trackear tus cromos del Mundial de Fútbol 2026.",

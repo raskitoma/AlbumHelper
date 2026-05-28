@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import SetupForm from "./SetupForm";
 import styles from "../auth.module.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Inicializar Sistema - AlbumHelper",
   description: "Crea la cuenta de administrador principal para tu tracker de cromos del Mundial.",
