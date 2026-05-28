@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { startAuthentication } from "@simplewebauthn/browser";
 import styles from "../auth.module.css";
+import { useI18n } from "@/lib/i18n";
 
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code2FA, setCode2FA] = useState("");
@@ -190,7 +192,15 @@ export default function LoginForm() {
           </div>
 
           <div className={styles.group}>
-            <label className={styles.label} htmlFor="password">Contraseña</label>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <label className={styles.label} htmlFor="password">Contraseña</label>
+              <Link
+                href="/forgot-password"
+                style={{ fontSize: "0.8rem", color: "var(--primary)", textDecoration: "none" }}
+              >
+                {t("forgotPasswordLink")}
+              </Link>
+            </div>
             <input
               id="password"
               type="password"
