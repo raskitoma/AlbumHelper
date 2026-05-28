@@ -97,11 +97,13 @@ export default function ShareModal({ isOpen, onClose, quantities, catalog }: Sha
     const text = generateShareText(type);
     const title = type === "missing" ? t("listMissing") : type === "swaps" ? t("listSwaps") : t("listHave");
     
+    // Combine title and list content into a single block to ensure target apps on iOS/Android receive the entire message
+    const combinedText = `⚽ AlbumHelper - ${title}\n\n${text}`;
+
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Figuritas - ${title}`,
-          text: text
+          text: combinedText
         });
       } catch (err) {
         console.error("Error al compartir: ", err);

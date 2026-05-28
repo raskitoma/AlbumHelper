@@ -44,7 +44,7 @@
   --sticker-special-text-owned: #ffffff;
   
   --glass-blur: blur(12px);
-  --bg-glass-dock: rgba(255, 255, 255, 0.75);
+  --bg-glass-dock: rgba(255, 255, 255, 0.92);
   --glass-blur-dock: blur(20px);
 }
 
@@ -87,7 +87,7 @@
   --sticker-special-bg-owned: #fbbf24;
   --sticker-special-text-empty: #fcd34d;
   --sticker-special-text-owned: #0f172a;
-  --bg-glass-dock: rgba(19, 27, 46, 0.75);
+  --bg-glass-dock: rgba(19, 27, 46, 0.95);
 }
 
 /* Global Reset & Base */

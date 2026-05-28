@@ -388,23 +388,20 @@ export default function UserSettings({
   // Share invitation via Web Share or fallback
   const handleShareInvite = async () => {
     if (!groupInvite) return;
-    const shareText = `¡Únete a mi grupo familiar "${groupName}" en AlbumHelper para coleccionar y cambiar cromos del Mundial juntos! Código: ${groupInvite}`;
-    const shareUrl = `${window.location.origin}/login?invite=${groupInvite}`;
+    const shareText = `¡Únete a mi grupo familiar "${groupName}" en AlbumHelper para coleccionar y cambiar cromos del Mundial juntos!\n\nCódigo de invitación: ${groupInvite}\nEnlace para unirse: ${window.location.origin}/login?invite=${groupInvite}`;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Invitación a AlbumHelper",
-          text: shareText,
-          url: shareUrl
+          text: shareText
         });
         showMsg("success", "¡Invitación compartida!");
       } catch (err) {
-        navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        navigator.clipboard.writeText(shareText);
         showMsg("success", "¡Mensaje de invitación copiado al portapapeles!");
       }
     } else {
-      navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+      navigator.clipboard.writeText(shareText);
       showMsg("success", "¡Mensaje de invitación copiado al portapapeles!");
     }
   };
@@ -756,6 +753,29 @@ export default function UserSettings({
           </button>
         </div>
       )}
+
+      {/* 6. About Section */}
+      <div className={`${styles.section} glass-card`} style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
+        <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("aboutTitle")}</h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.5rem" }}>
+          <span style={{ fontSize: "1.5rem" }}>⚽</span>
+          <strong style={{ fontSize: "1.25rem", color: "var(--text-primary)" }}>AlbumHelper</strong>
+        </div>
+        <p className={styles.sectionDesc} style={{ margin: "0.5rem 0", maxWidth: "500px", lineHeight: "1.5", fontSize: "0.9rem" }}>
+          {t("aboutDesc")}
+        </p>
+        <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.5rem" }}>
+          &copy; {new Date().getFullYear()}{" "}
+          <a
+            href="https://raskitoma.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--primary)", textDecoration: "none", fontWeight: 600 }}
+          >
+            Raskitoma.io
+          </a>
+        </div>
+      </div>
 
       {/* 2FA Recovery Codes Modal */}
       {showRecoveryModal && recoveryCodes && (

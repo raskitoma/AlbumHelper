@@ -183,7 +183,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     shareTotal: "Total: {count} cromos",
     statsTotal: "Total Cromos",
     atTime: "a las",
-    tradeInvalidQr: "Código QR no válido. Por favor escanea un código QR de AlbumHelper."
+    tradeInvalidQr: "Código QR no válido. Por favor escanea un código QR de AlbumHelper.",
+    aboutTitle: "ℹ️ Acerca de",
+    aboutDesc: "Tu compañero inteligente para coleccionar, gestionar y comparar cromos del Mundial de Fútbol. Comparte repetidos con tu grupo familiar y calcula intercambios ideales con tus amigos al instante."
   },
   en: {
     album: "Album",
@@ -348,7 +350,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     shareTotal: "Total: {count} stickers",
     statsTotal: "Total Stickers",
     atTime: "at",
-    tradeInvalidQr: "Invalid QR Code. Please scan an AlbumHelper QR Code."
+    tradeInvalidQr: "Invalid QR Code. Please scan an AlbumHelper QR Code.",
+    aboutTitle: "ℹ️ About",
+    aboutDesc: "Your smart companion to collect, manage and compare soccer stickers. Share swaps with your family group and calculate ideal trades with friends instantly."
   },
   it: {
     album: "Album",
@@ -513,7 +517,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     shareTotal: "Totale: {count} figurine",
     statsTotal: "Totale Figurine",
     atTime: "alle",
-    tradeInvalidQr: "Codice QR non valido. Scansiona un codice QR di AlbumHelper."
+    tradeInvalidQr: "Codice QR non valido. Scansiona un codice QR di AlbumHelper.",
+    aboutTitle: "ℹ️ Informazioni su",
+    aboutDesc: "Il tuo compagno intelligente per collezionare, gestire e confrontare le figurine dei Mondiali di calcio. Condividi i doppioni con il tuo gruppo familiare e calcola all'istante gli scambi ideali con i tuoi amici."
   },
   pt: {
     album: "Álbum",
@@ -678,7 +684,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     shareTotal: "Total: {count} cromos",
     statsTotal: "Total de Cromos",
     atTime: "às",
-    tradeInvalidQr: "Código QR inválido. Escaneie um código QR do AlbumHelper."
+    tradeInvalidQr: "Código QR inválido. Escaneie um código QR do AlbumHelper.",
+    aboutTitle: "ℹ️ Sobre",
+    aboutDesc: "Seu companheiro inteligente para colecionar, gerenciar e comparar figurinhas da Copa do Mundo. Compartilhe repetidas com seu grupo familiar e calcule trocas ideais com seus amigos instantaneamente."
   },
   fr: {
     album: "Album",
@@ -843,7 +851,9 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     shareTotal: "Total: {count} stickers",
     statsTotal: "Total de Stickers",
     atTime: "à",
-    tradeInvalidQr: "Code QR invalide. Veuillez scanner un code QR d'AlbumHelper."
+    tradeInvalidQr: "Code QR invalide. Veuillez scanner un code QR d'AlbumHelper.",
+    aboutTitle: "ℹ️ À propos de",
+    aboutDesc: "Votre compagnon intelligent pour collectionner, gérer et comparer les stickers de la Coupe du Monde de football. Partagez vos doubles avec votre groupe familial et calculez instantanément des échanges idéaux avec vos amis."
   }
 };
 
