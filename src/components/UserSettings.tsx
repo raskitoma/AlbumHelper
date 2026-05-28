@@ -50,6 +50,7 @@ export default function UserSettings({
   // States
   const [displayName, setDisplayName] = useState(initialName || "");
   const [isSavingName, setIsSavingName] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(initial2faEnabled);
   const [twoFactorSetup, setTwoFactorSetup] = useState<{ secret: string; qrUrl: string } | null>(null);
   const [token2FA, setToken2FA] = useState("");
@@ -445,6 +446,7 @@ export default function UserSettings({
       });
       if (res.ok) {
         showMsg("success", language === "es" ? "¡Nombre de usuario actualizado!" : "Username updated!");
+        setIsEditingName(false);
         router.refresh();
       } else {
         const data = await res.json();
@@ -489,10 +491,122 @@ export default function UserSettings({
 
       {/* 1. Profile / Account Summary Card */}
       <div className={`${styles.section} glass-card`} style={{ position: "relative" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "1.25rem", flexWrap: "wrap", gap: "1rem" }}>
-          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
-            {displayName ? `👋 ${language === "es" ? "¡Hola" : "Hello"} ${displayName}!` : `👋 ${language === "es" ? "¡Hola!" : "Hello!"}`}
-          </h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+            {/* Avatar Preview */}
+            <div className={styles.avatarPreviewContainer} style={{ margin: 0 }}>
+              <img
+                src={avatarSrc || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748b' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"}
+                alt="Avatar Preview"
+                className={styles.avatarPreview}
+              />
+            </div>
+
+            {/* Greeting and editable display name */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              {isEditingName ? (
+                <form onSubmit={handleSaveName} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--text-primary)" }}>
+                    👋 {language === "es" ? "¡Hola" : "Hello"}
+                  </span>
+                  <input
+                    type="text"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    className="input"
+                    placeholder={language === "es" ? "Tu nombre" : "Your name"}
+                    style={{
+                      padding: "0.2rem 0.5rem",
+                      fontSize: "1.2rem",
+                      fontWeight: 800,
+                      borderRadius: "6px",
+                      width: "140px",
+                      background: "var(--bg-secondary)",
+                      border: "1px solid var(--border-subtle)"
+                    }}
+                    autoFocus
+                    required
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSavingName}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "var(--success, #10b981)",
+                      cursor: "pointer",
+                      padding: "0.25rem",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "opacity 0.2s"
+                    }}
+                    title={language === "es" ? "Guardar" : "Save"}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDisplayName(initialName || "");
+                      setIsEditingName(false);
+                    }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "var(--text-secondary)",
+                      cursor: "pointer",
+                      padding: "0.25rem",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "opacity 0.2s"
+                    }}
+                    title={language === "es" ? "Cancelar" : "Cancel"}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </form>
+              ) : (
+                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                  <h2 className={styles.sectionTitle} style={{ margin: 0, fontSize: "1.3rem", fontWeight: 800 }}>
+                    {displayName ? `👋 ${language === "es" ? "¡Hola" : "Hello"} ${displayName}!` : `👋 ${language === "es" ? "¡Hola!" : "Hello!"}`}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingName(true)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "var(--text-secondary)",
+                      cursor: "pointer",
+                      padding: "0.25rem",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "color 0.2s"
+                    }}
+                    title={language === "es" ? "Editar nombre" : "Edit name"}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8 }}>
+                      <path d="M12 20h9"/>
+                      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                    </svg>
+                  </button>
+                </div>
+              )}
+              
+              <p className={styles.sectionDesc} style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                {t("profileDesc")}<strong>{userEmail}</strong>
+              </p>
+            </div>
+          </div>
+
           <button
             type="button"
             onClick={handleLogout}
@@ -514,102 +628,72 @@ export default function UserSettings({
               gap: "0.4rem"
             }}
           >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
             {t("profileLogout")}
           </button>
         </div>
-        
-        <div className={styles.profileRow}>
-          {/* Avatar Preview */}
-          <div className={styles.avatarPreviewContainer}>
-            <img
-              src={avatarSrc || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748b' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"}
-              alt="Avatar Preview"
-              className={styles.avatarPreview}
-            />
-          </div>
- 
-          <div className={styles.profileDetails}>
-            <p className={styles.sectionDesc} style={{ marginBottom: "1rem" }}>
-              {t("profileDesc")}<strong>{userEmail}</strong>
-            </p>
 
-            {/* Display Name Edit Form */}
-            <form onSubmit={handleSaveName} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "1.25rem", width: "100%", maxWidth: "320px" }}>
-              <div style={{ flex: 1 }}>
-                <input
-                  type="text"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  className="input"
-                  placeholder={language === "es" ? "Tu Nombre (ej. Carlos)" : "Your Name (e.g. Charlie)"}
-                  style={{ width: "100%", padding: "0.55rem 0.75rem", fontSize: "0.85rem", borderRadius: "8px" }}
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn-primary"
-                disabled={isSavingName}
-                style={{ padding: "0.55rem 1rem", fontSize: "0.85rem", whiteSpace: "nowrap", borderRadius: "8px" }}
-              >
-                {isSavingName ? "..." : (language === "es" ? "Guardar" : "Save")}
-              </button>
-            </form>
- 
-            <div className={styles.avatarControls}>
-              <span className={styles.label} style={{ display: "block", marginBottom: "0.25rem" }}>
-                {t("profileConfigAvatar")}
-              </span>
-              
-              <div className={styles.avatarToggleGroup}>
-                <button
-                  type="button"
-                  onClick={() => handleSaveAvatar("GRAVATAR", null)}
-                  className={`${styles.avatarToggleBtn} ${avatarType === "GRAVATAR" ? styles.avatarToggleBtnActive : ""}`}
-                  disabled={loading}
-                >
-                  {t("profileUseGravatar")}
-                </button>
-                
-                <label className={`${styles.avatarToggleBtn} ${avatarType === "UPLOAD" ? styles.avatarToggleBtnActive : ""}`}>
-                  {t("profileUploadImg")}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                    disabled={loading}
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
- 
-        {/* Google OAuth Account Linking Block */}
-        <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid var(--border-glass)", marginBottom: "1rem" }}>
-          <h3 className={styles.sectionTitle} style={{ fontSize: "1.05rem" }}>⚙️ {t("googleLinkTitle")}</h3>
-          <p className={styles.sectionDesc} style={{ marginBottom: "1rem" }}>{t("googleLinkDesc")}</p>
-          {googleEmail ? (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", background: "var(--primary-glow)", padding: "1rem", borderRadius: "12px", border: "1px solid rgba(59, 130, 246, 0.1)" }}>
-              <div>
-                <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "block", fontWeight: 600, textTransform: "uppercase" }}>{t("googleLinkedStatus")}</span>
-                <strong style={{ fontSize: "1rem", color: "var(--text-primary)" }}>{googleEmail}</strong>
-              </div>
-              <button type="button" onClick={handleUnlinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn} btn-secondary btnDanger`} style={{ margin: 0, padding: "0.5rem 1rem" }}>
-                {t("googleUnlinkBtn")}
-              </button>
-            </div>
-          ) : (
-            <button type="button" onClick={handleLinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem" }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" style={{ marginRight: "4px" }}>
-                <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.6 14.99 1 12 1 7.35 1 3.37 3.65 1.4 7.56l3.85 2.99c.92-2.75 3.5-4.51 6.75-4.51z"/>
-                <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.44c-.28 1.47-1.11 2.71-2.35 3.55l3.65 2.83c2.14-1.97 3.75-4.88 3.75-8.54z"/>
-                <path fill="#FBBC05" d="M5.25 14.57c-.24-.72-.37-1.49-.37-2.29s.13-1.57.37-2.29L1.4 7.01C.51 8.81 0 10.82 0 12.91s.51 4.1 1.4 5.9l3.85-2.99z"/>
-                <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.83c-1.01.68-2.31 1.09-4.31 1.09-3.25 0-5.83-1.76-6.75-4.51L1.4 16.83C3.37 20.74 7.35 23 12 23z"/>
+        {/* Divider line between main details and avatar configurations */}
+        <div style={{ borderTop: "1px solid var(--border-glass)", margin: "1.5rem 0" }} />
+
+        {/* Avatar Configurations (bottom part) */}
+        <div className={styles.avatarControls}>
+          <span className={styles.label} style={{ display: "block", marginBottom: "0.5rem", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.05em" }}>
+            {t("profileConfigAvatar")}
+          </span>
+          
+          <div className={styles.avatarToggleGroup}>
+            <button
+              type="button"
+              onClick={() => handleSaveAvatar("GRAVATAR", null)}
+              className={`${styles.avatarToggleBtn} ${avatarType === "GRAVATAR" ? styles.avatarToggleBtnActive : ""}`}
+              disabled={loading}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "10px"
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8 }}>
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="10" r="3"/>
+                <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
               </svg>
-              {t("googleLinkBtn")}
+              {t("profileUseGravatar")}
             </button>
-          )}
+            
+            <label
+              className={`${styles.avatarToggleBtn} ${avatarType === "UPLOAD" ? styles.avatarToggleBtnActive : ""}`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "10px",
+                margin: 0
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8 }}>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              {t("profileUploadImg")}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                style={{ display: "none" }}
+                disabled={loading}
+              />
+            </label>
+          </div>
         </div>
       </div>
 
@@ -711,7 +795,37 @@ export default function UserSettings({
         </div>
       </div>
 
-      {/* 3. Two-Factor Authentication (2FA) Card */}
+      {/* 3. Google Authentication Card */}
+      <div className={`${styles.section} glass-card`}>
+        <h2 className={styles.sectionTitle}>⚙️ {t("googleLinkTitle")}</h2>
+        <p className={styles.sectionDesc}>
+          {t("googleLinkDesc")}
+        </p>
+        
+        {googleEmail ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", background: "var(--primary-glow)", padding: "1rem", borderRadius: "12px", border: "1px solid rgba(59, 130, 246, 0.1)" }}>
+            <div>
+              <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "block", fontWeight: 600, textTransform: "uppercase" }}>{t("googleLinkedStatus")}</span>
+              <strong style={{ fontSize: "1rem", color: "var(--text-primary)" }}>{googleEmail}</strong>
+            </div>
+            <button type="button" onClick={handleUnlinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn} btn-secondary btnDanger`} style={{ margin: 0, padding: "0.5rem 1rem" }}>
+              {t("googleUnlinkBtn")}
+            </button>
+          </div>
+        ) : (
+          <button type="button" onClick={handleLinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" style={{ marginRight: "4px" }}>
+              <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.6 14.99 1 12 1 7.35 1 3.37 3.65 1.4 7.56l3.85 2.99c.92-2.75 3.5-4.51 6.75-4.51z"/>
+              <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.44c-.28 1.47-1.11 2.71-2.35 3.55l3.65 2.83c2.14-1.97 3.75-4.88 3.75-8.54z"/>
+              <path fill="#FBBC05" d="M5.25 14.57c-.24-.72-.37-1.49-.37-2.29s.13-1.57.37-2.29L1.4 7.01C.51 8.81 0 10.82 0 12.91s.51 4.1 1.4 5.9l3.85-2.99z"/>
+              <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.83c-1.01.68-2.31 1.09-4.31 1.09-3.25 0-5.83-1.76-6.75-4.51L1.4 16.83C3.37 20.74 7.35 23 12 23z"/>
+            </svg>
+            {t("googleLinkBtn")}
+          </button>
+        )}
+      </div>
+
+      {/* 4. Two-Factor Authentication (2FA) Card */}
       <div className={`${styles.section} glass-card`}>
         <h2 className={styles.sectionTitle}>{t("tfaTitle")}</h2>
         <p className={styles.sectionDesc}>
