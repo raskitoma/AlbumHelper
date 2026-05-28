@@ -15,8 +15,6 @@ export default function HelpGuide() {
   
   // Interaction feedback states
   const [feedback, setFeedback] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalStickerType, setModalStickerType] = useState<"normal" | "special">("normal");
 
   // Mobile long-press timer ref
   const touchTimerRef = useRef<any>(null);
@@ -82,11 +80,7 @@ export default function HelpGuide() {
     if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
   };
 
-  const handleDoubleClick = (type: "normal" | "special") => {
-    setModalStickerType(type);
-    setModalOpen(true);
-    triggerFeedback(language === "es" ? "Detalle abierto" : "Details opened");
-  };
+
 
   // Clean up timers on unmount
   useEffect(() => {
@@ -110,19 +104,16 @@ export default function HelpGuide() {
       albumIntro: "El álbum principal te permite registrar el estado de cada cromo del Mundial 2026 de forma interactiva.",
       
       step1Title: "1. Añadir Cromos",
-      step1Desc: "Toca o haz clic sobre el número de un cromo en la cuadrícula para marcarlo como 'Conseguido' (color sólido).",
+      step1Desc: "Toca o haz clic en un cromo para marcarlo como conseguido.",
       
       step2Title: "2. Repetidos (Duplicados)",
       step2Desc: "Sigue tocando el mismo cromo para añadir repetidos. Aparecerá un globo rojo con la cantidad (ej. +1, +2).",
       
       step3Title: "3. Quitar / Restar",
-      step3Desc: "Mantén presionado por 0.5s (en móvil) o haz clic derecho (en PC) sobre el cromo para disminuir el contador.",
+      step3Desc: "Mantén presionado o haz clic derecho sobre el cromo para restar cantidad.",
       
       step4Title: "4. Carga en Lote (Lote Rápido)",
       step4Desc: "Usa el cuadro de texto 'Carga rápida' para agregar muchos códigos separados por comas al mismo tiempo.",
-      
-      step5Title: "5. Detalle del Cromo",
-      step5Desc: "Haz doble clic (o doble toque) para abrir el detalle, ver la foto/camiseta del jugador y ajustar las cantidades.",
 
       tradeTitle: "Intercambios Inteligentes con QR y Chat",
       tradeIntro: "AlbumHelper calcula automáticamente las coincidencias entre tus repetidos y los cromos que le faltan a tus amigos.",
@@ -177,19 +168,16 @@ export default function HelpGuide() {
       albumIntro: "The main album page allows you to interactively log the collection status of every 2026 World Cup sticker.",
       
       step1Title: "1. Add Stickers",
-      step1Desc: "Tap or click on any sticker number in the grid to mark it as 'Collected' (solid color).",
+      step1Desc: "Tap or click on a sticker to mark it as collected.",
       
       step2Title: "2. Duplicates (Swaps)",
       step2Desc: "Keep tapping the same sticker to add duplicates. A red tag with the count will appear (e.g. +1, +2).",
       
       step3Title: "3. Remove / Subtract",
-      step3Desc: "Hold down for 0.5s (on mobile) or right-click (on PC) over the sticker to decrease its count.",
+      step3Desc: "Long press or right-click over the sticker to decrease its count.",
       
       step4Title: "4. Bulk Quick-Add",
       step4Desc: "Use the 'Bulk quick-add' input box to load many sticker codes separated by commas at once.",
-      
-      step5Title: "5. Sticker Details",
-      step5Desc: "Double-click (or double-tap) to open the detail view, see the player's card/jersey, and adjust quantities.",
 
       tradeTitle: "Smart Trading with QR & Chat Lists",
       tradeIntro: "AlbumHelper automatically matches your duplicates list against the stickers your friends are missing.",
@@ -244,19 +232,16 @@ export default function HelpGuide() {
       albumIntro: "L'album principale ti consente di registrare lo stato di ogni figurina del Mondiale 2026 in modo interattivo.",
       
       step1Title: "1. Aggiungi Figurine",
-      step1Desc: "Tocca o fai clic sul numero di una figurina nella griglia per contrassegnarla come 'Ottenuta' (colore solido).",
+      step1Desc: "Tocca o fai clic su una figurina per contrassegnarla come ottenuta.",
       
       step2Title: "2. Figurine Doppie",
       step2Desc: "Continua a toccare la stessa figurina per aggiungere doppie. Apparirà un badge rosso con la quantità (es. +1, +2).",
       
       step3Title: "3. Rimuovi / Sottrai",
-      step3Desc: "Tieni premuto per 0,5s (su cellulare) o fai clic con il tasto destro (su PC) sulla figurina per diminuire il conteggio.",
+      step3Desc: "Tieni premuto o fai clic destro sulla figurina per diminuire il conteggio.",
       
       step4Title: "4. Caricamento Rapido",
       step4Desc: "Utilizza la casella 'Caricamento rapido' per inserire molti codici separati da virgole contemporaneamente.",
-      
-      step5Title: "5. Scheda Figurina",
-      step5Desc: "Fai doppio clic (o doppio tap) per aprire la scheda dettagliata, vedere la maglia del giocatore e regolare le quantità.",
 
       tradeTitle: "Scambi Intelligenti con QR e Chat",
       tradeIntro: "AlbumHelper calcola automaticamente le corrispondenze tra i tuoi doppioni e le figurine mancanti dei tuoi amici.",
@@ -311,19 +296,16 @@ export default function HelpGuide() {
       albumIntro: "O álbum principal permite que você registre o status de cada cromo da Copa 2026 de forma interativa.",
       
       step1Title: "1. Adicionar Cromos",
-      step1Desc: "Toque ou clique sobre o número de um cromo no grid para marcá-lo como 'Obtido' (cor sólida).",
+      step1Desc: "Toque ou clique em um cromo para marcá-lo como obtido.",
       
       step2Title: "2. Cromos Repetidos",
       step2Desc: "Continue tocando no mesmo cromo para adicionar repetidos. Aparecerá um balão vermelho com a quantidade (ex. +1, +2).",
       
       step3Title: "3. Remover / Subtrair",
-      step3Desc: "Mantenha pressionado por 0.5s (em celular) ou clique com o botão direito (no PC) sobre o cromo para diminuir o contador.",
+      step3Desc: "Mantenha pressionado ou clique com o botão direito sobre o cromo para subtrair.",
       
       step4Title: "4. Carga Rápida em Lote",
       step4Desc: "Use a caixa de texto 'Carga rápida' para adicionar muitos códigos separados por vírgulas ao mesmo tempo.",
-      
-      step5Title: "5. Detalhes do Cromo",
-      step5Desc: "Dê duplo clique (ou duplo toque) para abrir os detalhes, ver a camisa do jogador e ajustar as quantidades.",
 
       tradeTitle: "Trocas Inteligentes com QR e Chat",
       tradeIntro: "O AlbumHelper calcula automaticamente as correspondências entre suas repetidas e os cromos que faltam para seus amigos.",
@@ -378,19 +360,16 @@ export default function HelpGuide() {
       albumIntro: "L'album principal vous permet de consigner de manière interactive l'état de votre collection de stickers Coupe du Monde 2026.",
       
       step1Title: "1. Ajouter des Stickers",
-      step1Desc: "Appuyez ou cliquez sur le numéro d'un sticker dans la grille pour le marquer comme 'Collectionné' (couleur unie).",
+      step1Desc: "Appuyez ou cliquez sur un sticker pour le marquer comme collectionné.",
       
       step2Title: "2. Stickers en Double",
       step2Desc: "Continuez d'appuyer sur le même sticker pour ajouter des doubles. Un badge rouge affichera la quantité (ex. +1, +2).",
       
       step3Title: "3. Retirer / Soustraire",
-      step3Desc: "Maintenez appuyé pendant 0.5s (sur mobile) ou faites un clic droit (sur PC) sur le sticker pour diminuer le compteur.",
+      step3Desc: "Maintenez appuyé ou faites un clic droit sur le sticker pour soustraire.",
       
       step4Title: "4. Ajout Rapide en Lot",
       step4Desc: "Utilisez la zone de texte 'Ajout rapide' pour charger de nombreux codes séparés par des virgules en une seule fois.",
-      
-      step5Title: "5. Détails du Sticker",
-      step5Desc: "Double-cliquez (ou double-touchez) pour ouvrir les détails, voir le maillot du joueur et ajuster finement les quantités.",
 
       tradeTitle: "Échanges Intelligents par QR et Chat",
       tradeIntro: "AlbumHelper calcule automatiquement les correspondances entre vos doubles et les stickers manquants de vos amis.",
@@ -497,10 +476,6 @@ export default function HelpGuide() {
                     <span className={styles.gestureKey}>LONG PRESS / RIGHT CLICK</span>
                     <span>{l.step3Desc}</span>
                   </div>
-                  <div className={styles.gestureGuide}>
-                    <span className={styles.gestureKey}>DOUBLE CLICK</span>
-                    <span>{l.step5Desc}</span>
-                  </div>
                 </div>
               </div>
 
@@ -513,13 +488,11 @@ export default function HelpGuide() {
                       onContextMenu={(e) => handleContextMenu(e, "normal")}
                       onTouchStart={() => handleTouchStart("normal")}
                       onTouchEnd={handleTouchEnd}
-                      onDoubleClick={() => handleDoubleClick("normal")}
                       className={`${styles.sticker} ${mockQty > 0 ? styles.stickerOwned : styles.stickerEmpty}`}
                       style={{
                         background: mockQty > 0 ? "linear-gradient(to bottom, #006341, #ffffff, #c8102e)" : "",
                         color: mockQty > 0 ? "#1e293b" : ""
                       }}
-                      title="Doble clic para info"
                     >
                       1
                     </div>
@@ -535,9 +508,7 @@ export default function HelpGuide() {
                       onContextMenu={(e) => handleContextMenu(e, "special")}
                       onTouchStart={() => handleTouchStart("special")}
                       onTouchEnd={handleTouchEnd}
-                      onDoubleClick={() => handleDoubleClick("special")}
                       className={`${styles.sticker} ${mockSpecialQty > 0 ? styles.stickerSpecialOwned : styles.stickerSpecialEmpty}`}
-                      title="Doble clic para info"
                     >
                       8
                     </div>
@@ -572,11 +543,6 @@ export default function HelpGuide() {
                 <span className={styles.stepNum}>4</span>
                 <div className={styles.stepTitle}>{l.step4Title}</div>
                 <p className={styles.stepDesc}>{l.step4Desc}</p>
-              </div>
-              <div className={styles.stepItem}>
-                <span className={styles.stepNum}>5</span>
-                <div className={styles.stepTitle}>{l.step5Title}</div>
-                <p className={styles.stepDesc}>{l.step5Desc}</p>
               </div>
             </div>
 
@@ -694,71 +660,6 @@ export default function HelpGuide() {
       <footer style={{ textAlign: "center", fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "1rem" }}>
         {l.aboutRaskitoma}
       </footer>
-
-      {/* 4. Interactive Sandbox Details Modal */}
-      {modalOpen && (
-        <div className={styles.modalOverlay} onClick={() => setModalOpen(false)}>
-          <div className={`${styles.modalCard} glass-card`} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.modalClose} onClick={() => setModalOpen(false)}>×</button>
-
-            <div
-              className={styles.jerseyContainer}
-              style={{
-                background: modalStickerType === "special"
-                  ? "linear-gradient(135deg, #fcd34d, #d97706, #fbbf24)"
-                  : "linear-gradient(to bottom, #006341, #ffffff, #c8102e)"
-              }}
-            >
-              <div className={styles.jerseyShirt}>
-                <div className={styles.jerseyNum}>
-                  {modalStickerType === "normal" ? "1" : "8"}
-                </div>
-                <span className={styles.jerseyCode}>
-                  {modalStickerType === "normal" ? "MEX" : "FWC"}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <h3 className={styles.modalName}>
-                {modalStickerType === "normal" ? "Memo Ochoa" : "World Cup Logo"}
-              </h3>
-              <div className={styles.modalPos}>
-                {modalStickerType === "normal" ? t("posGoalkeeper") : t("posSpecial")}
-              </div>
-              <div className={styles.modalMeta}>
-                <span>{modalStickerType === "normal" ? "🇲🇽" : "🌎"}</span>
-                <span>{modalStickerType === "normal" ? "México" : "FIFA Specials"}</span>
-                <span style={{ color: "var(--text-secondary)" }}>•</span>
-                <span style={{ fontWeight: 800 }}>
-                  {modalStickerType === "normal" ? "#MEX1" : "#FWC8"}
-                </span>
-              </div>
-            </div>
-
-            {/* Quantity Adjusters inside Mock Modal */}
-            <div className={styles.modalQtyRow}>
-              <button
-                onClick={() => handleStickerRemove(modalStickerType)}
-                className={styles.modalQtyBtn}
-                style={{ background: "rgba(239, 68, 68, 0.15)", color: "var(--danger)" }}
-              >
-                -
-              </button>
-              <div className={styles.modalQtyVal}>
-                {modalStickerType === "normal" ? mockQty : mockSpecialQty}
-              </div>
-              <button
-                onClick={() => handleStickerClick(modalStickerType)}
-                className={styles.modalQtyBtn}
-                style={{ background: "rgba(16, 185, 129, 0.15)", color: "var(--success)" }}
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

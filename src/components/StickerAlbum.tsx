@@ -78,8 +78,7 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
   // Collapse state: default everything expanded
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
 
-  // Details Modal states
-  const [selectedSticker, setSelectedSticker] = useState<CatalogSticker | null>(null);
+
 
   // Confirm Modal states
   const [confirmStickerCode, setConfirmStickerCode] = useState<string | null>(null);
@@ -468,8 +467,7 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
                         onTouchStart={() => handleTouchStart(sticker.code)}
                         onTouchEnd={handleTouchEnd}
                         className={`${styles.sticker} ${stickerStyle}`}
-                        title={`${sticker.name} (${translatePosition(sticker.position, sticker.isSpecial)}) - ${t("doubleClickText")}.`}
-                        onDoubleClick={() => setSelectedSticker(sticker)}
+                        title={`${sticker.name} (${translatePosition(sticker.position, sticker.isSpecial)})`}
                       >
                         {sticker.number}
 
@@ -489,75 +487,7 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
         })}
       </div>
 
-      {/* 3. Sticker Detail Modal */}
-      {selectedSticker && (
-        <div className={styles.overlay} onClick={() => setSelectedSticker(null)}>
-          <div className={`${styles.detailsCard} glass-card`} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeBtn} onClick={() => setSelectedSticker(null)}>×</button>
-            
-            {/* Elegant Sticker Card Visual Representation */}
-            <div
-              className={styles.cardImageContainer}
-              style={{
-                background: selectedSticker.isSpecial
-                  ? "linear-gradient(135deg, #fcd34d, #d97706, #fbbf24)"
-                  : TEAM_COLORS[selectedSticker.sectionCode]?.bg || "linear-gradient(135deg, var(--primary), var(--accent))"
-              }}
-            >
-              {selectedSticker.imageUrl ? (
-                <img
-                  src={selectedSticker.imageUrl}
-                  alt={selectedSticker.name}
-                  className={styles.cardStarImage}
-                />
-              ) : (
-                <div className={styles.jerseyShirt}>
-                  <div className={styles.jerseyNum}>{selectedSticker.number}</div>
-                  <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.7)", fontWeight: 700, zIndex: 2 }}>
-                    {selectedSticker.sectionCode}
-                  </span>
-                </div>
-              )}
-            </div>
 
-            <div>
-              <h3 className={styles.cardName}>{selectedSticker.name}</h3>
-              <div className={styles.cardPos}>
-                {translatePosition(selectedSticker.position, selectedSticker.isSpecial)}
-              </div>
-              
-              {/* Flag and Section meta */}
-              <div className={styles.cardMeta}>
-                <span>{SECTIONS.find((s) => s.code === selectedSticker.sectionCode)?.flag}</span>
-                <span>{SECTIONS.find((s) => s.code === selectedSticker.sectionCode)?.name}</span>
-                <span style={{ color: "var(--text-secondary)" }}>•</span>
-                <span style={{ fontWeight: 800 }}>#{selectedSticker.code}</span>
-              </div>
-            </div>
-
-            {/* Large Easy-touch Quantity Controls */}
-            <div className={styles.qtyControls}>
-              <button
-                onClick={() => updateStickerQuantity(selectedSticker.code, "remove")}
-                className={styles.qtyBtn}
-                style={{ background: "rgba(239, 68, 68, 0.15)", color: "var(--danger)" }}
-              >
-                -
-              </button>
-              <div className={styles.qtyValue}>
-                {quantities[selectedSticker.code] || 0}
-              </div>
-              <button
-                onClick={() => updateStickerQuantity(selectedSticker.code, "add")}
-                className={styles.qtyBtn}
-                style={{ background: "rgba(16, 185, 129, 0.15)", color: "var(--success)" }}
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* 4. Custom Glassmorphic Removal Confirmation Modal */}
       <ConfirmModal

@@ -218,6 +218,8 @@
   border-radius: 4px;
   padding: 0.1rem 0.35rem;
   font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .sandboxInteractiveArea {
