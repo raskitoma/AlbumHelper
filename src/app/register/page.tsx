@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import RegisterForm from "./RegisterForm";
 import styles from "../auth.module.css";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,9 @@ export default async function RegisterPage() {
             Regístrate con tu correo para empezar a registrar y compartir tus cromos del Mundial Fifa 2026.
           </p>
         </div>
-        <RegisterForm />
+        <Suspense fallback={<div className={styles.loading}>Cargando formulario...</div>}>
+          <RegisterForm />
+        </Suspense>
       </div>
     </main>
   );

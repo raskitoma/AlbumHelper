@@ -14,7 +14,8 @@ export async function GET() {
       select: {
         id: true,
         credentialDeviceType: true,
-        credentialBackedUp: true
+        credentialBackedUp: true,
+        name: true
       }
     });
 

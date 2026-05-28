@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import LoginForm from "./LoginForm";
 import styles from "../auth.module.css";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,9 @@ export default async function LoginPage() {
             Ingresa tus credenciales o utiliza tus datos biométricos para acceder a tu álbum de cromos.
           </p>
         </div>
-        <LoginForm />
+        <Suspense fallback={<div className={styles.loading}>Cargando formulario...</div>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </main>
   );

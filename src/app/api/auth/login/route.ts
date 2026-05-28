@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { verifyPassword, createSessionToken, setSessionCookie } from "@/lib/auth";
+import { verifyPassword, createSessionToken, setSessionCookie, hasValidTrustedDeviceCookie, createTrustedDeviceCookie } from "@/lib/auth";
 import { verifyTOTP } from "@/lib/totp";
+import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
@@ -14,7 +15,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { email, password, code2FA } = body;
+    const { email, password, code2FA, trustDevice } = body;
 
     if (!email || !password) {
       return NextResponse.json(
@@ -48,21 +49,64 @@ export async function POST(req: Request) {
 
     // 3. Handle Two-Factor Authentication (2FA) if enabled
     if (user.twoFactorEnabled && user.twoFactorSecret) {
-      if (!code2FA) {
-        // Return instructions indicating 2FA verification is required
-        return NextResponse.json({
-          requires2FA: true,
-          email: user.email
-        });
-      }
+      // Check if this device is trusted (by checking the trusted device cookie)
+      const isDeviceTrusted = await hasValidTrustedDeviceCookie(user.id);
+      
+      if (!isDeviceTrusted) {
+        if (!code2FA) {
+          // Return instructions indicating 2FA verification is required
+          return NextResponse.json({
+            requires2FA: true,
+            email: user.email
+          });
+        }
 
-      // Verify the 6-digit TOTP code
-      const is2FAValid = verifyTOTP(code2FA, user.twoFactorSecret);
-      if (!is2FAValid) {
-        return NextResponse.json(
-          { error: "El código de verificación de 2FA es incorrecto." },
-          { status: 401 }
-        );
+        // Check if it is a recovery code (format: XXXX-XXXX, 9 chars long)
+        const isRecoveryCode = code2FA.length === 9 && code2FA.includes("-");
+        
+        if (isRecoveryCode) {
+          // Verify recovery code
+          const normalizedCode = code2FA.toUpperCase().trim();
+          const hashedEntered = crypto.createHash("sha256").update(normalizedCode).digest("hex");
+          
+          const currentHashes = user.recoveryCodes ? user.recoveryCodes.split(",") : [];
+          const codeIndex = currentHashes.indexOf(hashedEntered);
+          
+          if (codeIndex === -1) {
+            return NextResponse.json(
+              { error: "El código de recuperación es incorrecto o ya fue utilizado." },
+              { status: 401 }
+            );
+          }
+
+          // Remove the used code
+          const updatedHashes = currentHashes.filter((_, idx) => idx !== codeIndex);
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              recoveryCodes: updatedHashes.length > 0 ? updatedHashes.join(",") : null
+            }
+          });
+
+          // Set trusted device cookie if requested
+          if (trustDevice) {
+            await createTrustedDeviceCookie(user.id);
+          }
+        } else {
+          // Verify standard 6-digit TOTP code
+          const is2FAValid = verifyTOTP(code2FA, user.twoFactorSecret);
+          if (!is2FAValid) {
+            return NextResponse.json(
+              { error: "El código de verificación de 2FA es incorrecto." },
+              { status: 401 }
+            );
+          }
+
+          // Set trusted device cookie if requested
+          if (trustDevice) {
+            await createTrustedDeviceCookie(user.id);
+          }
+        }
       }
     }
 

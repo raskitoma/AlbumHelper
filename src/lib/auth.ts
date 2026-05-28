@@ -131,3 +131,38 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+// 6. Trusted Device management for bypassing 2FA (valid for 30 days)
+export async function createTrustedDeviceCookie(userId: string) {
+  const secret = await getJwtSecret();
+  const token = await new SignJWT({ userId })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("30d")
+    .sign(secret);
+
+  const cookieStore = await cookies();
+  cookieStore.set(`figuritas_trusted_device_${userId}`, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30 // 30 days
+  });
+}
+
+export async function hasValidTrustedDeviceCookie(userId: string): Promise<boolean> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(`figuritas_trusted_device_${userId}`)?.value;
+    if (!token) return false;
+
+    const secret = await getJwtSecret();
+    const { payload } = await jwtVerify(token, secret, {
+      algorithms: ["HS256"]
+    });
+    return payload.userId === userId;
+  } catch (error) {
+    return false;
+  }
+}

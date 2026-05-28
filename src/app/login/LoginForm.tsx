@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { startAuthentication } from "@simplewebauthn/browser";
 import styles from "../auth.module.css";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code2FA, setCode2FA] = useState("");
@@ -254,7 +255,7 @@ export default function LoginForm() {
           )}
 
           <div className={styles.footer}>
-            ¿No tienes cuenta? <Link href="/register">Regístrate</Link>
+            ¿No tienes cuenta? <Link href={searchParams.get("invite") || searchParams.get("code") ? `/register?invite=${searchParams.get("invite") || searchParams.get("code")}` : "/register"}>Regístrate</Link>
           </div>
         </form>
       ) : (

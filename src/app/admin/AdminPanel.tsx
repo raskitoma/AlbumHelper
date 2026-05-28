@@ -171,6 +171,31 @@ export default function AdminPanel() {
     }
   };
 
+  const handleTestEmail = async () => {
+    setLoading(true);
+    setStatus(null);
+    try {
+      const res = await fetch("/api/admin/config/test-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          smtpHost,
+          smtpPort,
+          smtpUser,
+          smtpPass,
+          smtpFrom
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Fallo al enviar correo de prueba.");
+      showMsg("success", "¡Correo de prueba enviado con éxito! Revisa tu bandeja de entrada.");
+    } catch (err: any) {
+      showMsg("error", err.message || "Fallo al enviar correo de prueba.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleToggleRole = async (userId: string, currentRole: string) => {
     const newRole = currentRole === "ADMIN" ? "USER" : "ADMIN";
     setLoading(true);
@@ -470,13 +495,25 @@ export default function AdminPanel() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`${styles.saveBtn} btn-primary`}
-          >
-            {loading ? "Guardando..." : "Guardar Configuraciones"}
-          </button>
+          <div style={{ display: "flex", gap: "1rem", marginTop: "1rem", width: "100%", flexWrap: "wrap" }}>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`${styles.saveBtn} btn-primary`}
+              style={{ flex: 1, minWidth: "200px" }}
+            >
+              {loading ? "Guardando..." : "Guardar Configuraciones"}
+            </button>
+            <button
+              type="button"
+              onClick={handleTestEmail}
+              disabled={loading}
+              className="btn-secondary"
+              style={{ padding: "0.75rem 1.5rem" }}
+            >
+              📧 Probar Configuración
+            </button>
+          </div>
         </form>
       ) : activeTab === "users" ? (
         <div className={`${styles.sectionCard} glass-card`}>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { generateSecret, verifyTOTP, getOTPAuthURL } from "@/lib/totp";
+import crypto from "crypto";
 
 export async function POST(
   req: Request,
@@ -45,16 +46,34 @@ export async function POST(
         return NextResponse.json({ error: "El código ingresado es incorrecto." }, { status: 400 });
       }
 
-      // Save secret and enable 2FA in database
+      // Generate 8 recovery codes (XXXX-XXXX)
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      const codes = Array.from({ length: 8 }, () => {
+        let code = "";
+        for (let i = 0; i < 8; i++) {
+          if (i === 4) code += "-";
+          const idx = crypto.randomInt(0, chars.length);
+          code += chars[idx];
+        }
+        return code;
+      });
+
+      // Hash with SHA-256
+      const hashedCodes = codes.map((c) =>
+        crypto.createHash("sha256").update(c).digest("hex")
+      );
+
+      // Save secret, enable 2FA, and store recovery codes in database
       await prisma.user.update({
         where: { id: currentUser.id },
         data: {
           twoFactorSecret: secret,
-          twoFactorEnabled: true
+          twoFactorEnabled: true,
+          recoveryCodes: hashedCodes.join(",")
         }
       });
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true, recoveryCodes: codes });
     }
 
     // ----------------------------------------------------
@@ -65,7 +84,8 @@ export async function POST(
         where: { id: currentUser.id },
         data: {
           twoFactorSecret: null,
-          twoFactorEnabled: false
+          twoFactorEnabled: false,
+          recoveryCodes: null
         }
       });
 

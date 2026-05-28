@@ -80,6 +80,7 @@ export async function POST(
       }
 
       const body = await req.json();
+      const { passkeyName, ...assertionBody } = body;
       const expectedChallenge = cookieStore.get(CHALLENGE_COOKIE_NAME)?.value;
 
       if (!expectedChallenge) {
@@ -89,7 +90,7 @@ export async function POST(
       let verification: VerifiedRegistrationResponse;
       try {
         verification = await verifyRegistrationResponse({
-          response: body,
+          response: assertionBody,
           expectedChallenge,
           expectedOrigin: origin,
           expectedRPID: host
@@ -115,8 +116,9 @@ export async function POST(
           counter: BigInt(counter),
           credentialDeviceType,
           credentialBackedUp,
-          transports: JSON.stringify(body.response.transports || []),
-          userId: currentUser.id
+          transports: JSON.stringify(assertionBody.response?.transports || []),
+          userId: currentUser.id,
+          name: passkeyName ? passkeyName.trim() : null
         }
       });
 

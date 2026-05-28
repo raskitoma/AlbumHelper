@@ -5,11 +5,53 @@ import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
   const cookieStore = await cookies();
+  const { searchParams } = new URL(req.url);
+  const associate = searchParams.get("associate") === "true";
+
   const protocol = req.headers.get("x-forwarded-proto") || "http";
   const host = req.headers.get("host") || "localhost";
   const origin = `${protocol}://${host}`;
 
   try {
+    if (associate) {
+      cookieStore.set("google_oauth_associate", "true", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 10
+      });
+    } else {
+      cookieStore.delete("google_oauth_associate");
+    }
+
+    const inviteCode = searchParams.get("inviteCode");
+    const groupName = searchParams.get("groupName");
+
+    if (inviteCode) {
+      cookieStore.set("google_oauth_invite_code", inviteCode, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 10
+      });
+    } else {
+      cookieStore.delete("google_oauth_invite_code");
+    }
+
+    if (groupName) {
+      cookieStore.set("google_oauth_group_name", groupName, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 10
+      });
+    } else {
+      cookieStore.delete("google_oauth_group_name");
+    }
+
     // 1. Fetch Client ID from SQLite configuration
     const googleClientIdConfig = await prisma.systemConfig.findUnique({
       where: { key: "GOOGLE_CLIENT_ID" }

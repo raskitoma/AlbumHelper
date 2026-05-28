@@ -11,6 +11,7 @@ interface AuthenticatorInfo {
   id: string;
   credentialDeviceType: string;
   credentialBackedUp: boolean;
+  name: string | null;
 }
 
 interface UserSettingsProps {
@@ -23,6 +24,8 @@ interface UserSettingsProps {
   initialAvatarType: string;
   initialAvatarUrl: string | null;
   userRole: string;
+  isMailConfigured: boolean;
+  initialGoogleEmail: string | null;
 }
 
 export default function UserSettings({
@@ -34,7 +37,9 @@ export default function UserSettings({
   initialKeys,
   initialAvatarType,
   initialAvatarUrl,
-  userRole
+  userRole,
+  isMailConfigured,
+  initialGoogleEmail
 }: UserSettingsProps) {
   const router = useRouter();
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -60,6 +65,17 @@ export default function UserSettings({
   const [avatarType, setAvatarType] = useState(initialAvatarType);
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl);
   const [avatarSrc, setAvatarSrc] = useState("");
+
+  // Google OAuth states
+  const [googleEmail, setGoogleEmail] = useState<string | null>(initialGoogleEmail);
+
+  // Email invitation states
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [sendingInvite, setSendingInvite] = useState(false);
+
+  // 2FA Recovery Codes states
+  const [recoveryCodes, setRecoveryCodes] = useState<string[] | null>(null);
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
 
   useEffect(() => {
     const resolveAvatar = async () => {
@@ -192,7 +208,13 @@ export default function UserSettings({
       setTwoFactorEnabled(true);
       setTwoFactorSetup(null);
       setToken2FA("");
-      showMsg("success", "¡Verificación de dos factores activada con éxito!");
+      
+      if (data.recoveryCodes) {
+        setRecoveryCodes(data.recoveryCodes);
+        setShowRecoveryModal(true);
+      } else {
+        showMsg("success", "¡Verificación de dos factores activada con éxito!");
+      }
       router.refresh();
     } catch (err: any) {
       showMsg("error", err.message);
@@ -226,6 +248,12 @@ export default function UserSettings({
     setStatus(null);
 
     try {
+      const passkeyName = window.prompt(t("passkeyNamePrompt") || "Ingresa un nombre para esta llave de paso (ej. Mi Laptop):");
+      if (passkeyName === null) {
+        setLoading(false);
+        return; // user cancelled
+      }
+
       // 1. Fetch options
       const optionsRes = await fetch("/api/auth/passkey/generate-registration-options", { method: "POST" });
       const optionsData = await optionsRes.json();
@@ -240,7 +268,10 @@ export default function UserSettings({
       const verifyRes = await fetch("/api/auth/passkey/verify-registration", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(registrationResponse)
+        body: JSON.stringify({
+          ...registrationResponse,
+          passkeyName: passkeyName || "Dispositivo Biométrico"
+        })
       });
 
       const verifyData = await verifyRes.json();
@@ -332,6 +363,72 @@ export default function UserSettings({
     }
   };
 
+  // Send email invitation
+  const handleSendInviteEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inviteEmail.trim() || !groupInvite) return;
+    setSendingInvite(true);
+    try {
+      const res = await fetch("/api/group/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: inviteEmail, inviteCode: groupInvite })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Fallo al enviar la invitación.");
+      showMsg("success", "¡Invitación enviada con éxito!");
+      setInviteEmail("");
+    } catch (err: any) {
+      showMsg("error", err.message);
+    } finally {
+      setSendingInvite(false);
+    }
+  };
+
+  // Share invitation via Web Share or fallback
+  const handleShareInvite = async () => {
+    if (!groupInvite) return;
+    const shareText = `¡Únete a mi grupo familiar "${groupName}" en AlbumHelper para coleccionar y cambiar cromos del Mundial juntos! Código: ${groupInvite}`;
+    const shareUrl = `${window.location.origin}/login?invite=${groupInvite}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Invitación a AlbumHelper",
+          text: shareText,
+          url: shareUrl
+        });
+        showMsg("success", "¡Invitación compartida!");
+      } catch (err) {
+        navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        showMsg("success", "¡Mensaje de invitación copiado al portapapeles!");
+      }
+    } else {
+      navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+      showMsg("success", "¡Mensaje de invitación copiado al portapapeles!");
+    }
+  };
+
+  // Google OAuth Association actions
+  const handleLinkGoogle = () => {
+    window.location.href = "/api/auth/google/login?associate=true";
+  };
+
+  const handleUnlinkGoogle = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/google/unlink", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Fallo al desvincular.");
+      setGoogleEmail(null);
+      showMsg("success", "Cuenta de Google desvinculada con éxito.");
+    } catch (err: any) {
+      showMsg("error", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // ----------------------------------------------------
   // LOGOUT ACTION
   // ----------------------------------------------------
@@ -363,8 +460,13 @@ export default function UserSettings({
       )}
 
       {/* 1. Profile / Account Summary Card */}
-      <div className={`${styles.section} glass-card`}>
-        <h2 className={styles.sectionTitle}>{t("profileTitle")}</h2>
+      <div className={`${styles.section} glass-card`} style={{ position: "relative" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "1rem", flexWrap: "wrap", gap: "1rem" }}>
+          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("profileTitle")}</h2>
+          <button type="button" onClick={handleLogout} disabled={loading} className={`${styles.logoutBtn} btn-secondary btnDanger`} style={{ margin: 0, padding: "0.5rem 1rem", fontSize: "0.85rem" }}>
+            {t("profileLogout")}
+          </button>
+        </div>
         
         <div className={styles.profileRow}>
           {/* Avatar Preview */}
@@ -375,12 +477,12 @@ export default function UserSettings({
               className={styles.avatarPreview}
             />
           </div>
-
+ 
           <div className={styles.profileDetails}>
             <p className={styles.sectionDesc}>
               {t("profileDesc")}<strong>{userEmail}</strong>
             </p>
-
+ 
             <div className={styles.avatarControls}>
               <span className={styles.label} style={{ display: "block", marginBottom: "0.25rem" }}>
                 {t("profileConfigAvatar")}
@@ -410,16 +512,32 @@ export default function UserSettings({
             </div>
           </div>
         </div>
-
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
-          {userRole === "ADMIN" && (
-            <button onClick={() => router.push("/admin")} disabled={loading} className="btn-primary">
-              {t("adminPanelBtn")}
+ 
+        {/* Google OAuth Account Linking Block */}
+        <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid var(--border-glass)", marginBottom: "1rem" }}>
+          <h3 className={styles.sectionTitle} style={{ fontSize: "1.05rem" }}>⚙️ {t("googleLinkTitle")}</h3>
+          <p className={styles.sectionDesc} style={{ marginBottom: "1rem" }}>{t("googleLinkDesc")}</p>
+          {googleEmail ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", background: "var(--primary-glow)", padding: "1rem", borderRadius: "12px", border: "1px solid rgba(59, 130, 246, 0.1)" }}>
+              <div>
+                <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "block", fontWeight: 600, textTransform: "uppercase" }}>{t("googleLinkedStatus")}</span>
+                <strong style={{ fontSize: "1rem", color: "var(--text-primary)" }}>{googleEmail}</strong>
+              </div>
+              <button type="button" onClick={handleUnlinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn} btn-secondary btnDanger`} style={{ margin: 0, padding: "0.5rem 1rem" }}>
+                {t("googleUnlinkBtn")}
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={handleLinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" style={{ marginRight: "4px" }}>
+                <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.6 14.99 1 12 1 7.35 1 3.37 3.65 1.4 7.56l3.85 2.99c.92-2.75 3.5-4.51 6.75-4.51z"/>
+                <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.44c-.28 1.47-1.11 2.71-2.35 3.55l3.65 2.83c2.14-1.97 3.75-4.88 3.75-8.54z"/>
+                <path fill="#FBBC05" d="M5.25 14.57c-.24-.72-.37-1.49-.37-2.29s.13-1.57.37-2.29L1.4 7.01C.51 8.81 0 10.82 0 12.91s.51 4.1 1.4 5.9l3.85-2.99z"/>
+                <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.83c-1.01.68-2.31 1.09-4.31 1.09-3.25 0-5.83-1.76-6.75-4.51L1.4 16.83C3.37 20.74 7.35 23 12 23z"/>
+              </svg>
+              {t("googleLinkBtn")}
             </button>
           )}
-          <button onClick={handleLogout} disabled={loading} className={`${styles.logoutBtn} btn-secondary btnDanger`}>
-            {t("profileLogout")}
-          </button>
         </div>
       </div>
 
@@ -444,15 +562,41 @@ export default function UserSettings({
                 <span className={styles.groupLabel} style={{ display: "block", marginBottom: "0.25rem" }}>
                   {t("groupInviteLabel")}
                 </span>
-                <div className={styles.codeBox}>
-                  <span className={styles.codeText}>{groupInvite}</span>
-                  <button onClick={handleCopyInviteCode} className={styles.copyBtn} title="Copiar Código">
-                    📋
+                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                  <div className={styles.codeBox}>
+                    <span className={styles.codeText}>{groupInvite}</span>
+                    <button type="button" onClick={handleCopyInviteCode} className={styles.copyBtn} title="Copiar Código">
+                      📋
+                    </button>
+                  </div>
+                  <button type="button" onClick={handleShareInvite} className={styles.avatarToggleBtn} style={{ padding: "0.6rem 0.85rem", height: "100%", margin: 0 }} title={t("groupInviteShareBtn")}>
+                    📲 Compartir
                   </button>
                 </div>
               </div>
             )}
           </div>
+        )}
+
+        {groupName && groupInvite && isMailConfigured && (
+          <form onSubmit={handleSendInviteEmail} className={styles.miniForm} style={{ marginBottom: "1.5rem", background: "var(--bg-glass)", padding: "1.25rem", borderRadius: "12px", border: "1px solid var(--border-glass)" }}>
+            <h3 style={{ fontSize: "0.9rem", fontWeight: 700, textTransform: "uppercase", color: "var(--text-secondary)" }}>✉️ {t("groupInviteEmailLabel")}</h3>
+            <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.25rem" }}>
+              <input
+                type="email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                className={`${styles.input} input`}
+                placeholder={t("groupInviteEmailPlaceholder")}
+                disabled={loading || sendingInvite}
+                required
+                style={{ flex: 1 }}
+              />
+              <button type="submit" disabled={loading || sendingInvite} className="btn-primary" style={{ padding: "0.55rem 1.25rem", whiteSpace: "nowrap" }}>
+                {sendingInvite ? "..." : t("groupInviteEmailBtn")}
+              </button>
+            </div>
+          </form>
         )}
 
         <div className={styles.formsRow}>
@@ -585,7 +729,7 @@ export default function UserSettings({
                 <div className={styles.keyInfo}>
                   <span className={styles.keyIcon}>💻</span>
                   <div>
-                    <span className={styles.keyName}>{t("passkeysBiometric")}</span>
+                    <span className={styles.keyName}>{key.name || t("passkeysBiometric")}</span>
                     <div className={styles.keyMeta}>
                       Tipo: {key.credentialDeviceType} • Respaldo: {key.credentialBackedUp ? "Sí" : "No"}
                     </div>
@@ -597,6 +741,96 @@ export default function UserSettings({
           </div>
         )}
       </div>
+
+      {/* 5. Administration Section (Admins only, placed at the very bottom) */}
+      {userRole === "ADMIN" && (
+        <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(29, 78, 216, 0.05)", flexWrap: "wrap", gap: "1rem" }}>
+          <div>
+            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>🛡️ {t("adminPanelBtn")}</h2>
+            <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
+              Accede al panel global de configuración, SMTP y gestión de usuarios del sistema.
+            </p>
+          </div>
+          <button onClick={() => router.push("/admin")} disabled={loading} className="btn-primary" style={{ padding: "0.65rem 1.5rem", margin: 0 }}>
+            {t("adminPanelBtn")}
+          </button>
+        </div>
+      )}
+
+      {/* 2FA Recovery Codes Modal */}
+      {showRecoveryModal && recoveryCodes && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+          <div className="glass-card" style={{ maxWidth: "450px", width: "100%", padding: "2rem", display: "flex", flexDirection: "column", gap: "1.25rem", boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              {t("recoveryCodesModalTitle")}
+            </h2>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: 1.4, margin: 0 }}>
+              {t("recoveryCodesModalDesc")}
+            </p>
+            
+            <div style={{ background: "var(--bg-glass)", border: "1px solid var(--border-glass)", borderRadius: "10px", padding: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem", fontFamily: "monospace", fontSize: "1rem", color: "var(--text-primary)" }}>
+                {recoveryCodes.map((code, idx) => (
+                  <div key={idx} style={{ padding: "0.25rem 0", display: "flex", gap: "0.5rem" }}>
+                    <span style={{ color: "var(--text-secondary)" }}>{idx + 1}.</span>
+                    <strong>{code}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                className="btn-secondary"
+                style={{ flex: 1, padding: "0.5rem", fontSize: "0.85rem" }}
+                onClick={() => {
+                  navigator.clipboard.writeText(recoveryCodes.join("\n"));
+                  showMsg("success", "¡Códigos copiados!");
+                }}
+              >
+                {t("recoveryCodesCopyBtn")}
+              </button>
+              
+              {isMailConfigured && (
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  style={{ flex: 1, padding: "0.5rem", fontSize: "0.85rem" }}
+                  onClick={async () => {
+                    try {
+                      const res = await fetch("/api/auth/2fa/send-recovery", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ codes: recoveryCodes })
+                      });
+                      if (!res.ok) throw new Error("Fallo al enviar.");
+                      showMsg("success", "¡Códigos enviados al correo!");
+                    } catch (err) {
+                      showMsg("error", "No se pudieron enviar los códigos.");
+                    }
+                  }}
+                >
+                  {t("recoveryCodesEmailBtn")}
+                </button>
+              )}
+            </div>
+
+            <button
+              type="button"
+              className="btn-primary"
+              style={{ width: "100%", padding: "0.6rem" }}
+              onClick={() => {
+                setShowRecoveryModal(false);
+                setRecoveryCodes(null);
+                showMsg("success", "¡2FA activado y configurado!");
+              }}
+            >
+              {t("recoveryCodesDoneBtn")}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

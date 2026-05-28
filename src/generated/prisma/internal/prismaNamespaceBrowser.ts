@@ -59,7 +59,8 @@ export const ModelName = {
   StickerCatalog: 'StickerCatalog',
   StickerState: 'StickerState',
   ActivityLog: 'ActivityLog',
-  FifaIsoMap: 'FifaIsoMap'
+  FifaIsoMap: 'FifaIsoMap',
+  VerificationToken: 'VerificationToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -79,13 +80,15 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   passwordHash: 'passwordHash',
+  googleEmail: 'googleEmail',
   role: 'role',
   twoFactorSecret: 'twoFactorSecret',
   twoFactorEnabled: 'twoFactorEnabled',
   avatarType: 'avatarType',
   avatarUrl: 'avatarUrl',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  recoveryCodes: 'recoveryCodes'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -99,7 +102,8 @@ export const AuthenticatorScalarFieldEnum = {
   credentialDeviceType: 'credentialDeviceType',
   credentialBackedUp: 'credentialBackedUp',
   transports: 'transports',
-  userId: 'userId'
+  userId: 'userId',
+  name: 'name'
 } as const
 
 export type AuthenticatorScalarFieldEnum = (typeof AuthenticatorScalarFieldEnum)[keyof typeof AuthenticatorScalarFieldEnum]
@@ -180,6 +184,18 @@ export const FifaIsoMapScalarFieldEnum = {
 } as const
 
 export type FifaIsoMapScalarFieldEnum = (typeof FifaIsoMapScalarFieldEnum)[keyof typeof FifaIsoMapScalarFieldEnum]
+
+
+export const VerificationTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  email: 'email',
+  type: 'type',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
 export const SortOrder = {

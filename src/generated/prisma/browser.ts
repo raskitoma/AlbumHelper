@@ -62,3 +62,8 @@ export type ActivityLog = Prisma.ActivityLogModel
  * 
  */
 export type FifaIsoMap = Prisma.FifaIsoMapModel
+/**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = Prisma.VerificationTokenModel

@@ -24,7 +24,8 @@ export default async function SettingsPage() {
         select: {
           id: true,
           credentialDeviceType: true,
-          credentialBackedUp: true
+          credentialBackedUp: true,
+          name: true
         }
       }
     }
@@ -47,6 +48,27 @@ export default async function SettingsPage() {
     inviteCode = group?.inviteCode || "";
   }
 
+  // Check if SMTP is configured
+  const configs = await prisma.systemConfig.findMany({
+    where: {
+      key: {
+        in: ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"]
+      }
+    }
+  });
+
+  const configMap: Record<string, string> = {};
+  configs.forEach((c) => {
+    configMap[c.key] = c.value;
+  });
+
+  const isMailConfigured = !!(
+    configMap["SMTP_HOST"] &&
+    configMap["SMTP_PORT"] &&
+    configMap["SMTP_USER"] &&
+    configMap["SMTP_PASS"]
+  );
+
   return (
     <DashboardLayout
       userEmail={currentUser.email}
@@ -67,6 +89,8 @@ export default async function SettingsPage() {
           initialAvatarType={dbUser.avatarType}
           initialAvatarUrl={dbUser.avatarUrl}
           userRole={currentUser.role}
+          isMailConfigured={isMailConfigured}
+          initialGoogleEmail={dbUser.googleEmail || null}
         />
       </div>
     </DashboardLayout>

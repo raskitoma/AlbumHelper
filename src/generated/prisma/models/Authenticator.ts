@@ -43,6 +43,7 @@ export type AuthenticatorMinAggregateOutputType = {
   credentialBackedUp: boolean | null
   transports: string | null
   userId: string | null
+  name: string | null
 }
 
 export type AuthenticatorMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type AuthenticatorMaxAggregateOutputType = {
   credentialBackedUp: boolean | null
   transports: string | null
   userId: string | null
+  name: string | null
 }
 
 export type AuthenticatorCountAggregateOutputType = {
@@ -65,6 +67,7 @@ export type AuthenticatorCountAggregateOutputType = {
   credentialBackedUp: number
   transports: number
   userId: number
+  name: number
   _all: number
 }
 
@@ -86,6 +89,7 @@ export type AuthenticatorMinAggregateInputType = {
   credentialBackedUp?: true
   transports?: true
   userId?: true
+  name?: true
 }
 
 export type AuthenticatorMaxAggregateInputType = {
@@ -97,6 +101,7 @@ export type AuthenticatorMaxAggregateInputType = {
   credentialBackedUp?: true
   transports?: true
   userId?: true
+  name?: true
 }
 
 export type AuthenticatorCountAggregateInputType = {
@@ -108,6 +113,7 @@ export type AuthenticatorCountAggregateInputType = {
   credentialBackedUp?: true
   transports?: true
   userId?: true
+  name?: true
   _all?: true
 }
 
@@ -206,6 +212,7 @@ export type AuthenticatorGroupByOutputType = {
   credentialBackedUp: boolean
   transports: string
   userId: string
+  name: string | null
   _count: AuthenticatorCountAggregateOutputType | null
   _avg: AuthenticatorAvgAggregateOutputType | null
   _sum: AuthenticatorSumAggregateOutputType | null
@@ -240,6 +247,7 @@ export type AuthenticatorWhereInput = {
   credentialBackedUp?: Prisma.BoolFilter<"Authenticator"> | boolean
   transports?: Prisma.StringFilter<"Authenticator"> | string
   userId?: Prisma.StringFilter<"Authenticator"> | string
+  name?: Prisma.StringNullableFilter<"Authenticator"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -252,6 +260,7 @@ export type AuthenticatorOrderByWithRelationInput = {
   credentialBackedUp?: Prisma.SortOrder
   transports?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -267,6 +276,7 @@ export type AuthenticatorWhereUniqueInput = Prisma.AtLeast<{
   credentialBackedUp?: Prisma.BoolFilter<"Authenticator"> | boolean
   transports?: Prisma.StringFilter<"Authenticator"> | string
   userId?: Prisma.StringFilter<"Authenticator"> | string
+  name?: Prisma.StringNullableFilter<"Authenticator"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "credentialID">
 
@@ -279,6 +289,7 @@ export type AuthenticatorOrderByWithAggregationInput = {
   credentialBackedUp?: Prisma.SortOrder
   transports?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AuthenticatorCountOrderByAggregateInput
   _avg?: Prisma.AuthenticatorAvgOrderByAggregateInput
   _max?: Prisma.AuthenticatorMaxOrderByAggregateInput
@@ -298,6 +309,7 @@ export type AuthenticatorScalarWhereWithAggregatesInput = {
   credentialBackedUp?: Prisma.BoolWithAggregatesFilter<"Authenticator"> | boolean
   transports?: Prisma.StringWithAggregatesFilter<"Authenticator"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Authenticator"> | string
+  name?: Prisma.StringNullableWithAggregatesFilter<"Authenticator"> | string | null
 }
 
 export type AuthenticatorCreateInput = {
@@ -308,6 +320,7 @@ export type AuthenticatorCreateInput = {
   credentialDeviceType: string
   credentialBackedUp: boolean
   transports: string
+  name?: string | null
   user: Prisma.UserCreateNestedOneWithoutAuthenticatorsInput
 }
 
@@ -320,6 +333,7 @@ export type AuthenticatorUncheckedCreateInput = {
   credentialBackedUp: boolean
   transports: string
   userId: string
+  name?: string | null
 }
 
 export type AuthenticatorUpdateInput = {
@@ -330,6 +344,7 @@ export type AuthenticatorUpdateInput = {
   credentialDeviceType?: Prisma.StringFieldUpdateOperationsInput | string
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAuthenticatorsNestedInput
 }
 
@@ -342,6 +357,7 @@ export type AuthenticatorUncheckedUpdateInput = {
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AuthenticatorCreateManyInput = {
@@ -353,6 +369,7 @@ export type AuthenticatorCreateManyInput = {
   credentialBackedUp: boolean
   transports: string
   userId: string
+  name?: string | null
 }
 
 export type AuthenticatorUpdateManyMutationInput = {
@@ -363,6 +380,7 @@ export type AuthenticatorUpdateManyMutationInput = {
   credentialDeviceType?: Prisma.StringFieldUpdateOperationsInput | string
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AuthenticatorUncheckedUpdateManyInput = {
@@ -374,6 +392,7 @@ export type AuthenticatorUncheckedUpdateManyInput = {
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AuthenticatorListRelationFilter = {
@@ -395,6 +414,7 @@ export type AuthenticatorCountOrderByAggregateInput = {
   credentialBackedUp?: Prisma.SortOrder
   transports?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
 }
 
 export type AuthenticatorAvgOrderByAggregateInput = {
@@ -410,6 +430,7 @@ export type AuthenticatorMaxOrderByAggregateInput = {
   credentialBackedUp?: Prisma.SortOrder
   transports?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
 }
 
 export type AuthenticatorMinOrderByAggregateInput = {
@@ -421,6 +442,7 @@ export type AuthenticatorMinOrderByAggregateInput = {
   credentialBackedUp?: Prisma.SortOrder
   transports?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
 }
 
 export type AuthenticatorSumOrderByAggregateInput = {
@@ -485,6 +507,7 @@ export type AuthenticatorCreateWithoutUserInput = {
   credentialDeviceType: string
   credentialBackedUp: boolean
   transports: string
+  name?: string | null
 }
 
 export type AuthenticatorUncheckedCreateWithoutUserInput = {
@@ -495,6 +518,7 @@ export type AuthenticatorUncheckedCreateWithoutUserInput = {
   credentialDeviceType: string
   credentialBackedUp: boolean
   transports: string
+  name?: string | null
 }
 
 export type AuthenticatorCreateOrConnectWithoutUserInput = {
@@ -534,6 +558,7 @@ export type AuthenticatorScalarWhereInput = {
   credentialBackedUp?: Prisma.BoolFilter<"Authenticator"> | boolean
   transports?: Prisma.StringFilter<"Authenticator"> | string
   userId?: Prisma.StringFilter<"Authenticator"> | string
+  name?: Prisma.StringNullableFilter<"Authenticator"> | string | null
 }
 
 export type AuthenticatorCreateManyUserInput = {
@@ -544,6 +569,7 @@ export type AuthenticatorCreateManyUserInput = {
   credentialDeviceType: string
   credentialBackedUp: boolean
   transports: string
+  name?: string | null
 }
 
 export type AuthenticatorUpdateWithoutUserInput = {
@@ -554,6 +580,7 @@ export type AuthenticatorUpdateWithoutUserInput = {
   credentialDeviceType?: Prisma.StringFieldUpdateOperationsInput | string
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AuthenticatorUncheckedUpdateWithoutUserInput = {
@@ -564,6 +591,7 @@ export type AuthenticatorUncheckedUpdateWithoutUserInput = {
   credentialDeviceType?: Prisma.StringFieldUpdateOperationsInput | string
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AuthenticatorUncheckedUpdateManyWithoutUserInput = {
@@ -574,6 +602,7 @@ export type AuthenticatorUncheckedUpdateManyWithoutUserInput = {
   credentialDeviceType?: Prisma.StringFieldUpdateOperationsInput | string
   credentialBackedUp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   transports?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -587,6 +616,7 @@ export type AuthenticatorSelect<ExtArgs extends runtime.Types.Extensions.Interna
   credentialBackedUp?: boolean
   transports?: boolean
   userId?: boolean
+  name?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["authenticator"]>
 
@@ -599,6 +629,7 @@ export type AuthenticatorSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   credentialBackedUp?: boolean
   transports?: boolean
   userId?: boolean
+  name?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["authenticator"]>
 
@@ -611,6 +642,7 @@ export type AuthenticatorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   credentialBackedUp?: boolean
   transports?: boolean
   userId?: boolean
+  name?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["authenticator"]>
 
@@ -623,9 +655,10 @@ export type AuthenticatorSelectScalar = {
   credentialBackedUp?: boolean
   transports?: boolean
   userId?: boolean
+  name?: boolean
 }
 
-export type AuthenticatorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "credentialID" | "credentialPublicKey" | "counter" | "credentialDeviceType" | "credentialBackedUp" | "transports" | "userId", ExtArgs["result"]["authenticator"]>
+export type AuthenticatorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "credentialID" | "credentialPublicKey" | "counter" | "credentialDeviceType" | "credentialBackedUp" | "transports" | "userId" | "name", ExtArgs["result"]["authenticator"]>
 export type AuthenticatorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -650,6 +683,7 @@ export type $AuthenticatorPayload<ExtArgs extends runtime.Types.Extensions.Inter
     credentialBackedUp: boolean
     transports: string
     userId: string
+    name: string | null
   }, ExtArgs["result"]["authenticator"]>
   composites: {}
 }
@@ -1082,6 +1116,7 @@ export interface AuthenticatorFieldRefs {
   readonly credentialBackedUp: Prisma.FieldRef<"Authenticator", 'Boolean'>
   readonly transports: Prisma.FieldRef<"Authenticator", 'String'>
   readonly userId: Prisma.FieldRef<"Authenticator", 'String'>
+  readonly name: Prisma.FieldRef<"Authenticator", 'String'>
 }
     
 

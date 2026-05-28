@@ -28,6 +28,7 @@ export type UserMinAggregateOutputType = {
   id: string | null
   email: string | null
   passwordHash: string | null
+  googleEmail: string | null
   role: string | null
   twoFactorSecret: string | null
   twoFactorEnabled: boolean | null
@@ -35,12 +36,14 @@ export type UserMinAggregateOutputType = {
   avatarUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  recoveryCodes: string | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
   email: string | null
   passwordHash: string | null
+  googleEmail: string | null
   role: string | null
   twoFactorSecret: string | null
   twoFactorEnabled: boolean | null
@@ -48,12 +51,14 @@ export type UserMaxAggregateOutputType = {
   avatarUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  recoveryCodes: string | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
   email: number
   passwordHash: number
+  googleEmail: number
   role: number
   twoFactorSecret: number
   twoFactorEnabled: number
@@ -61,6 +66,7 @@ export type UserCountAggregateOutputType = {
   avatarUrl: number
   createdAt: number
   updatedAt: number
+  recoveryCodes: number
   _all: number
 }
 
@@ -69,6 +75,7 @@ export type UserMinAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
+  googleEmail?: true
   role?: true
   twoFactorSecret?: true
   twoFactorEnabled?: true
@@ -76,12 +83,14 @@ export type UserMinAggregateInputType = {
   avatarUrl?: true
   createdAt?: true
   updatedAt?: true
+  recoveryCodes?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
+  googleEmail?: true
   role?: true
   twoFactorSecret?: true
   twoFactorEnabled?: true
@@ -89,12 +98,14 @@ export type UserMaxAggregateInputType = {
   avatarUrl?: true
   createdAt?: true
   updatedAt?: true
+  recoveryCodes?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
+  googleEmail?: true
   role?: true
   twoFactorSecret?: true
   twoFactorEnabled?: true
@@ -102,6 +113,7 @@ export type UserCountAggregateInputType = {
   avatarUrl?: true
   createdAt?: true
   updatedAt?: true
+  recoveryCodes?: true
   _all?: true
 }
 
@@ -181,6 +193,7 @@ export type UserGroupByOutputType = {
   id: string
   email: string
   passwordHash: string | null
+  googleEmail: string | null
   role: string
   twoFactorSecret: string | null
   twoFactorEnabled: boolean
@@ -188,6 +201,7 @@ export type UserGroupByOutputType = {
   avatarUrl: string | null
   createdAt: Date
   updatedAt: Date
+  recoveryCodes: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -215,6 +229,7 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  googleEmail?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringFilter<"User"> | string
   twoFactorSecret?: Prisma.StringNullableFilter<"User"> | string | null
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
@@ -222,6 +237,7 @@ export type UserWhereInput = {
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  recoveryCodes?: Prisma.StringNullableFilter<"User"> | string | null
   authenticators?: Prisma.AuthenticatorListRelationFilter
   memberships?: Prisma.FamilyGroupMemberListRelationFilter
 }
@@ -230,6 +246,7 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  googleEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   twoFactorSecret?: Prisma.SortOrderInput | Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
@@ -237,6 +254,7 @@ export type UserOrderByWithRelationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  recoveryCodes?: Prisma.SortOrderInput | Prisma.SortOrder
   authenticators?: Prisma.AuthenticatorOrderByRelationAggregateInput
   memberships?: Prisma.FamilyGroupMemberOrderByRelationAggregateInput
 }
@@ -244,6 +262,7 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  googleEmail?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -255,14 +274,16 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  recoveryCodes?: Prisma.StringNullableFilter<"User"> | string | null
   authenticators?: Prisma.AuthenticatorListRelationFilter
   memberships?: Prisma.FamilyGroupMemberListRelationFilter
-}, "id" | "email">
+}, "id" | "email" | "googleEmail">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  googleEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   twoFactorSecret?: Prisma.SortOrderInput | Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
@@ -270,6 +291,7 @@ export type UserOrderByWithAggregationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  recoveryCodes?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -282,6 +304,7 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  googleEmail?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.StringWithAggregatesFilter<"User"> | string
   twoFactorSecret?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   twoFactorEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
@@ -289,12 +312,14 @@ export type UserScalarWhereWithAggregatesInput = {
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  recoveryCodes?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -302,6 +327,7 @@ export type UserCreateInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
   authenticators?: Prisma.AuthenticatorCreateNestedManyWithoutUserInput
   memberships?: Prisma.FamilyGroupMemberCreateNestedManyWithoutUserInput
 }
@@ -310,6 +336,7 @@ export type UserUncheckedCreateInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -317,6 +344,7 @@ export type UserUncheckedCreateInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
   authenticators?: Prisma.AuthenticatorUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.FamilyGroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
@@ -325,6 +353,7 @@ export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -332,6 +361,7 @@ export type UserUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   authenticators?: Prisma.AuthenticatorUpdateManyWithoutUserNestedInput
   memberships?: Prisma.FamilyGroupMemberUpdateManyWithoutUserNestedInput
 }
@@ -340,6 +370,7 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -347,6 +378,7 @@ export type UserUncheckedUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   authenticators?: Prisma.AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.FamilyGroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -355,6 +387,7 @@ export type UserCreateManyInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -362,12 +395,14 @@ export type UserCreateManyInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -375,12 +410,14 @@ export type UserUpdateManyMutationInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -388,12 +425,14 @@ export type UserUncheckedUpdateManyInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  googleEmail?: Prisma.SortOrder
   role?: Prisma.SortOrder
   twoFactorSecret?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
@@ -401,12 +440,14 @@ export type UserCountOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  recoveryCodes?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  googleEmail?: Prisma.SortOrder
   role?: Prisma.SortOrder
   twoFactorSecret?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
@@ -414,12 +455,14 @@ export type UserMaxOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  recoveryCodes?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  googleEmail?: Prisma.SortOrder
   role?: Prisma.SortOrder
   twoFactorSecret?: Prisma.SortOrder
   twoFactorEnabled?: Prisma.SortOrder
@@ -427,6 +470,7 @@ export type UserMinOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  recoveryCodes?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -482,6 +526,7 @@ export type UserCreateWithoutAuthenticatorsInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -489,6 +534,7 @@ export type UserCreateWithoutAuthenticatorsInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
   memberships?: Prisma.FamilyGroupMemberCreateNestedManyWithoutUserInput
 }
 
@@ -496,6 +542,7 @@ export type UserUncheckedCreateWithoutAuthenticatorsInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -503,6 +550,7 @@ export type UserUncheckedCreateWithoutAuthenticatorsInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
   memberships?: Prisma.FamilyGroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -526,6 +574,7 @@ export type UserUpdateWithoutAuthenticatorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -533,6 +582,7 @@ export type UserUpdateWithoutAuthenticatorsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   memberships?: Prisma.FamilyGroupMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -540,6 +590,7 @@ export type UserUncheckedUpdateWithoutAuthenticatorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -547,6 +598,7 @@ export type UserUncheckedUpdateWithoutAuthenticatorsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   memberships?: Prisma.FamilyGroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -554,6 +606,7 @@ export type UserCreateWithoutMembershipsInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -561,6 +614,7 @@ export type UserCreateWithoutMembershipsInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
   authenticators?: Prisma.AuthenticatorCreateNestedManyWithoutUserInput
 }
 
@@ -568,6 +622,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   id?: string
   email: string
   passwordHash?: string | null
+  googleEmail?: string | null
   role?: string
   twoFactorSecret?: string | null
   twoFactorEnabled?: boolean
@@ -575,6 +630,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   avatarUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recoveryCodes?: string | null
   authenticators?: Prisma.AuthenticatorUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -598,6 +654,7 @@ export type UserUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -605,6 +662,7 @@ export type UserUpdateWithoutMembershipsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   authenticators?: Prisma.AuthenticatorUpdateManyWithoutUserNestedInput
 }
 
@@ -612,6 +670,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   twoFactorSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -619,6 +678,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recoveryCodes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   authenticators?: Prisma.AuthenticatorUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -666,6 +726,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  googleEmail?: boolean
   role?: boolean
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
@@ -673,6 +734,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   avatarUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  recoveryCodes?: boolean
   authenticators?: boolean | Prisma.User$authenticatorsArgs<ExtArgs>
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -682,6 +744,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  googleEmail?: boolean
   role?: boolean
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
@@ -689,12 +752,14 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatarUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  recoveryCodes?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  googleEmail?: boolean
   role?: boolean
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
@@ -702,12 +767,14 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatarUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  recoveryCodes?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  googleEmail?: boolean
   role?: boolean
   twoFactorSecret?: boolean
   twoFactorEnabled?: boolean
@@ -715,9 +782,10 @@ export type UserSelectScalar = {
   avatarUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  recoveryCodes?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "twoFactorSecret" | "twoFactorEnabled" | "avatarType" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "googleEmail" | "role" | "twoFactorSecret" | "twoFactorEnabled" | "avatarType" | "avatarUrl" | "createdAt" | "updatedAt" | "recoveryCodes", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authenticators?: boolean | Prisma.User$authenticatorsArgs<ExtArgs>
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
@@ -736,6 +804,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     email: string
     passwordHash: string | null
+    googleEmail: string | null
     role: string
     twoFactorSecret: string | null
     twoFactorEnabled: boolean
@@ -743,6 +812,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     avatarUrl: string | null
     createdAt: Date
     updatedAt: Date
+    recoveryCodes: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1171,6 +1241,7 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
+  readonly googleEmail: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'String'>
   readonly twoFactorSecret: Prisma.FieldRef<"User", 'String'>
   readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
@@ -1178,6 +1249,7 @@ export interface UserFieldRefs {
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly recoveryCodes: Prisma.FieldRef<"User", 'String'>
 }
     
 
