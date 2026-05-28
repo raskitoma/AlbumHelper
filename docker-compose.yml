@@ -9,8 +9,9 @@ services:
     ports:
       - "${PORT:-3000}:3000"
     volumes:
-      - "${DB_DIR:-./data}:/app/prisma"
+      - "${DB_DIR:-./data}:/app/data"
     environment:
       - PORT=3000
       - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/figuritas.db
     restart: always

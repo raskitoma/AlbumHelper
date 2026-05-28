@@ -8,8 +8,16 @@ export function runBackup() {
   try {
     const todayStr = new Date().toISOString().split("T")[0];
     const prismaDir = path.join(process.cwd(), "prisma");
-    const dbFilePath = path.join(prismaDir, "figuritas.db");
-    const backupsDir = path.join(prismaDir, "backups");
+    let dbFilePath = path.join(prismaDir, "figuritas.db");
+    let backupsDir = path.join(prismaDir, "backups");
+
+    const dbUrl = process.env.DATABASE_URL;
+    if (dbUrl && dbUrl.startsWith("file:")) {
+      const resolvedPath = dbUrl.replace("file:", "");
+      dbFilePath = path.isAbsolute(resolvedPath) ? resolvedPath : path.resolve(process.cwd(), resolvedPath);
+      backupsDir = path.join(path.dirname(dbFilePath), "backups");
+    }
+
     const backupZipPath = path.join(backupsDir, `backup_${todayStr}.zip`);
 
     // 1. Ensure backups directory exists

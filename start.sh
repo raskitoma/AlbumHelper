@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Ensure database directory exists
+mkdir -p /app/data
+
 # Run Prisma schema push (to initialize the DB file if it doesn't exist)
 echo "Running Prisma db push..."
 npx prisma db push --accept-data-loss

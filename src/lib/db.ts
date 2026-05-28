@@ -7,8 +7,8 @@ import { startBackupScheduler } from "./backupService";
 const globalForPrisma = global as unknown as { prisma: PrismaClient | undefined };
 
 export const initPrisma = () => {
-  // Database file path relative to project root
-  const dbPath = "file:" + path.join(process.cwd(), "prisma", "figuritas.db");
+  // Database file path: check DATABASE_URL environment variable first
+  const dbPath = process.env.DATABASE_URL || ("file:" + path.join(process.cwd(), "prisma", "figuritas.db"));
   const adapter = new PrismaBetterSqlite3({ url: dbPath });
   return new PrismaClient({ adapter });
 };
