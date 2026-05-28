@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
 
-// Start background database backups (only on server side)
-if (typeof window === "undefined") {
+// Start background database backups (only on server side inside Next.js context)
+if (typeof window === "undefined" && process.env.NEXT_RUNTIME === "nodejs") {
   startBackupScheduler();
 }
