@@ -15,3 +15,8 @@ services:
       - NODE_ENV=production
       - DATABASE_URL=file:/app/data/figuritas.db
     restart: always
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:-album_network}
+    external: true
