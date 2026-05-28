@@ -90,6 +90,7 @@ export default function DashboardLayout({ children, userEmail, groupName, userRo
     { name: t("album"), path: "/album", icon: "📖" },
     { name: t("stats"), path: "/stats", icon: "📊" },
     { name: t("trade"), path: "/trade", icon: "🔄" },
+    { name: t("helpTitle") || "Ayuda", path: "/help", icon: "❓" },
     { name: t("settings"), path: "/settings", icon: "⚙️" }
   ];
 
@@ -143,15 +144,7 @@ export default function DashboardLayout({ children, userEmail, groupName, userRo
             )}
           </div>
 
-          {/* Quick link to Packs simulation */}
-          <Link href="/packs" style={{ textDecoration: "none", fontSize: "1.2rem", cursor: "pointer", display: "flex", alignItems: "center" }} title={t("packsTitle")}>
-            🎒
-          </Link>
-          
-          {/* Quick link to Help Guide */}
-          <Link href="/help" style={{ textDecoration: "none", fontSize: "1.2rem", cursor: "pointer", display: "flex", alignItems: "center" }} title={t("helpTitle")}>
-            ❓
-          </Link>
+
           
           <button onClick={toggleTheme} className={styles.themeToggle} aria-label={theme === "light" ? "Modo Oscuro" : "Modo Claro"}>
             {theme === "light" ? "🌙" : "☀️"}

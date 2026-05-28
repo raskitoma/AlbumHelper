@@ -754,6 +754,19 @@ export default function UserSettings({
         </div>
       )}
 
+      {/* Packs Simulator Link Section */}
+      <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(59, 130, 246, 0.03)", flexWrap: "wrap", gap: "1rem" }}>
+        <div>
+          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>🎒 {t("packsTitle")}</h2>
+          <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
+            {t("packsDesc")}
+          </p>
+        </div>
+        <button onClick={() => router.push("/packs")} className="btn-secondary" style={{ padding: "0.65rem 1.5rem", margin: 0 }}>
+          {t("packsTitle")}
+        </button>
+      </div>
+
       {/* Help Section */}
       <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(147, 51, 234, 0.2)", background: "rgba(147, 51, 234, 0.03)", flexWrap: "wrap", gap: "1rem" }}>
         <div>
