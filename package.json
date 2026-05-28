@@ -39,6 +39,10 @@
     "tsx": "^4.22.3",
     "typescript": "^5"
   },
+  "overrides": {
+    "@hono/node-server": "1.19.14",
+    "postcss": "8.5.15"
+  },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   }
