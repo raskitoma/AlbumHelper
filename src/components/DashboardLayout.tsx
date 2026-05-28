@@ -163,7 +163,15 @@ export default function DashboardLayout({ children, userEmail, groupName, userRo
       </header>
 
       {/* 2. Main Content Wrapper */}
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main}>
+        {children}
+        <footer className={styles.footerCopyright}>
+          &copy; {new Date().getFullYear()}{" "}
+          <a href="https://raskitoma.io" target="_blank" rel="noopener noreferrer">
+            Raskitoma.io
+          </a>
+        </footer>
+      </main>
 
       {/* 3. Bottom Glassmorphic Navigation Bar */}
       <nav className={styles.nav}>

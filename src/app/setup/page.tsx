@@ -35,6 +35,12 @@ export default async function SetupPage() {
         </div>
         <SetupForm />
       </div>
+      <footer className={styles.authCopyright}>
+        &copy; {new Date().getFullYear()}{" "}
+        <a href="https://raskitoma.io" target="_blank" rel="noopener noreferrer">
+          Raskitoma.io
+        </a>
+      </footer>
     </main>
   );
 }

@@ -139,6 +139,12 @@ export default function ResetPasswordPage() {
           <ResetPasswordForm />
         </Suspense>
       </div>
+      <footer className={styles.authCopyright}>
+        &copy; {new Date().getFullYear()}{" "}
+        <a href="https://raskitoma.io" target="_blank" rel="noopener noreferrer">
+          Raskitoma.io
+        </a>
+      </footer>
     </main>
   );
 }
