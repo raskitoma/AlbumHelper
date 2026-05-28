@@ -613,6 +613,9 @@ export default function UserSettings({
             disabled={loading}
             className="btn-danger"
             style={{
+              position: "absolute",
+              top: "1.5rem",
+              right: "1.5rem",
               margin: 0,
               padding: "0.55rem 1.25rem",
               fontSize: "0.85rem",
@@ -625,11 +628,11 @@ export default function UserSettings({
               boxShadow: "0 4px 12px rgba(239, 68, 68, 0.25)",
               display: "flex",
               alignItems: "center",
-              gap: "0.4rem"
+              gap: "0.4rem",
+              zIndex: 10
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
               <polyline points="16 17 21 12 16 7"/>
               <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
@@ -757,8 +760,8 @@ export default function UserSettings({
 
         <div className={styles.formsRow}>
           {/* Join Form */}
-          <form onSubmit={handleJoinGroup} className={styles.miniForm}>
-            <h3 style={{ fontSize: "0.95rem", fontWeight: 700 }}>{t("groupJoinTitle")}</h3>
+          <form onSubmit={handleJoinGroup} className={styles.miniForm} style={{ background: "var(--bg-glass)", padding: "1.25rem", borderRadius: "12px", border: "1px solid var(--border-glass)" }}>
+            <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)" }}>{t("groupJoinTitle")}</h3>
             <div className={styles.group}>
               <input
                 type="text"
@@ -770,14 +773,14 @@ export default function UserSettings({
                 disabled={loading}
               />
             </div>
-            <button type="submit" disabled={loading} className="btn-secondary" style={{ padding: "0.55rem" }}>
+            <button type="submit" disabled={loading} className="btn-primary" style={{ padding: "0.55rem", marginTop: "0.25rem" }}>
               {t("groupJoinBtn")}
             </button>
           </form>
 
           {/* Create Form */}
-          <form onSubmit={handleCreateGroup} className={styles.miniForm}>
-            <h3 style={{ fontSize: "0.95rem", fontWeight: 700 }}>{t("groupCreateTitle")}</h3>
+          <form onSubmit={handleCreateGroup} className={styles.miniForm} style={{ background: "var(--bg-glass)", padding: "1.25rem", borderRadius: "12px", border: "1px solid var(--border-glass)" }}>
+            <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)" }}>{t("groupCreateTitle")}</h3>
             <div className={styles.group}>
               <input
                 type="text"
@@ -788,7 +791,7 @@ export default function UserSettings({
                 disabled={loading}
               />
             </div>
-            <button type="submit" disabled={loading} className="btn-secondary" style={{ padding: "0.55rem" }}>
+            <button type="submit" disabled={loading} className="btn-primary" style={{ padding: "0.55rem", marginTop: "0.25rem" }}>
               {t("groupCreateBtn")}
             </button>
           </form>
@@ -813,13 +816,15 @@ export default function UserSettings({
             </button>
           </div>
         ) : (
-          <button type="button" onClick={handleLinkGoogle} disabled={loading} className={`${styles.avatarToggleBtn}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem" }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" style={{ marginRight: "4px" }}>
-              <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.6 14.99 1 12 1 7.35 1 3.37 3.65 1.4 7.56l3.85 2.99c.92-2.75 3.5-4.51 6.75-4.51z"/>
-              <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.44c-.28 1.47-1.11 2.71-2.35 3.55l3.65 2.83c2.14-1.97 3.75-4.88 3.75-8.54z"/>
-              <path fill="#FBBC05" d="M5.25 14.57c-.24-.72-.37-1.49-.37-2.29s.13-1.57.37-2.29L1.4 7.01C.51 8.81 0 10.82 0 12.91s.51 4.1 1.4 5.9l3.85-2.99z"/>
-              <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.83c-1.01.68-2.31 1.09-4.31 1.09-3.25 0-5.83-1.76-6.75-4.51L1.4 16.83C3.37 20.74 7.35 23 12 23z"/>
-            </svg>
+          <button type="button" onClick={handleLinkGoogle} disabled={loading} className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.55rem 1.25rem", margin: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#ffffff", padding: "3px", borderRadius: "6px", marginRight: "4px" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.6 14.99 1 12 1 7.35 1 3.37 3.65 1.4 7.56l3.85 2.99c.92-2.75 3.5-4.51 6.75-4.51z"/>
+                <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.44c-.28 1.47-1.11 2.71-2.35 3.55l3.65 2.83c2.14-1.97 3.75-4.88 3.75-8.54z"/>
+                <path fill="#FBBC05" d="M5.25 14.57c-.24-.72-.37-1.49-.37-2.29s.13-1.57.37-2.29L1.4 7.01C.51 8.81 0 10.82 0 12.91s.51 4.1 1.4 5.9l3.85-2.99z"/>
+                <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.83c-1.01.68-2.31 1.09-4.31 1.09-3.25 0-5.83-1.76-6.75-4.51L1.4 16.83C3.37 20.74 7.35 23 12 23z"/>
+              </svg>
+            </div>
             {t("googleLinkBtn")}
           </button>
         )}
@@ -928,21 +933,6 @@ export default function UserSettings({
         )}
       </div>
 
-      {/* 5. Administration Section (Admins only, placed at the very bottom) */}
-      {userRole === "ADMIN" && (
-        <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(29, 78, 216, 0.05)", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("adminPanelBtn")}</h2>
-            <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
-              Accede al panel global de configuración, SMTP y gestión de usuarios del sistema.
-            </p>
-          </div>
-          <button onClick={() => router.push("/admin")} disabled={loading} className="btn-primary" style={{ padding: "0.65rem 1.5rem", margin: 0 }}>
-            {t("adminPanelBtn")}
-          </button>
-        </div>
-      )}
-
       {/* Packs Simulator Link Section */}
       <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(59, 130, 246, 0.03)", flexWrap: "wrap", gap: "1rem" }}>
         <div>
@@ -991,6 +981,21 @@ export default function UserSettings({
           </a>
         </div>
       </div>
+
+      {/* 5. Administration Section (Admins only, placed at the absolute bottom of page after About) */}
+      {userRole === "ADMIN" && (
+        <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(29, 78, 216, 0.05)", flexWrap: "wrap", gap: "1rem" }}>
+          <div>
+            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("adminPanelBtn")}</h2>
+            <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
+              Accede al panel global de configuración, SMTP y gestión de usuarios del sistema.
+            </p>
+          </div>
+          <button onClick={() => router.push("/admin")} disabled={loading} className="btn-primary" style={{ padding: "0.65rem 1.5rem", margin: 0 }}>
+            {t("adminPanelBtn")}
+          </button>
+        </div>
+      )}
 
       {/* 2FA Recovery Codes Modal */}
       {showRecoveryModal && recoveryCodes && (

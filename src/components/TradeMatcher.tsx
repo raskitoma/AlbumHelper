@@ -7,6 +7,7 @@ import styles from "./TradeMatcher.module.css";
 import { SECTIONS } from "@/lib/albumData";
 import { useI18n } from "@/lib/i18n";
 import { DEFAULT_FIFA_ISO_MAP, getFlagImgUrl } from "@/lib/flagUtils";
+import ShareModal from "./ShareModal";
 
 interface CatalogSticker {
   code: string;
@@ -32,6 +33,7 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
   const [swaps, setSwaps] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [copyFeedback, setCopyFeedback] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const [flagMap, setFlagMap] = useState<Record<string, string>>(DEFAULT_FIFA_ISO_MAP);
 
   // Scanner states
@@ -401,11 +403,10 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
                 {t("tradeSwapsCount").replace("{count}", String(swaps.length))}
               </p>
               <button
-                onClick={handleShareSwaps}
-                className="btn-primary"
-                style={{ width: "100%", padding: "0.55rem 1rem", fontSize: "0.85rem" }}
+                onClick={() => setIsShareOpen(true)}
+                className={styles.shareBtn}
               >
-                {copyFeedback ? "✔️ " + (t("shareCopied") || "¡Copiado!") : "📤 " + (t("shareBtn") || "Compartir lista")}
+                {t("shareBtn") || "Compartir lista"}
               </button>
             </>
           )}
@@ -538,6 +539,13 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
           </div>
         </div>
       </div>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        quantities={quantities}
+        catalog={catalog}
+      />
     </div>
   );
 }

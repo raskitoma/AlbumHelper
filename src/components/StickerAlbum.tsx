@@ -48,7 +48,7 @@ const TEAM_COLORS: Record<string, { bg: string; text: string }> = {
 };
 
 export default function StickerAlbum({ catalog }: StickerAlbumProps) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
 
   const translatePosition = (pos: string | null, isSpecial: boolean) => {
     if (!pos) return isSpecial ? t("posSpecial") : "Cromo";
@@ -85,6 +85,10 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
 
   // Share Modal states
   const [isShareOpen, setIsShareOpen] = useState(false);
+
+  // Info Modal states
+  const [selectedInfoSection, setSelectedInfoSection] = useState<any | null>(null);
+  const [flippedStickers, setFlippedStickers] = useState<Record<string, boolean>>({});
 
   // Long-press detection helpers for mobile
   const longPressActiveRef = useRef(false);
@@ -130,6 +134,17 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (selectedInfoSection) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedInfoSection]);
 
   // Haptic feedback provider
   const triggerHaptic = (pattern: number | number[]) => {
@@ -312,7 +327,7 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
       stickers: filteredStickers,
       totalCount: sectionStickers.length
     };
-  }).filter((sec) => sec.stickers.length > 0 || searchTerm !== ""); // Hide empty sections during searches
+  }).filter((sec) => sec.stickers.length > 0); // Hide empty sections during searches
 
   const translateGroup = (group: string | undefined) => {
     if (!group) return "";
@@ -385,7 +400,16 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
 
       {/* 2. Interactive Sections Grid */}
       <div className={styles.albumGrid}>
-        {filteredSections.map((section) => {
+        {filteredSections.length === 0 ? (
+          <div className={styles.noResultsCard} style={{ gridColumn: "1 / -1", textAlign: "center", padding: "3rem 1.5rem" }}>
+            <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", fontWeight: 600, margin: 0 }}>
+              {language === "es"
+                ? "No se encontraron secciones o cromos que coincidan con la búsqueda."
+                : "No sections or stickers matched your search filters."}
+            </p>
+          </div>
+        ) : (
+          filteredSections.map((section) => {
           const isCollapsed = collapsedSections[section.code] || false;
           
           // Calculate progress for this section
@@ -430,7 +454,25 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
                   ) : (
                     <span className={styles.sectionFlag}>{section.flag}</span>
                   )}
-                  <h2 className={styles.sectionTitle}>{section.name}</h2>
+                  <h2 className={styles.sectionTitle}>
+                    {section.name}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedInfoSection(section);
+                        setFlippedStickers({});
+                      }}
+                      className={styles.sectionInfoBtn}
+                      title={language === "es" ? "Ver información de la sección" : "View section info"}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle" }}>
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                      </svg>
+                    </button>
+                  </h2>
                   {section.type === "team" && (
                     <span className={styles.sectionCode}>{section.code}</span>
                   )}
@@ -484,7 +526,7 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
 
 
@@ -505,6 +547,142 @@ export default function StickerAlbum({ catalog }: StickerAlbumProps) {
         quantities={quantities}
         catalog={catalog}
       />
+
+      {/* 6. Section Info / Squad Modal with 3D Flip Cards */}
+      {selectedInfoSection && (
+        <div className={styles.modalOverlay} onClick={() => setSelectedInfoSection(null)}>
+          <div className={`${styles.infoModal} glass-card`} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.modalCloseBtn} onClick={() => setSelectedInfoSection(null)}>×</button>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>
+                {flagMap[selectedInfoSection.code] ? (
+                  <img
+                    src={getFlagImgUrl(flagMap[selectedInfoSection.code]) || ""}
+                    alt={selectedInfoSection.name}
+                    className={styles.sectionFlagImg}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                      const parent = (e.target as HTMLImageElement).parentElement;
+                      if (parent) {
+                        const span = document.createElement("span");
+                        span.className = styles.sectionFlag || "";
+                        span.textContent = selectedInfoSection.flag;
+                        parent.insertBefore(span, e.target as HTMLImageElement);
+                      }
+                    }}
+                  />
+                ) : (
+                  <span className={styles.sectionFlag}>{selectedInfoSection.flag}</span>
+                )}{" "}
+                {selectedInfoSection.name}
+              </h2>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", margin: "0.25rem 0 0 0" }}>
+                {language === "es"
+                  ? "Haz clic sobre un cromo para ver su reverso y detalles."
+                  : "Click on any sticker to flip and see details."}
+              </p>
+            </div>
+            
+            <div className={styles.modalScrollBody}>
+              <div className={styles.modalGrid}>
+                {catalog
+                  .filter((s) => s.sectionCode === selectedInfoSection.code)
+                  .map((sticker) => {
+                    const isFlipped = !!flippedStickers[sticker.code];
+                    const qty = quantities[sticker.code] || 0;
+                    const isOwned = qty > 0;
+                    const teamColor = TEAM_COLORS[selectedInfoSection.code] || { bg: "linear-gradient(135deg, #3b82f6, #1d4ed8)", text: "#ffffff" };
+
+                    return (
+                      <div
+                        key={sticker.code}
+                        className={`${styles.flipCard} ${isFlipped ? styles.flipped : ""}`}
+                        onClick={() => {
+                          setFlippedStickers((prev) => ({
+                            ...prev,
+                            [sticker.code]: !prev[sticker.code]
+                          }));
+                        }}
+                      >
+                        <div className={styles.flipCardInner}>
+                          {/* FRONT */}
+                          <div
+                            className={`${styles.flipCardFront} ${
+                              sticker.isSpecial
+                                ? styles.frontSpecial
+                                : isOwned
+                                ? styles.frontOwned
+                                : styles.frontEmpty
+                            }`}
+                            style={{
+                              border: isOwned ? `2px solid var(--primary)` : "1.5px dashed var(--border-glass)",
+                            }}
+                          >
+                            <div className={styles.frontTop}>
+                              <span className={styles.frontNumber}>{sticker.number}</span>
+                              {sticker.isSpecial && <span className={styles.frontSpecialBadge}>✦</span>}
+                            </div>
+                            
+                            {sticker.imageUrl && isOwned ? (
+                              <img
+                                src={`/api/stickers/image?code=${sticker.code}`}
+                                alt={sticker.name}
+                                className={styles.frontImage}
+                              />
+                            ) : (
+                              <div
+                                className={styles.jerseyPlaceholder}
+                                style={{
+                                  background: isOwned ? teamColor.bg : "rgba(0,0,0,0.05)",
+                                  color: isOwned ? teamColor.text : "var(--text-secondary)"
+                                }}
+                              >
+                                {isOwned ? "👕" : "?"}
+                              </div>
+                            )}
+
+                            <div className={styles.frontName}>{sticker.name}</div>
+                            {qty >= 2 && (
+                              <div className={styles.frontDupBadge}>+{qty - 1}</div>
+                            )}
+                          </div>
+
+                          {/* BACK */}
+                          <div className={styles.flipCardBack}>
+                            <div className={styles.backTopCode}>{sticker.code}</div>
+                            <div className={styles.backName}>{sticker.name}</div>
+                            
+                            <div className={styles.backDetailsList}>
+                              <div className={styles.backDetailItem} style={{ justifyContent: "center" }}>
+                                <span className={styles.backDetailVal}>{translatePosition(sticker.position, sticker.isSpecial)}</span>
+                              </div>
+                              <div className={styles.backDetailItem}>
+                                <span className={styles.backDetailLabel}>Sección:</span>
+                                <span className={styles.backDetailVal}>{selectedInfoSection.name}</span>
+                              </div>
+                              <div className={styles.backDetailItem}>
+                                <span className={styles.backDetailLabel}>Tipo:</span>
+                                <span className={styles.backDetailVal}>{sticker.isSpecial ? "Especial (Holo) ✦" : "Normal"}</span>
+                              </div>
+                              <div className={styles.backDetailItem}>
+                                <span className={styles.backDetailLabel}>Estado:</span>
+                                <span className={styles.backDetailVal} style={{ color: isOwned ? "var(--success)" : "var(--danger)", fontWeight: "bold" }}>
+                                  {isOwned ? `Obtenido (${qty})` : "Pendiente"}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className={styles.backFooterLogo}>AlbumHelper</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

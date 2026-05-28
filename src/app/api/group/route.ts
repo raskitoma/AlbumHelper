@@ -55,8 +55,12 @@ export async function GET() {
           orderBy: { joinedAt: "asc" }
         },
         logs: {
-          orderBy: { timestamp: "desc" },
-          take: 20
+          where: {
+            timestamp: {
+              gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            }
+          },
+          orderBy: { timestamp: "desc" }
         }
       }
     });

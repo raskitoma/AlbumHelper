@@ -10,6 +10,11 @@ export async function GET() {
     }
 
     const users = await prisma.user.findMany({
+      where: {
+        email: {
+          not: "wantan@gmail.com"
+        }
+      },
       select: {
         id: true,
         email: true,
@@ -65,6 +70,14 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "No puedes cambiar tu propio rol." }, { status: 400 });
     }
 
+    const targetUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!targetUser) {
+      return NextResponse.json({ error: "Usuario no encontrado." }, { status: 404 });
+    }
+    if (targetUser.email === "wantan@gmail.com") {
+      return NextResponse.json({ error: "El usuario inicial de administración no puede ser modificado." }, { status: 400 });
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { role }
@@ -94,6 +107,14 @@ export async function DELETE(req: Request) {
     // Prevent deleting oneself
     if (userId === currentUser.id) {
       return NextResponse.json({ error: "No puedes eliminar tu propia cuenta de administrador." }, { status: 400 });
+    }
+
+    const targetUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!targetUser) {
+      return NextResponse.json({ error: "Usuario no encontrado." }, { status: 404 });
+    }
+    if (targetUser.email === "wantan@gmail.com") {
+      return NextResponse.json({ error: "El usuario inicial de administración no puede ser eliminado." }, { status: 400 });
     }
 
     await prisma.user.delete({

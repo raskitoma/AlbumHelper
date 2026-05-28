@@ -31,6 +31,8 @@ export default function DashboardStats({ catalog }: DashboardStatsProps) {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [activity, setActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activityPage, setActivityPage] = useState(1);
+  const activityPerPage = 10;
   const { t, language } = useI18n();
 
   const fetchStats = async () => {
@@ -241,7 +243,7 @@ export default function DashboardStats({ catalog }: DashboardStatsProps) {
               {t("noActivity")}
             </p>
           ) : (
-            activity.map((log) => {
+            activity.slice((activityPage - 1) * activityPerPage, activityPage * activityPerPage).map((log) => {
               const date = new Date(log.timestamp);
               const localeStr = language === "es" ? "es-ES" : language;
               const timeString = date.toLocaleTimeString(localeStr, { hour: "2-digit", minute: "2-digit" });
@@ -272,6 +274,31 @@ export default function DashboardStats({ catalog }: DashboardStatsProps) {
             })
           )}
         </div>
+        {activity.length > activityPerPage && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem", borderTop: "1px solid var(--border-glass)", paddingTop: "1rem" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+              Página {activityPage} de {Math.ceil(activity.length / activityPerPage)} ({activity.length} actividades)
+            </span>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <button
+                onClick={() => setActivityPage((prev) => Math.max(1, prev - 1))}
+                disabled={activityPage === 1}
+                className="btn-secondary"
+                style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
+              >
+                Anterior
+              </button>
+              <button
+                onClick={() => setActivityPage((prev) => Math.min(Math.ceil(activity.length / activityPerPage), prev + 1))}
+                disabled={activityPage === Math.ceil(activity.length / activityPerPage)}
+                className="btn-secondary"
+                style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

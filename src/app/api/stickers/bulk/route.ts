@@ -73,6 +73,15 @@ export async function POST(req: Request) {
           }
         });
       }
+
+      // Prune logs older than 30 days to avoid database bloat
+      await tx.activityLog.deleteMany({
+        where: {
+          timestamp: {
+            lt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+          }
+        }
+      });
     });
 
     return NextResponse.json({

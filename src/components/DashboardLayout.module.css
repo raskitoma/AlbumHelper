@@ -275,9 +275,9 @@
 }
 
 .footerCopyright {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  position: relative;
+  text-align: center;
+  margin: 2rem auto 5rem auto;
   font-size: 0.8rem;
   padding: 0.5rem 0.75rem;
   background: var(--bg-glass);
@@ -287,8 +287,10 @@
   border-radius: 20px;
   color: var(--text-secondary);
   box-shadow: var(--shadow-sm);
-  z-index: 1000;
+  z-index: 10;
   transition: all 0.2s ease;
+  width: fit-content;
+  display: block;
 }
 
 .footerCopyright:hover {
@@ -306,17 +308,4 @@
 
 .footerCopyright a:hover {
   text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .footerCopyright {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    text-align: center;
-    margin: 1.5rem auto 4rem auto;
-    padding: 0.5rem 0.75rem;
-    width: fit-content;
-    display: inline-block;
-  }
 }

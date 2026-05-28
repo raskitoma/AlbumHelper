@@ -61,6 +61,26 @@
 .shareBtn {
   margin-top: 1rem;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(147, 51, 234, 0.1);
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shareBtn:hover {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 0 12px rgba(147, 51, 234, 0.4);
 }
 
 /* Scanner section */

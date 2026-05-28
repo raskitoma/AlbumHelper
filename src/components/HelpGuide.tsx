@@ -152,7 +152,7 @@ export default function HelpGuide() {
       securityStep3Desc: "Descarga o envía por correo tus códigos de un solo uso para no perder acceso si pierdes tu celular.",
       
       backToAlbum: "Volver al Álbum",
-      interactiveTip: "¡Prueba aquí abajo interactuando con los cromos de prueba!",
+      interactiveTip: "¡Prueba interactuando con los cromos de prueba!",
       quickPasteEx: "Ejemplo de pegado rápido de cromos:",
       aboutRaskitoma: "Desarrollado con pasión para coleccionistas. © 2026 Raskitoma.io"
     },
@@ -216,7 +216,7 @@ export default function HelpGuide() {
       securityStep3Desc: "Download or email your one-time recovery codes to prevent lockout if you lose your mobile device.",
       
       backToAlbum: "Back to Album",
-      interactiveTip: "Try it out below by interacting with these test stickers!",
+      interactiveTip: "Try it out by interacting with these test stickers!",
       quickPasteEx: "Example of bulk quick-add format:",
       aboutRaskitoma: "Developed with passion for collectors. © 2026 Raskitoma.io"
     },
@@ -280,7 +280,7 @@ export default function HelpGuide() {
       securityStep3Desc: "Scarica o invia via email i tuoi codici monouso per non perdere l'accesso se perdi lo smartphone.",
       
       backToAlbum: "Torna all'Album",
-      interactiveTip: "Prova qui sotto a interagire con le figurine di prova!",
+      interactiveTip: "Prova a interagire con le figurine di prova!",
       quickPasteEx: "Esempio di caricamento rapido:",
       aboutRaskitoma: "Sviluppato con passione per i collezionisti. © 2026 Raskitoma.io"
     },
@@ -344,7 +344,7 @@ export default function HelpGuide() {
       securityStep3Desc: "Baixe ou envie por e-mail seus códigos descartáveis para não perder o acesso caso perca o celular.",
       
       backToAlbum: "Voltar ao Álbum",
-      interactiveTip: "Teste aqui abaixo interagindo com os cromos de teste!",
+      interactiveTip: "Teste interagindo com os cromos de teste!",
       quickPasteEx: "Exemplo de carga rápida em lote:",
       aboutRaskitoma: "Desenvolvido com paixão para colecionadores. © 2026 Raskitoma.io"
     },
@@ -408,7 +408,7 @@ export default function HelpGuide() {
       securityStep3Desc: "Téléchargez ou envoyez par e-mail vos codes à usage unique pour éviter le blocage si vous perdez votre téléphone.",
       
       backToAlbum: "Retour à l'Album",
-      interactiveTip: "Essayez ci-dessous en interagissant avec ces stickers de test !",
+      interactiveTip: "Essayez en interagissant avec ces stickers de test !",
       quickPasteEx: "Exemple d'ajout rapide en lot :",
       aboutRaskitoma: "Développé avec passion pour les collectionneurs. © 2026 Raskitoma.io"
     }
@@ -465,18 +465,12 @@ export default function HelpGuide() {
             {/* Interactive Sticker Sandbox */}
             <div className={styles.sandboxCard}>
               <div className={styles.sandboxInfo}>
-                <div className={styles.sandboxTitle}>✨ {language === "es" ? "Caja de Arena Interactiva (Prueba los gestos)" : "Interactive Sticker Sandbox (Test gestures)"}</div>
+                <div className={styles.sandboxTitle}>✨ {language === "es" ? "Caja de pruebas interactiva" : "Interactive sandbox (Test gestures)"}</div>
                 <p className={styles.sandboxDesc}>{l.interactiveTip}</p>
-                <div className={styles.sandboxGestures}>
-                  <div className={styles.gestureGuide}>
-                    <span className={styles.gestureKey}>TAP / CLICK</span>
-                    <span>{l.step1Desc}</span>
-                  </div>
-                  <div className={styles.gestureGuide}>
-                    <span className={styles.gestureKey}>LONG PRESS / RIGHT CLICK</span>
-                    <span>{l.step3Desc}</span>
-                  </div>
-                </div>
+                <ul className={styles.sandboxGesturesList}>
+                  <li>{l.step1Desc}</li>
+                  <li>{l.step3Desc}</li>
+                </ul>
               </div>
 
               <div className={styles.sandboxInteractiveArea}>
@@ -525,23 +519,31 @@ export default function HelpGuide() {
 
             <div className={styles.stepsGrid}>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>1</span>
-                <div className={styles.stepTitle}>{l.step1Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>1</span>
+                  <div className={styles.stepTitle}>{l.step1Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.step1Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>2</span>
-                <div className={styles.stepTitle}>{l.step2Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>2</span>
+                  <div className={styles.stepTitle}>{l.step2Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.step2Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>3</span>
-                <div className={styles.stepTitle}>{l.step3Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>3</span>
+                  <div className={styles.stepTitle}>{l.step3Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.step3Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>4</span>
-                <div className={styles.stepTitle}>{l.step4Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>4</span>
+                  <div className={styles.stepTitle}>{l.step4Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.step4Desc}</p>
               </div>
             </div>
@@ -567,18 +569,24 @@ export default function HelpGuide() {
 
             <div className={styles.stepsGrid}>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>1</span>
-                <div className={styles.stepTitle}>{l.tradeStep1Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>1</span>
+                  <div className={styles.stepTitle}>{l.tradeStep1Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.tradeStep1Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>2</span>
-                <div className={styles.stepTitle}>{l.tradeStep2Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>2</span>
+                  <div className={styles.stepTitle}>{l.tradeStep2Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.tradeStep2Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>3</span>
-                <div className={styles.stepTitle}>{l.tradeStep3Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>3</span>
+                  <div className={styles.stepTitle}>{l.tradeStep3Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.tradeStep3Desc}</p>
               </div>
             </div>
@@ -589,7 +597,7 @@ export default function HelpGuide() {
                 {language === "es" ? "Las listas generadas contienen banderitas para mayor legibilidad y agrupan los hologramas especiales automáticamente:" : "The generated lists contain flags for scanning readability and group holograms automatically:"}
               </span>
               <code className={styles.codeExample}>
-                {`Figuritas App - Lista\nUsa Méx Can 26\nMe faltan\nFWC 🌎: 8, 15\nMEX 🇲🇽: 1, 2\nUSA 🇺🇸: 10\nCAN 🇨🇦: 4`}
+                {`AlbumHelper - Lista\nUsa Méx Can 26\nMe faltan\nFWC 🌎: 8, 15\nMEX 🇲🇽: 1, 2\nUSA 🇺🇸: 10\nCAN 🇨🇦: 4\n\nhttp://localhost:3000`}
               </code>
             </div>
           </div>
@@ -603,18 +611,24 @@ export default function HelpGuide() {
 
             <div className={styles.stepsGrid}>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>1</span>
-                <div className={styles.stepTitle}>{l.groupStep1Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>1</span>
+                  <div className={styles.stepTitle}>{l.groupStep1Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.groupStep1Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>2</span>
-                <div className={styles.stepTitle}>{l.groupStep2Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>2</span>
+                  <div className={styles.stepTitle}>{l.groupStep2Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.groupStep2Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>3</span>
-                <div className={styles.stepTitle}>{l.groupStep3Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>3</span>
+                  <div className={styles.stepTitle}>{l.groupStep3Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.groupStep3Desc}</p>
               </div>
             </div>
@@ -629,18 +643,24 @@ export default function HelpGuide() {
 
             <div className={styles.stepsGrid}>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>1</span>
-                <div className={styles.stepTitle}>{l.securityStep1Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>1</span>
+                  <div className={styles.stepTitle}>{l.securityStep1Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.securityStep1Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>2</span>
-                <div className={styles.stepTitle}>{l.securityStep2Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>2</span>
+                  <div className={styles.stepTitle}>{l.securityStep2Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.securityStep2Desc}</p>
               </div>
               <div className={styles.stepItem}>
-                <span className={styles.stepNum}>3</span>
-                <div className={styles.stepTitle}>{l.securityStep3Title}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span className={styles.stepNum}>3</span>
+                  <div className={styles.stepTitle}>{l.securityStep3Title.replace(/^\d+\.\s*/, "")}</div>
+                </div>
                 <p className={styles.stepDesc}>{l.securityStep3Desc}</p>
               </div>
             </div>
