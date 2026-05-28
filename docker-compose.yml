@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: album-helper
+    container_name: ${CONTAINER_NAME:-album-helper}
     ports:
       - "${PORT:-3000}:3000"
     volumes:

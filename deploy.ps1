@@ -5,6 +5,7 @@ Write-Host "=============================================" -ForegroundColor Cyan
 $defaultPort = "3000"
 $defaultDbDir = "./data"
 $defaultDockerNetwork = "album_network"
+$defaultContainerName = "album-helper"
 
 if (Test-Path .env) {
     $envContent = Get-Content .env
@@ -18,11 +19,15 @@ if (Test-Path .env) {
         if ($line -match "^DOCKER_NETWORK=(.*)$") {
             $defaultDockerNetwork = $Matches[1].Trim()
         }
+        if ($line -match "^CONTAINER_NAME=(.*)$") {
+            $defaultContainerName = $Matches[1].Trim()
+        }
     }
     Write-Host "Se detectó configuración previa:" -ForegroundColor Yellow
     Write-Host "  Puerto: $defaultPort" -ForegroundColor Yellow
     Write-Host "  Ruta DB: $defaultDbDir" -ForegroundColor Yellow
     Write-Host "  Red Docker: $defaultDockerNetwork" -ForegroundColor Yellow
+    Write-Host "  Contenedor: $defaultContainerName" -ForegroundColor Yellow
     Write-Host "=============================================" -ForegroundColor Yellow
 }
 
@@ -35,6 +40,9 @@ if (-not $dbDir) { $dbDir = $defaultDbDir }
 $dockerNetwork = Read-Host "Ingresa el nombre de la red de Docker (ej. para Nginx Proxy Manager) [Default: $defaultDockerNetwork]"
 if (-not $dockerNetwork) { $dockerNetwork = $defaultDockerNetwork }
 
+$containerName = Read-Host "Ingresa el nombre del contenedor de Docker [Default: $defaultContainerName]"
+if (-not $containerName) { $containerName = $defaultContainerName }
+
 # Asegurar que la red de Docker existe
 $networkCheck = docker network ls --filter name="^$dockerNetwork$" -q
 if (-not $networkCheck) {
@@ -43,7 +51,7 @@ if (-not $networkCheck) {
 }
 
 Write-Host "Guardando configuración en archivo .env..." -ForegroundColor Yellow
-$envLines = @("PORT=$port", "DB_DIR=$dbDir", "DOCKER_NETWORK=$dockerNetwork")
+$envLines = @("PORT=$port", "DB_DIR=$dbDir", "DOCKER_NETWORK=$dockerNetwork", "CONTAINER_NAME=$containerName")
 $envLines | Out-File -FilePath .env -Encoding ascii
 
 Write-Host "Construyendo y levantando el contenedor de Docker..." -ForegroundColor Yellow
@@ -54,4 +62,5 @@ Write-Host "¡Despliegue completado con éxito!" -ForegroundColor Green
 Write-Host "La aplicación está corriendo en http://localhost:$port" -ForegroundColor Green
 Write-Host "Base de datos y respaldos mapeados en: $dbDir" -ForegroundColor Green
 Write-Host "Red de Docker conectada: $dockerNetwork" -ForegroundColor Green
+Write-Host "Contenedor de Docker: $containerName" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Green

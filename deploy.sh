@@ -7,6 +7,7 @@ echo "============================================="
 DEFAULT_PORT=3000
 DEFAULT_DB_DIR="./data"
 DEFAULT_DOCKER_NETWORK="album_network"
+DEFAULT_CONTAINER_NAME="album-helper"
 
 if [ -f .env ]; then
   SAVED_PORT=$(grep -E "^PORT=" .env | cut -d= -f2 | tr -d '\r')
@@ -21,10 +22,15 @@ if [ -f .env ]; then
   if [ ! -z "$SAVED_DOCKER_NETWORK" ]; then
     DEFAULT_DOCKER_NETWORK=$SAVED_DOCKER_NETWORK
   fi
+  SAVED_CONTAINER_NAME=$(grep -E "^CONTAINER_NAME=" .env | cut -d= -f2 | tr -d '\r')
+  if [ ! -z "$SAVED_CONTAINER_NAME" ]; then
+    DEFAULT_CONTAINER_NAME=$SAVED_CONTAINER_NAME
+  fi
   echo "Se detectó configuración previa:"
   echo "  Puerto: $DEFAULT_PORT"
   echo "  Ruta DB: $DEFAULT_DB_DIR"
   echo "  Red Docker: $DEFAULT_DOCKER_NETWORK"
+  echo "  Contenedor: $DEFAULT_CONTAINER_NAME"
   echo "============================================="
 fi
 
@@ -40,6 +46,10 @@ DB_DIR=${DB_DIR:-$DEFAULT_DB_DIR}
 read -p "Ingresa el nombre de la red de Docker (ej. para Nginx Proxy Manager) [Default: $DEFAULT_DOCKER_NETWORK]: " DOCKER_NETWORK
 DOCKER_NETWORK=${DOCKER_NETWORK:-$DEFAULT_DOCKER_NETWORK}
 
+# Preguntar nombre del contenedor
+read -p "Ingresa el nombre del contenedor de Docker [Default: $DEFAULT_CONTAINER_NAME]: " CONTAINER_NAME
+CONTAINER_NAME=${CONTAINER_NAME:-$DEFAULT_CONTAINER_NAME}
+
 # Asegurar que la red de Docker existe
 if ! docker network inspect "$DOCKER_NETWORK" >/dev/null 2>&1; then
   echo "La red de Docker '$DOCKER_NETWORK' no existe. Creándola..."
@@ -51,6 +61,7 @@ echo "Guardando configuración en archivo .env..."
 echo "PORT=$PORT" > .env
 echo "DB_DIR=$DB_DIR" >> .env
 echo "DOCKER_NETWORK=$DOCKER_NETWORK" >> .env
+echo "CONTAINER_NAME=$CONTAINER_NAME" >> .env
 
 # Levantar contenedores
 echo "Construyendo y levantando el contenedor de Docker..."
@@ -61,4 +72,5 @@ echo "¡Despliegue completado con éxito!"
 echo "La aplicación está corriendo en http://localhost:$PORT"
 echo "Base de datos y respaldos mapeados en: $DB_DIR"
 echo "Red de Docker conectada: $DOCKER_NETWORK"
+echo "Contenedor de Docker: $CONTAINER_NAME"
 echo "============================================="
