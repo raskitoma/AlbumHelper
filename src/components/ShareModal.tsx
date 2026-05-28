@@ -24,7 +24,7 @@ interface ShareModalProps {
 
 export default function ShareModal({ isOpen, onClose, quantities, catalog }: ShareModalProps) {
   const [copyingType, setCopyingType] = useState<string | null>(null);
-  const { t } = useI18n();
+  const { t, language } = useI18n();
 
   // Prevent scroll when modal is open
   useEffect(() => {
@@ -41,22 +41,59 @@ export default function ShareModal({ isOpen, onClose, quantities, catalog }: Sha
   if (!isOpen) return null;
 
   const generateShareText = (type: "missing" | "swaps" | "have") => {
-    let text = "";
-    if (type === "missing") {
-      text = `${t("shareMissingHeader")}\n\n`;
-    } else if (type === "swaps") {
-      text = `${t("shareSwapsHeader")}\n\n`;
+    let header = "";
+    if (language === "es") {
+      header = "Figuritas App - Lista\nUsa Méx Can 26\n";
+      if (type === "missing") header += "Me faltan\n";
+      else if (type === "swaps") header += "Tengo repetidas\n";
+      else header += "Tengo conseguidas\n";
+    } else if (language === "it") {
+      header = "Figuritas App - Lista\nUsa Méx Can 26\n";
+      if (type === "missing") header += "Mi mancano\n";
+      else if (type === "swaps") header += "Ho doppie\n";
+      else header += "Ho completato\n";
+    } else if (language === "pt") {
+      header = "Figuritas App - Lista\nUsa Méx Can 26\n";
+      if (type === "missing") header += "Faltam-me\n";
+      else if (type === "swaps") header += "Tenho repetidas\n";
+      else header += "Tenho colecionadas\n";
+    } else if (language === "fr") {
+      header = "Figuritas App - Liste\nUsa Méx Can 26\n";
+      if (type === "missing") header += "Il me manque\n";
+      else if (type === "swaps") header += "J'ai des doubles\n";
+      else header += "J'ai obtenu\n";
     } else {
-      text = `${t("shareHaveHeader")}\n\n`;
+      // default English
+      header = "Figuritas App - List\nUSA MEX CAN 26\n";
+      if (type === "missing") header += "Missing stickers\n";
+      else if (type === "swaps") header += "My duplicates\n";
+      else header += "My collected\n";
     }
 
+    let text = header;
     let totalCount = 0;
 
+    // Group FWC-S and FWC-H -> display code FWC, flag 🌎
+    const groupedSections: { displayCode: string; flag: string; sections: string[] }[] = [
+      { displayCode: "FWC", flag: "🌎", sections: ["FWC-S", "FWC-H"] }
+    ];
+
+    // Add all other sections
     SECTIONS.forEach((section) => {
-      const sectionStickers = catalog.filter((s) => s.sectionCode === section.code);
+      if (section.code !== "FWC-S" && section.code !== "FWC-H") {
+        groupedSections.push({
+          displayCode: section.code,
+          flag: section.flag,
+          sections: [section.code]
+        });
+      }
+    });
+
+    groupedSections.forEach((group) => {
+      const groupStickers = catalog.filter((s) => group.sections.includes(s.sectionCode));
       const matches: string[] = [];
-      
-      sectionStickers.forEach((sticker) => {
+
+      groupStickers.forEach((sticker) => {
         const qty = quantities[sticker.code] || 0;
         if (type === "missing" && qty === 0) {
           matches.push(sticker.number.toString());
@@ -69,7 +106,7 @@ export default function ShareModal({ isOpen, onClose, quantities, catalog }: Sha
       });
 
       if (matches.length > 0) {
-        text += `${section.flag} ${section.code}: ${matches.join(", ")}\n`;
+        text += `${group.displayCode} ${group.flag}: ${matches.join(", ")}\n`;
         totalCount += matches.length;
       }
     });

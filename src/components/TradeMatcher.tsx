@@ -6,6 +6,7 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 import styles from "./TradeMatcher.module.css";
 import { SECTIONS } from "@/lib/albumData";
 import { useI18n } from "@/lib/i18n";
+import { DEFAULT_FIFA_ISO_MAP, getFlagImgUrl } from "@/lib/flagUtils";
 
 interface CatalogSticker {
   code: string;
@@ -24,12 +25,14 @@ interface TradeMatcherProps {
 
 export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   
   // Current user's sticker quantities
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [swaps, setSwaps] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [copyFeedback, setCopyFeedback] = useState(false);
+  const [flagMap, setFlagMap] = useState<Record<string, string>>(DEFAULT_FIFA_ISO_MAP);
 
   // Scanner states
   const [scannerActive, setScannerActive] = useState(false);
@@ -71,6 +74,19 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
 
   useEffect(() => {
     fetchQuantities();
+
+    const fetchFlagMap = async () => {
+      try {
+        const res = await fetch("/api/flags");
+        if (res.ok) {
+          const data = await res.json();
+          setFlagMap((prev) => ({ ...prev, ...data }));
+        }
+      } catch (e) {
+        console.error("Error fetching flags in TradeMatcher:", e);
+      }
+    };
+    fetchFlagMap();
   }, []);
 
   // Generate QR Code on canvas when swaps or origin changes
@@ -225,6 +241,87 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
     setPasteMatchedStickers(matched);
   };
 
+  // Generate standardized duplicate share text
+  const generateSwapsShareText = () => {
+    let header = "";
+    if (language === "es") {
+      header = "Figuritas App - Lista\nUsa Méx Can 26\nTengo repetidas\n";
+    } else if (language === "it") {
+      header = "Figuritas App - Lista\nUsa Méx Can 26\nHo doppie\n";
+    } else if (language === "pt") {
+      header = "Figuritas App - Lista\nUsa Méx Can 26\nTenho repetidas\n";
+    } else if (language === "fr") {
+      header = "Figuritas App - Liste\nUsa Méx Can 26\nJ'ai des doubles\n";
+    } else {
+      header = "Figuritas App - List\nUSA MEX CAN 26\nMy duplicates\n";
+    }
+
+    let text = header;
+    let totalCount = 0;
+
+    // Group FWC-S and FWC-H -> display code FWC, flag 🌎
+    const groupedSections: { displayCode: string; flag: string; sections: string[] }[] = [
+      { displayCode: "FWC", flag: "🌎", sections: ["FWC-S", "FWC-H"] }
+    ];
+
+    // Add all other sections
+    SECTIONS.forEach((section) => {
+      if (section.code !== "FWC-S" && section.code !== "FWC-H") {
+        groupedSections.push({
+          displayCode: section.code,
+          flag: section.flag,
+          sections: [section.code]
+        });
+      }
+    });
+
+    groupedSections.forEach((group) => {
+      const groupStickers = catalog.filter((s) => group.sections.includes(s.sectionCode));
+      const matches: string[] = [];
+
+      groupStickers.forEach((sticker) => {
+        const qty = quantities[sticker.code] || 0;
+        if (qty >= 2) {
+          const duplicateCount = qty - 1;
+          matches.push(duplicateCount > 1 ? `${sticker.number} (x${duplicateCount})` : `${sticker.number}`);
+        }
+      });
+
+      if (matches.length > 0) {
+        text += `${group.displayCode} ${group.flag}: ${matches.join(", ")}\n`;
+        totalCount += matches.length;
+      }
+    });
+
+    if (totalCount === 0) {
+      text += t("shareEmptyList") || "(Ningún cromo en esta lista)";
+    } else {
+      text += `\n${(t("shareTotal") || "Total: {count} cromos").replace("{count}", String(totalCount))}`;
+    }
+    return text;
+  };
+
+  const handleShareSwaps = async () => {
+    const text = generateSwapsShareText();
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          text: text
+        });
+      } catch (err) {
+        console.error("Error al compartir repetidos: ", err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(text);
+        setCopyFeedback(true);
+        setTimeout(() => setCopyFeedback(false), 2000);
+      } catch (err) {
+        console.error("Error al copiar repetidos: ", err);
+      }
+    }
+  };
+
   // Helper to render matched stickers with their flags
   const renderStickersList = (codes: string[]) => {
     if (codes.length === 0) {
@@ -236,9 +333,39 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
         {codes.map((code) => {
           const item = catalog.find((s) => s.code === code);
           const section = SECTIONS.find((s) => s.code === item?.sectionCode);
+          const isoCode = flagMap[section?.code || ""] || null;
+          const flagUrl = getFlagImgUrl(isoCode);
+
           return (
             <span key={code} className={styles.matchStickerTag}>
-              <span className={styles.matchStickerFlag}>{section?.flag || "⚽"}</span>
+              <span className={styles.matchStickerFlag}>
+                {flagUrl ? (
+                  <img
+                    src={flagUrl}
+                    alt={section?.name || ""}
+                    style={{
+                      width: "20px",
+                      height: "15px",
+                      objectFit: "cover",
+                      borderRadius: "3px",
+                      display: "inline-block",
+                      verticalAlign: "middle",
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.15)"
+                    }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                      const parent = (e.target as HTMLImageElement).parentElement;
+                      if (parent) {
+                        const span = document.createElement("span");
+                        span.textContent = section?.flag || "⚽";
+                        parent.appendChild(span);
+                      }
+                    }}
+                  />
+                ) : (
+                  section?.flag || "⚽"
+                )}
+              </span>
               <span>{code}</span>
             </span>
           );
@@ -264,9 +391,16 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
               <div className={styles.qrContainer}>
                 <canvas ref={canvasRef} className={styles.qrCanvas} />
               </div>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600, marginBottom: "1rem" }}>
                 {t("tradeSwapsCount").replace("{count}", String(swaps.length))}
               </p>
+              <button
+                onClick={handleShareSwaps}
+                className="btn-primary"
+                style={{ width: "100%", padding: "0.55rem 1rem", fontSize: "0.85rem" }}
+              >
+                {copyFeedback ? "✔️ " + (t("shareCopied") || "¡Copiado!") : "📤 " + (t("shareBtn") || "Compartir lista")}
+              </button>
             </>
           )}
         </div>
