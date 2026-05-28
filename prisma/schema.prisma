@@ -10,6 +10,7 @@ generator client {
 model User {
   id               String               @id @default(uuid())
   email            String               @unique
+  name             String?
   passwordHash     String?              // Nullable for OAuth-only users
   googleEmail      String?              @unique // For Google OAuth account linking
   role             String               @default("USER") // "ADMIN" | "USER"

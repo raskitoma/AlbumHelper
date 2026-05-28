@@ -81,6 +81,7 @@ export default async function SettingsPage() {
         <h1 style={{ fontSize: "1.5rem", fontWeight: 800, marginBottom: "1rem" }}>Ajustes y Configuración</h1>
         <UserSettings
           userEmail={currentUser.email}
+          initialName={dbUser.name}
           initial2faEnabled={dbUser.twoFactorEnabled}
           initialGroupName={groupName}
           initialGroupInvite={inviteCode}

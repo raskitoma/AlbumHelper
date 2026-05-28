@@ -99,8 +99,9 @@ export default function DashboardLayout({ children, userEmail, groupName, userRo
       {/* 1. Top Header Bar */}
       <header className={styles.header}>
         <div className={styles.logoArea}>
-          <Link href="/album" style={{ display: "flex", alignItems: "center" }} title="AlbumHelper">
+          <Link href="/album" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none" }} title="AlbumHelper">
             <AlbumLogo />
+            <span className={styles.logo}>AlbumHelper</span>
           </Link>
         </div>
 

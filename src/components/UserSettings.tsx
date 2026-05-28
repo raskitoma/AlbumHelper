@@ -16,6 +16,7 @@ interface AuthenticatorInfo {
 
 interface UserSettingsProps {
   userEmail: string;
+  initialName: string | null;
   initial2faEnabled: boolean;
   initialGroupName: string;
   initialGroupInvite: string;
@@ -30,6 +31,7 @@ interface UserSettingsProps {
 
 export default function UserSettings({
   userEmail,
+  initialName,
   initial2faEnabled,
   initialGroupName,
   initialGroupInvite,
@@ -43,9 +45,11 @@ export default function UserSettings({
 }: UserSettingsProps) {
   const router = useRouter();
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const { t } = useI18n();
+  const { t, language } = useI18n();
 
   // States
+  const [displayName, setDisplayName] = useState(initialName || "");
+  const [isSavingName, setIsSavingName] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(initial2faEnabled);
   const [twoFactorSetup, setTwoFactorSetup] = useState<{ secret: string; qrUrl: string } | null>(null);
   const [token2FA, setToken2FA] = useState("");
@@ -427,6 +431,33 @@ export default function UserSettings({
   };
 
   // ----------------------------------------------------
+  // PROFILE NAME ACTION
+  // ----------------------------------------------------
+  const handleSaveName = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSavingName) return;
+    setIsSavingName(true);
+    try {
+      const res = await fetch("/api/auth/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: displayName.trim() })
+      });
+      if (res.ok) {
+        showMsg("success", language === "es" ? "¡Nombre de usuario actualizado!" : "Username updated!");
+        router.refresh();
+      } else {
+        const data = await res.json();
+        showMsg("error", data.error || (language === "es" ? "Fallo al actualizar el nombre." : "Failed to update name."));
+      }
+    } catch (e) {
+      showMsg("error", language === "es" ? "Error al guardar el nombre." : "Error saving name.");
+    } finally {
+      setIsSavingName(false);
+    }
+  };
+
+  // ----------------------------------------------------
   // LOGOUT ACTION
   // ----------------------------------------------------
   const handleLogout = async () => {
@@ -458,9 +489,31 @@ export default function UserSettings({
 
       {/* 1. Profile / Account Summary Card */}
       <div className={`${styles.section} glass-card`} style={{ position: "relative" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "1rem", flexWrap: "wrap", gap: "1rem" }}>
-          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("profileTitle")}</h2>
-          <button type="button" onClick={handleLogout} disabled={loading} className={`${styles.logoutBtn} btn-secondary btnDanger`} style={{ margin: 0, padding: "0.5rem 1rem", fontSize: "0.85rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "1.25rem", flexWrap: "wrap", gap: "1rem" }}>
+          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
+            {displayName ? `👋 ${language === "es" ? "¡Hola" : "Hello"} ${displayName}!` : `👋 ${language === "es" ? "¡Hola!" : "Hello!"}`}
+          </h2>
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={loading}
+            className="btn-danger"
+            style={{
+              margin: 0,
+              padding: "0.55rem 1.25rem",
+              fontSize: "0.85rem",
+              background: "var(--danger, #ef4444)",
+              color: "#ffffff",
+              border: "none",
+              borderRadius: "8px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(239, 68, 68, 0.25)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem"
+            }}
+          >
             {t("profileLogout")}
           </button>
         </div>
@@ -476,9 +529,31 @@ export default function UserSettings({
           </div>
  
           <div className={styles.profileDetails}>
-            <p className={styles.sectionDesc}>
+            <p className={styles.sectionDesc} style={{ marginBottom: "1rem" }}>
               {t("profileDesc")}<strong>{userEmail}</strong>
             </p>
+
+            {/* Display Name Edit Form */}
+            <form onSubmit={handleSaveName} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "1.25rem", width: "100%", maxWidth: "320px" }}>
+              <div style={{ flex: 1 }}>
+                <input
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="input"
+                  placeholder={language === "es" ? "Tu Nombre (ej. Carlos)" : "Your Name (e.g. Charlie)"}
+                  style={{ width: "100%", padding: "0.55rem 0.75rem", fontSize: "0.85rem", borderRadius: "8px" }}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn-primary"
+                disabled={isSavingName}
+                style={{ padding: "0.55rem 1rem", fontSize: "0.85rem", whiteSpace: "nowrap", borderRadius: "8px" }}
+              >
+                {isSavingName ? "..." : (language === "es" ? "Guardar" : "Save")}
+              </button>
+            </form>
  
             <div className={styles.avatarControls}>
               <span className={styles.label} style={{ display: "block", marginBottom: "0.25rem" }}>
@@ -743,7 +818,7 @@ export default function UserSettings({
       {userRole === "ADMIN" && (
         <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(29, 78, 216, 0.05)", flexWrap: "wrap", gap: "1rem" }}>
           <div>
-            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>🛡️ {t("adminPanelBtn")}</h2>
+            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("adminPanelBtn")}</h2>
             <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
               Accede al panel global de configuración, SMTP y gestión de usuarios del sistema.
             </p>
@@ -757,7 +832,7 @@ export default function UserSettings({
       {/* Packs Simulator Link Section */}
       <div className={`${styles.section} glass-card`} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(59, 130, 246, 0.2)", background: "rgba(59, 130, 246, 0.03)", flexWrap: "wrap", gap: "1rem" }}>
         <div>
-          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>🎒 {t("packsTitle")}</h2>
+          <h2 className={styles.sectionTitle} style={{ margin: 0 }}>{t("packsTitle")}</h2>
           <p className={styles.sectionDesc} style={{ margin: "0.25rem 0 0 0" }}>
             {t("packsDesc")}
           </p>

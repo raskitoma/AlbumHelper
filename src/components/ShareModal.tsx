@@ -43,28 +43,28 @@ export default function ShareModal({ isOpen, onClose, quantities, catalog }: Sha
   const generateShareText = (type: "missing" | "swaps" | "have") => {
     let header = "";
     if (language === "es") {
-      header = "Figuritas App - Lista\nUsa Méx Can 26\n";
+      header = "AlbumHelper - Lista\nUsa Méx Can 26\n";
       if (type === "missing") header += "Me faltan\n";
       else if (type === "swaps") header += "Tengo repetidas\n";
       else header += "Tengo conseguidas\n";
     } else if (language === "it") {
-      header = "Figuritas App - Lista\nUsa Méx Can 26\n";
+      header = "AlbumHelper - Lista\nUsa Méx Can 26\n";
       if (type === "missing") header += "Mi mancano\n";
       else if (type === "swaps") header += "Ho doppie\n";
       else header += "Ho completato\n";
     } else if (language === "pt") {
-      header = "Figuritas App - Lista\nUsa Méx Can 26\n";
+      header = "AlbumHelper - Lista\nUsa Méx Can 26\n";
       if (type === "missing") header += "Faltam-me\n";
       else if (type === "swaps") header += "Tenho repetidas\n";
       else header += "Tenho colecionadas\n";
     } else if (language === "fr") {
-      header = "Figuritas App - Liste\nUsa Méx Can 26\n";
+      header = "AlbumHelper - Liste\nUsa Méx Can 26\n";
       if (type === "missing") header += "Il me manque\n";
       else if (type === "swaps") header += "J'ai des doubles\n";
       else header += "J'ai obtenu\n";
     } else {
       // default English
-      header = "Figuritas App - List\nUSA MEX CAN 26\n";
+      header = "AlbumHelper - List\nUSA MEX CAN 26\n";
       if (type === "missing") header += "Missing stickers\n";
       else if (type === "swaps") header += "My duplicates\n";
       else header += "My collected\n";
@@ -116,6 +116,12 @@ export default function ShareModal({ isOpen, onClose, quantities, catalog }: Sha
     } else {
       text += `\n${t("shareTotal").replace("{count}", String(totalCount))}`;
     }
+
+    // Append App URL if running client-side
+    if (typeof window !== "undefined" && window.location?.origin) {
+      text += `\n\n${window.location.origin}`;
+    }
+
     return text;
   };
 

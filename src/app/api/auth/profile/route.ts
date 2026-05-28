@@ -9,24 +9,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No autorizado." }, { status: 401 });
     }
 
-    const { avatarType, avatarUrl } = await req.json();
+    const { avatarType, avatarUrl, name } = await req.json();
 
-    if (avatarType !== "GRAVATAR" && avatarType !== "UPLOAD") {
+    if (avatarType && avatarType !== "GRAVATAR" && avatarType !== "UPLOAD") {
       return NextResponse.json({ error: "Tipo de avatar inválido." }, { status: 400 });
     }
 
     const updatedUser = await prisma.user.update({
       where: { id: currentUser.id },
       data: {
-        avatarType,
-        avatarUrl: avatarType === "UPLOAD" ? avatarUrl : null
+        avatarType: avatarType !== undefined ? avatarType : undefined,
+        avatarUrl: avatarType === "UPLOAD" ? avatarUrl : avatarType === "GRAVATAR" ? null : undefined,
+        name: name !== undefined ? name : undefined
       }
     });
 
     return NextResponse.json({
       success: true,
       avatarType: updatedUser.avatarType,
-      avatarUrl: updatedUser.avatarUrl
+      avatarUrl: updatedUser.avatarUrl,
+      name: updatedUser.name
     });
   } catch (error: any) {
     console.error("Error updating profile:", error);

@@ -245,15 +245,15 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
   const generateSwapsShareText = () => {
     let header = "";
     if (language === "es") {
-      header = "Figuritas App - Lista\nUsa Méx Can 26\nTengo repetidas\n";
+      header = "AlbumHelper - Lista\nUsa Méx Can 26\nTengo repetidas\n";
     } else if (language === "it") {
-      header = "Figuritas App - Lista\nUsa Méx Can 26\nHo doppie\n";
+      header = "AlbumHelper - Lista\nUsa Méx Can 26\nHo doppie\n";
     } else if (language === "pt") {
-      header = "Figuritas App - Lista\nUsa Méx Can 26\nTenho repetidas\n";
+      header = "AlbumHelper - Lista\nUsa Méx Can 26\nTenho repetidas\n";
     } else if (language === "fr") {
-      header = "Figuritas App - Liste\nUsa Méx Can 26\nJ'ai des doubles\n";
+      header = "AlbumHelper - Liste\nUsa Méx Can 26\nJ'ai des doubles\n";
     } else {
-      header = "Figuritas App - List\nUSA MEX CAN 26\nMy duplicates\n";
+      header = "AlbumHelper - List\nUSA MEX CAN 26\nMy duplicates\n";
     }
 
     let text = header;
@@ -298,6 +298,12 @@ export default function TradeMatcher({ catalog, userEmail }: TradeMatcherProps) 
     } else {
       text += `\n${(t("shareTotal") || "Total: {count} cromos").replace("{count}", String(totalCount))}`;
     }
+
+    // Append App URL if running client-side
+    if (typeof window !== "undefined" && window.location?.origin) {
+      text += `\n\n${window.location.origin}`;
+    }
+
     return text;
   };
 

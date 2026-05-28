@@ -1,37 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
   <defs>
-    <linearGradient id="albumCover" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#3b82f6" />
-      <stop offset="100%" stop-color="#1d4ed8" />
+    <!-- Radial gradient for 3D sphere effect -->
+    <radialGradient id="sphereShade" cx="32%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="55%" stop-color="#888888" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.48"/>
+    </radialGradient>
+    <!-- Linear gradients for premium color styling -->
+    <linearGradient id="bluePanel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
     </linearGradient>
-    <linearGradient id="goldStar" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24" />
-      <stop offset="100%" stop-color="#d97706" />
+    <linearGradient id="greyPanel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
     </linearGradient>
-    <linearGradient id="sticker1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ec4899" />
-      <stop offset="100%" stop-color="#db2777" />
-    </linearGradient>
-    <linearGradient id="sticker2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10b981" />
-      <stop offset="100%" stop-color="#059669" />
-    </linearGradient>
+    <clipPath id="ballClip">
+      <circle cx="24" cy="24" r="22"/>
+    </clipPath>
   </defs>
-  {/* Left page */}
-  <path d="M 8 10 L 23 6 L 23 42 L 8 38 Z" fill="url(#albumCover)" filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.15))" />
-  {/* Right page */}
-  <path d="M 40 10 L 25 6 L 25 42 L 40 38 Z" fill="url(#albumCover)" filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.15))" />
-  {/* Center spine */}
-  <rect x="23.5" y="6" width="1" height="36" rx="0.5" fill="rgba(255,255,255,0.3)" />
-  
-  {/* Left Page Details (slot outlines) */}
-  <rect x="11" y="12" width="9" height="7" rx="1" transform="skewY(-6.5)" fill="rgba(255,255,255,0.15)" />
-  <rect x="11" y="24" width="9" height="7" rx="1" transform="skewY(-6.5)" fill="rgba(255,255,255,0.15)" />
-  
-  {/* Right Page Details (colored stickers) */}
-  <rect x="28" y="13" width="9" height="7" rx="1" transform="skewY(6.5)" fill="url(#sticker1)" />
-  <rect x="28" y="25" width="9" height="7" rx="1" transform="skewY(6.5)" fill="url(#sticker2)" />
-  
-  {/* Gold badge in front */}
-  <path d="M 20 16 L 22.5 21 L 28 21.5 L 24 25.5 L 25.2 31 L 20 28 L 14.8 31 L 16 25.5 L 12 21.5 L 17.5 21 Z" fill="url(#goldStar)" stroke="#ffffff" stroke-width="1" stroke-linejoin="round" filter="drop-shadow(0px 2px 4px rgba(217, 119, 6, 0.4))" />
+
+  <!-- Base outer border shadow -->
+  <circle cx="24" cy="24" r="22.5" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1" />
+
+  <g clip-path="url(#ballClip)">
+    <!-- Base background (grey hexagons base) -->
+    <circle cx="24" cy="24" r="22" fill="url(#greyPanel)"/>
+
+    <!-- Center pentagon (Blue) -->
+    <polygon points="24,15 29.7,19.1 27.5,26 20.5,26 18.3,19.1" fill="url(#bluePanel)" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+    
+    <!-- Outer pentagons (Blue) -->
+    <!-- Top-north -->
+    <polygon points="24,-0.5 27.5,4 20.5,4" fill="url(#bluePanel)" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Top-right -->
+    <polygon points="42.5,11.5 37,14 39,20.5 45,18" fill="url(#bluePanel)" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Bottom-right -->
+    <polygon points="35.5,37.5 32,32 37.5,27.5 41,33" fill="url(#bluePanel)" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Bottom-left -->
+    <polygon points="12.5,37.5 16,32 10.5,27.5 7,33" fill="url(#bluePanel)" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Top-left -->
+    <polygon points="5.5,11.5 11,14 9,20.5 3,18" fill="url(#bluePanel)" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+    
+    <!-- Seam lines to connect pentagons to outer boundary -->
+    <!-- Top to center -->
+    <line x1="24" y1="4" x2="24" y2="15" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="27.5" y1="4" x2="33.5" y2="9.5" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="20.5" y1="4" x2="14.5" y2="9.5" stroke="#1e293b" stroke-width="1.5"/>
+    
+    <!-- Center to sides -->
+    <line x1="29.7" y1="19.1" x2="37" y2="14" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="18.3" y1="19.1" x2="11" y2="14" stroke="#1e293b" stroke-width="1.5"/>
+    
+    <!-- Sides to boundary -->
+    <line x1="33.5" y1="9.5" x2="37" y2="14" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="14.5" y1="9.5" x2="11" y2="14" stroke="#1e293b" stroke-width="1.5"/>
+    
+    <!-- Center to bottom -->
+    <line x1="27.5" y1="26" x2="32" y2="32" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="20.5" y1="26" x2="16" y2="32" stroke="#1e293b" stroke-width="1.5"/>
+    
+    <!-- Bottom connections -->
+    <line x1="32" y1="32" x2="24" y2="38" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="16" y1="32" x2="24" y2="38" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="24" y1="38" x2="24" y2="48.5" stroke="#1e293b" stroke-width="1.5"/>
+    
+    <!-- Mid side connections -->
+    <line x1="39" y1="20.5" x2="37.5" y2="27.5" stroke="#1e293b" stroke-width="1.5"/>
+    <line x1="9" y1="20.5" x2="10.5" y2="27.5" stroke="#1e293b" stroke-width="1.5"/>
+  </g>
+
+  <!-- 3D spherical shade overlay -->
+  <circle cx="24" cy="24" r="22" fill="url(#sphereShade)" pointer-events="none"/>
 </svg>
