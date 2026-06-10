@@ -11,88 +11,13 @@ interface AlbumLogoProps {
 
 export default function AlbumLogo({ width = 36, height = 36, className, style }: AlbumLogoProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 48 48"
+    <img
+      src="/logo.png"
+      alt="AlbumHelper Logo"
       width={width}
       height={height}
       className={className}
-      style={{ flexShrink: 0, ...style }}
-      aria-label="AlbumHelper Logo"
-    >
-      <defs>
-        {/* Radial gradient for 3D sphere effect */}
-        <radialGradient id="sphereShade" cx="32%" cy="32%" r="68%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45"/>
-          <stop offset="55%" stopColor="#888888" stopOpacity="0.08"/>
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.48"/>
-        </radialGradient>
-        {/* Linear gradients for premium color styling */}
-        <linearGradient id="bluePanel" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3b82f6"/>
-          <stop offset="100%" stopColor="#1d4ed8"/>
-        </linearGradient>
-        <linearGradient id="greyPanel" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#f8fafc"/>
-          <stop offset="100%" stopColor="#cbd5e1"/>
-        </linearGradient>
-        <clipPath id="ballClip">
-          <circle cx="24" cy="24" r="22"/>
-        </clipPath>
-      </defs>
-
-      {/* Base outer border shadow */}
-      <circle cx="24" cy="24" r="22.5" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="1" />
-
-      <g clipPath="url(#ballClip)">
-        {/* Base background (grey hexagons base) */}
-        <circle cx="24" cy="24" r="22" fill="url(#greyPanel)"/>
-
-        {/* Center pentagon (Blue) */}
-        <polygon points="24,15 29.7,19.1 27.5,26 20.5,26 18.3,19.1" fill="url(#bluePanel)" stroke="#1e293b" strokeWidth="1.5" strokeLinejoin="round"/>
-        
-        {/* Outer pentagons (Blue) */}
-        {/* Top-north */}
-        <polygon points="24,-0.5 27.5,4 20.5,4" fill="url(#bluePanel)" stroke="#1e293b" strokeWidth="1.5" strokeLinejoin="round"/>
-        {/* Top-right */}
-        <polygon points="42.5,11.5 37,14 39,20.5 45,18" fill="url(#bluePanel)" stroke="#1e293b" strokeWidth="1.5" strokeLinejoin="round"/>
-        {/* Bottom-right */}
-        <polygon points="35.5,37.5 32,32 37.5,27.5 41,33" fill="url(#bluePanel)" stroke="#1e293b" strokeWidth="1.5" strokeLinejoin="round"/>
-        {/* Bottom-left */}
-        <polygon points="12.5,37.5 16,32 10.5,27.5 7,33" fill="url(#bluePanel)" stroke="#1e293b" strokeWidth="1.5" strokeLinejoin="round"/>
-        {/* Top-left */}
-        <polygon points="5.5,11.5 11,14 9,20.5 3,18" fill="url(#bluePanel)" stroke="#1e293b" strokeWidth="1.5" strokeLinejoin="round"/>
-        
-        {/* Seam lines to connect pentagons to outer boundary */}
-        {/* Top to center */}
-        <line x1="24" y1="4" x2="24" y2="15" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="27.5" y1="4" x2="33.5" y2="9.5" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="20.5" y1="4" x2="14.5" y2="9.5" stroke="#1e293b" strokeWidth="1.5"/>
-        
-        {/* Center to sides */}
-        <line x1="29.7" y1="19.1" x2="37" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="18.3" y1="19.1" x2="11" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
-        
-        {/* Sides to boundary */}
-        <line x1="33.5" y1="9.5" x2="37" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="14.5" y1="9.5" x2="11" y2="14" stroke="#1e293b" strokeWidth="1.5"/>
-        
-        {/* Center to bottom */}
-        <line x1="27.5" y1="26" x2="32" y2="32" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="20.5" y1="26" x2="16" y2="32" stroke="#1e293b" strokeWidth="1.5"/>
-        
-        {/* Bottom connections */}
-        <line x1="32" y1="32" x2="24" y2="38" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="16" y1="32" x2="24" y2="38" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="24" y1="38" x2="24" y2="48.5" stroke="#1e293b" strokeWidth="1.5"/>
-        
-        {/* Mid side connections */}
-        <line x1="39" y1="20.5" x2="37.5" y2="27.5" stroke="#1e293b" strokeWidth="1.5"/>
-        <line x1="9" y1="20.5" x2="10.5" y2="27.5" stroke="#1e293b" strokeWidth="1.5"/>
-      </g>
-
-      {/* 3D spherical shade overlay */}
-      <circle cx="24" cy="24" r="22" fill="url(#sphereShade)" pointerEvents="none"/>
-    </svg>
+      style={{ flexShrink: 0, objectFit: "contain", ...style }}
+    />
   );
 }
