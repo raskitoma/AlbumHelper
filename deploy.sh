@@ -3,6 +3,16 @@ echo "============================================="
 echo "   AlbumHelper - Despliegue con Docker"
 echo "============================================="
 
+# 1. Detener contenedores existentes
+if [ -f docker-compose.yml ]; then
+  echo "Deteniendo contenedores existentes..."
+  docker compose down
+fi
+
+# 2. Obtener la última versión desde Git
+echo "Obteniendo la última versión desde el repositorio Git (git pull)..."
+git pull
+
 # Cargar configuración anterior desde .env si existe
 DEFAULT_PORT=3000
 DEFAULT_DB_DIR="./data"
