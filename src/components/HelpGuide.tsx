@@ -154,7 +154,9 @@ export default function HelpGuide() {
       backToAlbum: "Volver al Álbum",
       interactiveTip: "¡Prueba interactuando con los cromos de prueba!",
       quickPasteEx: "Ejemplo de pegado rápido de cromos:",
-      aboutRaskitoma: "Desarrollado con pasión para coleccionistas. © 2026 Raskitoma.io"
+      aboutRaskitoma: "Desarrollado con pasión para coleccionistas. © 2026 Raskitoma.io",
+      disclaimerIntro: "Una utilidad ligera y autohospedada para registrar y administrar tu colección de cromos de la Copa Mundial 2026. Registra fácilmente los faltantes, realiza un seguimiento de los duplicados y genera listas de intercambio limpias.",
+      disclaimerText: "Proyecto independiente no afiliado, respaldado ni asociado con la FIFA o Panini. Todas las marcas comerciales y derechos de autor pertenecen a sus respectivos propietarios. No se utilizan activos oficiales, logotipos o nombres de marcas protegidas dentro de esta aplicación."
     },
     en: {
       title: "Help & Support Center",
@@ -218,7 +220,9 @@ export default function HelpGuide() {
       backToAlbum: "Back to Album",
       interactiveTip: "Try it out by interacting with these test stickers!",
       quickPasteEx: "Example of bulk quick-add format:",
-      aboutRaskitoma: "Developed with passion for collectors. © 2026 Raskitoma.io"
+      aboutRaskitoma: "Developed with passion for collectors. © 2026 Raskitoma.io",
+      disclaimerIntro: "A lightweight, self-hosted utility to track and manage your 2026 World Cup sticker collection. Easily log missing items, track duplicates, and generate clean trading lists.",
+      disclaimerText: "Independent project not affiliated with, endorsed by, or associated with FIFA or Panini. All trademarks and copyrights belong to their respective owners. No official assets, logos, or protected brand names are used within this application."
     },
     it: {
       title: "Centro Assistenza e Supporto",
@@ -282,7 +286,9 @@ export default function HelpGuide() {
       backToAlbum: "Torna all'Album",
       interactiveTip: "Prova a interagire con le figurine di prova!",
       quickPasteEx: "Esempio di caricamento rapido:",
-      aboutRaskitoma: "Sviluppato con passione per i collezionisti. © 2026 Raskitoma.io"
+      aboutRaskitoma: "Sviluppato con passione per i collezionisti. © 2026 Raskitoma.io",
+      disclaimerIntro: "Un'utilità leggera e autogestita per monitorare e gestire la tua collezione di figurine della Coppa del Mondo 2026. Registra facilmente gli articoli mancanti, tieni traccia dei doppioni e genera elenchi di scambio puliti.",
+      disclaimerText: "Progetto indipendente non affiliato, approvato o associato alla FIFA o a Panini. Tutti i marchi e i diritti d'autore appartengono ai rispettivi proprietari. All'interno di questa applicazione non vengono utilizzati asset ufficiali, loghi o marchi protetti."
     },
     pt: {
       title: "Centro de Ajuda e Suporte",
@@ -346,7 +352,9 @@ export default function HelpGuide() {
       backToAlbum: "Voltar ao Álbum",
       interactiveTip: "Teste interagindo com os cromos de teste!",
       quickPasteEx: "Exemplo de carga rápida em lote:",
-      aboutRaskitoma: "Desenvolvido com paixão para colecionadores. © 2026 Raskitoma.io"
+      aboutRaskitoma: "Desenvolvido com paixão para coleccionadores. © 2026 Raskitoma.io",
+      disclaimerIntro: "Uma utilidade leve e autohospedada para rastrear e gerenciar sua coleção de cromos da Copa do Mundo de 2026. Registre facilmente itens em falta, acompanhe duplicatas e gere listas de troca limpas.",
+      disclaimerText: "Projeto independente não afiliado, endossado ou associado à FIFA ou à Panini. Todas as marcas comerciais e direitos autorais pertencem aos seus respectivos proprietários. Nenhum ativo oficial, logotipo ou nome de marca protegida é usado nesta aplicação."
     },
     fr: {
       title: "Centre d'Aide & Support",
@@ -410,7 +418,9 @@ export default function HelpGuide() {
       backToAlbum: "Retour à l'Album",
       interactiveTip: "Essayez en interagissant avec ces stickers de test !",
       quickPasteEx: "Exemple d'ajout rapide en lot :",
-      aboutRaskitoma: "Développé avec passion pour les collectionneurs. © 2026 Raskitoma.io"
+      aboutRaskitoma: "Développé avec passion pour les collectionneurs. © 2026 Raskitoma.io",
+      disclaimerIntro: "Un utilitaire léger et auto-hébergé pour suivre et gérer votre collection de stickers de la Coupe du Monde 2026. Enregistrez facilement les articles manquants, suivez les doublons et générez des listes d'échange claires.",
+      disclaimerText: "Projet indépendant non affilié, approuvé ou associé à la FIFA ou à Panini. Toutes les marques et droits d'auteur appartiennent à leurs propriétaires respectifs. Aucun actif officiel, logo ou nom de marque protégée n'est utilisé dans cette application."
     }
   };
 
@@ -423,6 +433,14 @@ export default function HelpGuide() {
       <div className={styles.headerCard}>
         <h1 className={styles.headerTitle}>{l.title}</h1>
         <p className={styles.headerDesc}>{l.description}</p>
+      </div>
+
+      {/* Disclaimer Card */}
+      <div className={`${styles.disclaimerCard} glass-card`}>
+        <p className={styles.disclaimerText}>{l.disclaimerIntro}</p>
+        <p className={styles.disclaimerNote}>
+          <strong>{language === "es" ? "Descargo de responsabilidad" : language === "it" ? "Disclaimer" : language === "pt" ? "Aviso Legal" : language === "fr" ? "Clause de non-responsabilité" : "Disclaimer"}:</strong> {l.disclaimerText}
+        </p>
       </div>
 
       {/* 2. Glassmorphic Navigation Tabs */}

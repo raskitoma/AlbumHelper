@@ -532,3 +532,37 @@
     transform: scale(1);
   }
 }
+
+.disclaimerCard {
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+  animation: slideIn 0.3s ease-out;
+}
+
+[data-theme="dark"] .disclaimerCard {
+  background: rgba(239, 68, 68, 0.02);
+  border-color: rgba(239, 68, 68, 0.08);
+}
+
+.disclaimerText {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.disclaimerNote {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  margin: 0;
+  border-top: 1px dashed var(--border-glass);
+  padding-top: 0.5rem;
+}

@@ -1,100 +1,112 @@
-# 📖 AlbumHelper - Contenedor de Álbum Digital y Gestión de Repetidos
+# 📖 AlbumHelper - Digital Album Tracker & Duplicate Sticker Manager
 
-AlbumHelper es una aplicación web moderna diseñada para registrar, coleccionar y coordinar el intercambio de cromos de forma colaborativa o individual, ideal para grupos familiares y comunidades de coleccionistas.
+A lightweight, self-hosted utility to track and manage your 2026 World Cup sticker collection. Easily log missing items, track duplicates, and generate clean trading lists.
 
-Este repositorio está empaquetado para correr en un **contenedor de Docker** con soporte para persistencia de datos (SQLite) y un sistema automatizado de copias de seguridad.
-
----
-
-## 🚀 Requisitos Previos
-
-Antes de comenzar, asegúrate de tener instalado en tu máquina o servidor:
-* **Docker** (versión 20.10 o superior)
-* **Docker Compose**
+**Disclaimer:** Independent project not affiliated with, endorsed by, or associated with FIFA or Panini. All trademarks and copyrights belong to their respective owners. No official assets, logos, or protected brand names are used within this application.
 
 ---
 
-## 📦 Métodos de Despliegue
+## ✨ Features & Capabilities
 
-Elige uno de los siguientes métodos para levantar la aplicación en tu servidor o computadora local:
+*   **Interactive Digital Album:** Easily log collected items, duplicates (swaps), and missing stickers. Taps increase counts, right-clicks or long-presses decrease counts.
+*   **3D Flip-Cards:** Detailed player profiles, custom team-colored jerseys, and interactive flip-to-view sticker info.
+*   **Smart Trade Matching:** Generate clean checklist exports. Automatically calculate matches with friends' collections by scanning their QR codes or pasting text-based lists.
+*   **Family Groups:** Share and sync your collection in real-time with family members or friends using a unified database.
+*   **Modern Security:** Secure your account with **Two-Factor Authentication (2FA/TOTP)** and passwordless **Passkeys (WebAuthn/Biometrics)**.
+*   **Automated Backups:** Scheduled background service that compresses the database into ZIP files every 24 hours with a rolling 7-day retention window.
+*   **Multilingual Interface:** Localized in English, Spanish, Italian, Portuguese, and French.
 
-### Método A: Despliegue Interactivo (Recomendado)
+---
 
-Disponemos de asistentes interactivos que detectarán configuraciones anteriores (puerto y ruta de datos) y se encargarán de inicializar y arrancar los contenedores.
+## 🚀 Prerequisites
 
-#### En Linux / macOS:
-1. Dale permisos de ejecución al script:
+Before you begin, ensure you have the following installed on your machine or server:
+*   **Docker** (version 20.10 or superior)
+*   **Docker Compose**
+
+---
+
+## 📦 Deployment Methods
+
+Choose one of the following methods to deploy the application on your server or local computer:
+
+### Method A: Interactive Deployment (Recommended)
+
+We provide interactive assistant scripts that automatically detect previous configurations (port and data paths) and handle initial setup and container execution.
+
+#### On Linux / macOS:
+1. Grant execute permissions to the script:
    ```bash
    chmod +x deploy.sh
    ```
-2. Ejecuta el script:
+2. Run the script:
    ```bash
    ./deploy.sh
    ```
 
-#### En Windows (PowerShell):
-1. Abre tu terminal de PowerShell en el directorio del proyecto y corre:
+#### On Windows (PowerShell):
+1. Open your PowerShell terminal in the project directory and run:
    ```powershell
    .\deploy.ps1
    ```
 
-El asistente te preguntará:
-* El **puerto** del host donde deseas exponer la aplicación (por defecto `3000`).
-* La **carpeta del host** donde deseas que se guarden la base de datos de SQLite y las copias de seguridad de forma persistente (por defecto `./data`).
+The assistant will ask for:
+*   The host **port** where the application should be exposed (default is `3000`).
+*   The **host folder** where the SQLite database and backups will be stored persistently (default is `./data`).
 
 ---
 
-### Método B: Despliegue Manual con Docker Compose
+### Method B: Manual Deployment with Docker Compose
 
-Si prefieres configurar y arrancar todo manualmente, sigue estos pasos:
+If you prefer to configure and run the container manually:
 
-1. Copia la plantilla de configuración de entorno:
+1. Copy the environment variables template:
    ```bash
    cp .env.example .env
    ```
-2. Abre el archivo `.env` creado y personaliza los valores:
-   * `PORT`: Puerto del host expuesto.
-   * `DB_DIR`: Ruta de la carpeta persistente en el host (puede ser una ruta relativa como `./data` o absoluta como `/var/album_data`).
-3. Construye y arranca los contenedores en segundo plano:
+2. Open the `.env` file and customize the values:
+   *   `PORT`: Exposed host port.
+   *   `DB_DIR`: Persistent host data directory (e.g. `./data` or absolute path like `/var/album_data`).
+3. Build and launch the container in the background:
    ```bash
    docker compose up -d --build
    ```
 
 ---
 
-## 💾 Persistencia de Datos y Respaldos (Backups)
+## 💾 Data Persistence and Backups
 
-Toda la información del álbum se almacena de forma segura en la carpeta montada en el host (`DB_DIR`). 
+All database files and configuration details are stored securely in the directory mapped to `DB_DIR` on the host.
 
-### Sistema de Respaldos Diarios
-La aplicación incluye un programador en segundo plano que realiza las siguientes acciones:
-* **Compresión ZIP**: Cada 24 horas genera una copia comprimida de la base de datos activa (`figuritas.db`) en la subcarpeta `backups/`.
-* **Retención de 7 Días**: Mantiene un historial de copias de seguridad diario y elimina automáticamente las copias con una antigüedad mayor a 7 días para optimizar espacio.
-* **Acceso Directo**: Las copias de seguridad se almacenan en `[Ruta-Configurada]/backups/` en tu host, facilitando su recuperación o almacenamiento externo.
-
----
-
-## 👤 Configuración Inicial (Primer Inicio)
-
-Una vez levantado el contenedor:
-1. Accede en tu navegador a `http://localhost:[PUERTO]` (ej. `http://localhost:3000`).
-2. Al detectar que la base de datos está vacía, la aplicación te redirigirá automáticamente al **Asistente de Configuración Inicial** (`/setup`).
-3. Registra tu cuenta; el primer usuario registrado obtendrá automáticamente el rol de **Administrador**.
-4. ¡Listo! Ya puedes empezar a escanear repetidos, abrir sobres, invitar a familiares o configurar el inicio de sesión OAuth de Google en los ajustes del sistema.
+### Daily Backup System
+The app includes a background service that:
+*   **ZIP Compresses** the active SQLite database (`figuritas.db`) every 24 hours and stores it in the `backups/` subfolder.
+*   **Applies a 7-day retention policy** to automatically clean up older zip archives to save disk space.
+*   **Allows direct download/restoration** by keeping backups easily accessible in `[Configured-DB-Path]/backups/` on the host.
 
 ---
 
-## 🛠️ Comandos de Utilidad
+## 👤 Initial Setup (First Run)
 
-* **Detener la aplicación**:
-  ```bash
-  docker compose down
-  ```
-* **Ver registros en tiempo real (Logs)**:
-  ```bash
-  docker compose logs -f app
-  ```
-* **Reiniciar el contenedor**:
-  ```bash
-  docker compose restart app
-  ```
+Once the container is running:
+1. Open your browser and navigate to `http://localhost:[PORT]` (e.g., `http://localhost:3000`).
+2. The app will detect an empty database and automatically redirect you to the **Initial Setup Wizard** (`/setup`).
+3. Register your account. The first registered user is automatically assigned the **Administrator** role.
+4. You are ready to go! Start logging stickers, opening packs, inviting family members, or configuring Google OAuth login in the Settings menu.
+
+---
+
+## 🛠️ Utility Commands
+
+*   **Stop the application:**
+    ```bash
+    docker compose down
+    ```
+*   **View real-time logs:**
+    ```bash
+    docker compose logs -f app
+    ```
+*   **Restart the container:**
+    ```bash
+    docker compose restart app
+    ```

@@ -12,76 +12,76 @@ export const SECTIONS: SectionInfo[] = [
   { code: "FWC-H", name: "FWC - Host Cities & Stadiums", flag: "🏟️", type: "special" },
 
   // Group A
-  { code: "USA", name: "United States", flag: "🇺🇸", type: "team", group: "Grupo A" },
-  { code: "CUW", name: "Curaçao", flag: "🇨🇼", type: "team", group: "Grupo A" },
-  { code: "ALG", name: "Algeria", flag: "🇩🇿", type: "team", group: "Grupo A" },
-  { code: "NOR", name: "Norway", flag: "🇳🇴", type: "team", group: "Grupo A" },
+  { code: "MEX", name: "Mexico", flag: "🇲🇽", type: "team", group: "Grupo A" },
+  { code: "RSA", name: "South Africa", flag: "🇿🇦", type: "team", group: "Grupo A" },
+  { code: "KOR", name: "South Korea", flag: "🇰🇷", type: "team", group: "Grupo A" },
+  { code: "CZE", name: "Czech Republic", flag: "🇨🇿", type: "team", group: "Grupo A" },
 
   // Group B
-  { code: "MEX", name: "Mexico", flag: "🇲🇽", type: "team", group: "Grupo B" },
-  { code: "HAI", name: "Haiti", flag: "🇭🇹", type: "team", group: "Grupo B" },
-  { code: "CIV", name: "Ivory Coast", flag: "🇨🇮", type: "team", group: "Grupo B" },
-  { code: "SWE", name: "Sweden", flag: "🇸🇪", type: "team", group: "Grupo B" },
+  { code: "CAN", name: "Canada", flag: "🇨🇦", type: "team", group: "Grupo B" },
+  { code: "SUI", name: "Switzerland", flag: "🇨🇭", type: "team", group: "Grupo B" },
+  { code: "QAT", name: "Qatar", flag: "🇶🇦", type: "team", group: "Grupo B" },
+  { code: "BIH", name: "Bosnia & Herz.", flag: "🇧🇦", type: "team", group: "Grupo B" },
 
   // Group C
-  { code: "CAN", name: "Canada", flag: "🇨🇦", type: "team", group: "Grupo C" },
-  { code: "PAN", name: "Panama", flag: "🇵🇦", type: "team", group: "Grupo C" },
-  { code: "RSA", name: "South Africa", flag: "🇿🇦", type: "team", group: "Grupo C" },
-  { code: "TUR", name: "Turkey", flag: "🇹🇷", type: "team", group: "Grupo C" },
+  { code: "BRA", name: "Brazil", flag: "🇧🇷", type: "team", group: "Grupo C" },
+  { code: "MAR", name: "Morocco", flag: "🇲🇦", type: "team", group: "Grupo C" },
+  { code: "HAI", name: "Haiti", flag: "🇭🇹", type: "team", group: "Grupo C" },
+  { code: "SCO", name: "Scotland", flag: "🏴\u200d󠁧\u200d󠁢\u200d󠁢\u200d󠁴\u200d󠁿", type: "team", group: "Grupo C" },
 
   // Group D
-  { code: "ARG", name: "Argentina", flag: "🇦🇷", type: "team", group: "Grupo D" },
-  { code: "ECU", name: "Ecuador", flag: "🇪🇨", type: "team", group: "Grupo D" },
-  { code: "CPV", name: "Cape Verde", flag: "🇨🇻", type: "team", group: "Grupo D" },
-  { code: "NED", name: "Netherlands", flag: "🇳🇱", type: "team", group: "Grupo D" },
+  { code: "USA", name: "United States", flag: "🇺🇸", type: "team", group: "Grupo D" },
+  { code: "PAR", name: "Paraguay", flag: "🇵🇾", type: "team", group: "Grupo D" },
+  { code: "AUS", name: "Australia", flag: "🇦🇺", type: "team", group: "Grupo D" },
+  { code: "TUR", name: "Turkey", flag: "🇹🇷", type: "team", group: "Grupo D" },
 
   // Group E
-  { code: "BRA", name: "Brazil", flag: "🇧🇷", type: "team", group: "Grupo E" },
-  { code: "PAR", name: "Paraguay", flag: "🇵🇾", type: "team", group: "Grupo E" },
-  { code: "COD", name: "DR Congo", flag: "🇨🇩", type: "team", group: "Grupo E" },
-  { code: "BEL", name: "Belgium", flag: "🇧🇪", type: "team", group: "Grupo E" },
+  { code: "GER", name: "Germany", flag: "🇩🇪", type: "team", group: "Grupo E" },
+  { code: "CUW", name: "Curaçao", flag: "🇨🇼", type: "team", group: "Grupo E" },
+  { code: "CIV", name: "Ivory Coast", flag: "🇨🇮", type: "team", group: "Grupo E" },
+  { code: "ECU", name: "Ecuador", flag: "🇪🇨", type: "team", group: "Grupo E" },
 
   // Group F
-  { code: "COL", name: "Colombia", flag: "🇨🇴", type: "team", group: "Grupo F" },
-  { code: "URU", name: "Uruguay", flag: "🇺🇾", type: "team", group: "Grupo F" },
-  { code: "EGY", name: "Egypt", flag: "🇪🇬", type: "team", group: "Grupo F" },
-  { code: "CRO", name: "Croatia", flag: "🇭🇷", type: "team", group: "Grupo F" },
+  { code: "NED", name: "Netherlands", flag: "🇳🇱", type: "team", group: "Grupo F" },
+  { code: "JPN", name: "Japan", flag: "🇯🇵", type: "team", group: "Grupo F" },
+  { code: "TUN", name: "Tunisia", flag: "🇹🇳", type: "team", group: "Grupo F" },
+  { code: "SWE", name: "Sweden", flag: "🇸🇪", type: "team", group: "Grupo F" },
 
   // Group G
-  { code: "JPN", name: "Japan", flag: "🇯🇵", type: "team", group: "Grupo G" },
-  { code: "UZB", name: "Uzbekistan", flag: "🇺🇿", type: "team", group: "Grupo G" },
-  { code: "SEN", name: "Senegal", flag: "🇸🇳", type: "team", group: "Grupo G" },
-  { code: "FRA", name: "France", flag: "🇫🇷", type: "team", group: "Grupo G" },
+  { code: "BEL", name: "Belgium", flag: "🇧🇪", type: "team", group: "Grupo G" },
+  { code: "EGY", name: "Egypt", flag: "🇪🇬", type: "team", group: "Grupo G" },
+  { code: "IRN", name: "Iran", flag: "🇮🇷", type: "team", group: "Grupo G" },
+  { code: "NZL", name: "New Zealand", flag: "🇳🇿", type: "team", group: "Grupo G" },
 
   // Group H
-  { code: "KOR", name: "South Korea", flag: "🇰🇷", type: "team", group: "Grupo H" },
-  { code: "IRQ", name: "Iraq", flag: "🇮🇶", type: "team", group: "Grupo H" },
-  { code: "TUN", name: "Tunisia", flag: "🇹🇳", type: "team", group: "Grupo H" },
-  { code: "ENG", name: "England", flag: "🏴\u200d󠁧\u200d󠁢\u200d󠁥\u200d󠁮\u200d󠁧\u200d󠁿", type: "team", group: "Grupo H" },
+  { code: "ESP", name: "Spain", flag: "🇪🇸", type: "team", group: "Grupo H" },
+  { code: "CPV", name: "Cape Verde", flag: "🇨🇻", type: "team", group: "Grupo H" },
+  { code: "KSA", name: "Saudi Arabia", flag: "🇸🇦", type: "team", group: "Grupo H" },
+  { code: "URU", name: "Uruguay", flag: "🇺🇾", type: "team", group: "Grupo H" },
 
   // Group I
-  { code: "AUS", name: "Australia", flag: "🇦🇺", type: "team", group: "Grupo I" },
-  { code: "JOR", name: "Jordan", flag: "🇯🇴", type: "team", group: "Grupo I" },
-  { code: "GHA", name: "Ghana", flag: "🇬🇭", type: "team", group: "Grupo I" },
-  { code: "ESP", name: "Spain", flag: "🇪🇸", type: "team", group: "Grupo I" },
+  { code: "FRA", name: "France", flag: "🇫🇷", type: "team", group: "Grupo I" },
+  { code: "SEN", name: "Senegal", flag: "🇸🇳", type: "team", group: "Grupo I" },
+  { code: "NOR", name: "Norway", flag: "🇳🇴", type: "team", group: "Grupo I" },
+  { code: "IRQ", name: "Iraq", flag: "🇮🇶", type: "team", group: "Grupo I" },
 
   // Group J
-  { code: "IRN", name: "Iran", flag: "🇮🇷", type: "team", group: "Grupo J" },
-  { code: "QAT", name: "Qatar", flag: "🇶🇦", type: "team", group: "Grupo J" },
-  { code: "MAR", name: "Morocco", flag: "🇲🇦", type: "team", group: "Grupo J" },
-  { code: "POR", name: "Portugal", flag: "🇵🇹", type: "team", group: "Grupo J" },
+  { code: "ARG", name: "Argentina", flag: "🇦🇷", type: "team", group: "Grupo J" },
+  { code: "ALG", name: "Algeria", flag: "🇩🇿", type: "team", group: "Grupo J" },
+  { code: "AUT", name: "Austria", flag: "🇦🇹", type: "team", group: "Grupo J" },
+  { code: "JOR", name: "Jordan", flag: "🇯🇴", type: "team", group: "Grupo J" },
 
   // Group K
-  { code: "KSA", name: "Saudi Arabia", flag: "🇸🇦", type: "team", group: "Grupo K" },
-  { code: "NZL", name: "New Zealand", flag: "🇳🇿", type: "team", group: "Grupo K" },
-  { code: "GER", name: "Germany", flag: "🇩🇪", type: "team", group: "Grupo K" },
-  { code: "SUI", name: "Switzerland", flag: "🇨🇭", type: "team", group: "Grupo K" },
+  { code: "POR", name: "Portugal", flag: "🇵🇹", type: "team", group: "Grupo K" },
+  { code: "UZB", name: "Uzbekistan", flag: "🇺🇿", type: "team", group: "Grupo K" },
+  { code: "COL", name: "Colombia", flag: "🇨🇴", type: "team", group: "Grupo K" },
+  { code: "COD", name: "DR Congo", flag: "🇨🇩", type: "team", group: "Grupo K" },
 
   // Group L
-  { code: "AUT", name: "Austria", flag: "🇦🇹", type: "team", group: "Grupo L" },
-  { code: "BIH", name: "Bosnia & Herz.", flag: "🇧🇦", type: "team", group: "Grupo L" },
-  { code: "CZE", name: "Czech Republic", flag: "🇨🇿", type: "team", group: "Grupo L" },
-  { code: "SCO", name: "Scotland", flag: "🏴\u200d󠁧\u200d󠁢\u200d󠁢\u200d󠁴\u200d󠁿", type: "team", group: "Grupo L" },
+  { code: "ENG", name: "England", flag: "🏴\u200d󠁧\u200d󠁢\u200d󠁥\u200d󠁮\u200d󠁧\u200d󠁿", type: "team", group: "Grupo L" },
+  { code: "CRO", name: "Croatia", flag: "🇭🇷", type: "team", group: "Grupo L" },
+  { code: "GHA", name: "Ghana", flag: "🇬🇭", type: "team", group: "Grupo L" },
+  { code: "PAN", name: "Panama", flag: "🇵🇦", type: "team", group: "Grupo L" },
 
   // Promos
   { code: "COKE", name: "Coca-Cola Specials", flag: "🥤", type: "promo" }
