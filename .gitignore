@@ -43,3 +43,6 @@ next-env.d.ts
 
 # backups
 /prisma/backups/
+
+# SQLite databases
+/prisma/figuritas.db*

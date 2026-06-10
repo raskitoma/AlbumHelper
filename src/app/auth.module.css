@@ -200,6 +200,34 @@
   transform: translateY(-1px);
 }
 
+.alternativeButtons {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.alternativeButtons .googleBtn,
+.alternativeButtons .passkeyBtn {
+  flex: 1;
+  width: auto;
+  margin: 0;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 400px) {
+  .alternativeButtons {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .alternativeButtons .googleBtn,
+  .alternativeButtons .passkeyBtn {
+    width: 100%;
+  }
+}
+
 .footer {
   margin-top: 1.5rem;
   text-align: center;

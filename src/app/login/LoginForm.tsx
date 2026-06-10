@@ -221,20 +221,19 @@ export default function LoginForm() {
             {loading ? "Iniciando..." : "Iniciar Sesión"}
           </button>
 
-          <div className={styles.divider}>Opciones Biométricas / Seguras</div>
+          <div className={styles.divider}>o entra con</div>
 
-          <button
-            type="button"
-            onClick={handlePasskeyLogin}
-            disabled={loading}
-            className={styles.passkeyBtn}
-          >
-            🔑 Entrar con Llave de Paso
-          </button>
+          <div className={styles.alternativeButtons}>
+            <button
+              type="button"
+              onClick={handlePasskeyLogin}
+              disabled={loading}
+              className={styles.passkeyBtn}
+            >
+              🔑 Llave de Paso
+            </button>
 
-          {oauthEnabled && (
-            <>
-              <div className={styles.divider}>o entra con</div>
+            {oauthEnabled && (
               <button
                 type="button"
                 onClick={handleGoogleLogin}
@@ -259,10 +258,10 @@ export default function LoginForm() {
                     d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.83c-1.01.68-2.31 1.09-4.31 1.09-3.25 0-5.83-1.76-6.75-4.51L1.4 16.83C3.37 20.74 7.35 23 12 23z"
                   />
                 </svg>
-                Iniciar Sesión con Google
+                Google
               </button>
-            </>
-          )}
+            )}
+          </div>
 
           <div className={styles.footer}>
             ¿No tienes cuenta? <Link href={searchParams.get("invite") || searchParams.get("code") ? `/register?invite=${searchParams.get("invite") || searchParams.get("code")}` : "/register"}>Regístrate</Link>
