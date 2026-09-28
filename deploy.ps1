@@ -6,6 +6,7 @@ $defaultPort = "3000"
 $defaultDbDir = "./data"
 $defaultDockerNetwork = "album_network"
 $defaultContainerName = "album-helper"
+$defaultAppUrl = ""
 
 if (Test-Path .env) {
     $envContent = Get-Content .env
@@ -22,12 +23,16 @@ if (Test-Path .env) {
         if ($line -match "^CONTAINER_NAME=(.*)$") {
             $defaultContainerName = $Matches[1].Trim()
         }
+        if ($line -match "^APP_URL=(.*)$") {
+            $defaultAppUrl = $Matches[1].Trim()
+        }
     }
     Write-Host "Se detectó configuración previa:" -ForegroundColor Yellow
     Write-Host "  Puerto: $defaultPort" -ForegroundColor Yellow
     Write-Host "  Ruta DB: $defaultDbDir" -ForegroundColor Yellow
     Write-Host "  Red Docker: $defaultDockerNetwork" -ForegroundColor Yellow
     Write-Host "  Contenedor: $defaultContainerName" -ForegroundColor Yellow
+    Write-Host "  URL pública: $(if ($defaultAppUrl) { $defaultAppUrl } else { '(sin definir)' })" -ForegroundColor Yellow
     Write-Host "=============================================" -ForegroundColor Yellow
 }
 
@@ -43,6 +48,15 @@ if (-not $dockerNetwork) { $dockerNetwork = $defaultDockerNetwork }
 $containerName = Read-Host "Ingresa el nombre del contenedor de Docker [Default: $defaultContainerName]"
 if (-not $containerName) { $containerName = $defaultContainerName }
 
+# URL pública (se usa en los enlaces de los correos: restablecer contraseña, invitaciones)
+$appUrl = Read-Host "Ingresa la URL pública de la aplicación, ej. https://album.ejemplo.com [Default: $(if ($defaultAppUrl) { $defaultAppUrl } else { 'vacío' })]"
+if (-not $appUrl) { $appUrl = $defaultAppUrl }
+if (-not $appUrl) {
+    Write-Host "AVISO: APP_URL vacío. Los enlaces de los correos apuntarán a http://localhost:3000 y no funcionarán fuera de este equipo." -ForegroundColor Yellow
+} elseif ($appUrl -match "localhost|127\.0\.0\.1") {
+    Write-Host "AVISO: APP_URL apunta a localhost. Los enlaces de los correos no funcionarán fuera de este equipo." -ForegroundColor Yellow
+}
+
 # Asegurar que la red de Docker existe
 $networkCheck = docker network ls --filter name="^$dockerNetwork$" -q
 if (-not $networkCheck) {
@@ -51,7 +65,7 @@ if (-not $networkCheck) {
 }
 
 Write-Host "Guardando configuración en archivo .env..." -ForegroundColor Yellow
-$envLines = @("PORT=$port", "DB_DIR=$dbDir", "DOCKER_NETWORK=$dockerNetwork", "CONTAINER_NAME=$containerName")
+$envLines = @("PORT=$port", "DB_DIR=$dbDir", "DOCKER_NETWORK=$dockerNetwork", "CONTAINER_NAME=$containerName", "APP_URL=$appUrl")
 $envLines | Out-File -FilePath .env -Encoding ascii
 
 Write-Host "Construyendo y levantando el contenedor de Docker..." -ForegroundColor Yellow

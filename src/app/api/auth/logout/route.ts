@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { removeSessionCookie } from "@/lib/auth";
+import { publicUrl } from "@/lib/publicUrl";
 
 export async function POST() {
   try {
@@ -15,7 +16,7 @@ export async function GET() {
   try {
     await removeSessionCookie();
     // Redirect to login on GET request
-    const response = NextResponse.redirect(new URL("/login", "http://localhost:3000")); // will resolve to current origin dynamically if we use redirection headers
+    const response = NextResponse.redirect(publicUrl("/login"));
     return response;
   } catch (error) {
     return NextResponse.json({ error: "Fallo al cerrar sesión." });

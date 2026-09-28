@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
+import { publicUrl } from "@/lib/publicUrl";
 import crypto from "crypto";
 
 export async function POST(req: Request) {
@@ -41,8 +42,7 @@ export async function POST(req: Request) {
     });
 
     // Send reset email
-    const origin = new URL(req.url).origin;
-    const resetLink = `${origin}/reset-password?token=${token}`;
+    const resetLink = publicUrl(`/reset-password?token=${token}`);
 
     const subject = "Restablece tu contraseña - AlbumHelper";
     const text = `¡Hola!

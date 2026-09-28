@@ -18,6 +18,7 @@ DEFAULT_PORT=3000
 DEFAULT_DB_DIR="./data"
 DEFAULT_DOCKER_NETWORK="album_network"
 DEFAULT_CONTAINER_NAME="album-helper"
+DEFAULT_APP_URL=""
 
 if [ -f .env ]; then
   SAVED_PORT=$(grep -E "^PORT=" .env | cut -d= -f2 | tr -d '\r')
@@ -36,11 +37,16 @@ if [ -f .env ]; then
   if [ ! -z "$SAVED_CONTAINER_NAME" ]; then
     DEFAULT_CONTAINER_NAME=$SAVED_CONTAINER_NAME
   fi
+  SAVED_APP_URL=$(grep -E "^APP_URL=" .env | cut -d= -f2- | tr -d '\r')
+  if [ ! -z "$SAVED_APP_URL" ]; then
+    DEFAULT_APP_URL=$SAVED_APP_URL
+  fi
   echo "Se detectó configuración previa:"
   echo "  Puerto: $DEFAULT_PORT"
   echo "  Ruta DB: $DEFAULT_DB_DIR"
   echo "  Red Docker: $DEFAULT_DOCKER_NETWORK"
   echo "  Contenedor: $DEFAULT_CONTAINER_NAME"
+  echo "  URL pública: ${DEFAULT_APP_URL:-(sin definir)}"
   echo "============================================="
 fi
 
@@ -60,6 +66,16 @@ DOCKER_NETWORK=${DOCKER_NETWORK:-$DEFAULT_DOCKER_NETWORK}
 read -p "Ingresa el nombre del contenedor de Docker [Default: $DEFAULT_CONTAINER_NAME]: " CONTAINER_NAME
 CONTAINER_NAME=${CONTAINER_NAME:-$DEFAULT_CONTAINER_NAME}
 
+# Preguntar URL pública (se usa en los enlaces de los correos: restablecer contraseña, invitaciones)
+read -p "Ingresa la URL pública de la aplicación, ej. https://album.ejemplo.com [Default: ${DEFAULT_APP_URL:-vacío}]: " APP_URL
+APP_URL=${APP_URL:-$DEFAULT_APP_URL}
+case "$APP_URL" in
+  "")
+    echo "AVISO: APP_URL vacío. Los enlaces de los correos apuntarán a http://localhost:3000 y no funcionarán fuera de este equipo." ;;
+  *localhost*|*127.0.0.1*)
+    echo "AVISO: APP_URL apunta a localhost. Los enlaces de los correos no funcionarán fuera de este equipo." ;;
+esac
+
 # Asegurar que la red de Docker existe
 if ! docker network inspect "$DOCKER_NETWORK" >/dev/null 2>&1; then
   echo "La red de Docker '$DOCKER_NETWORK' no existe. Creándola..."
@@ -72,6 +88,7 @@ echo "PORT=$PORT" > .env
 echo "DB_DIR=$DB_DIR" >> .env
 echo "DOCKER_NETWORK=$DOCKER_NETWORK" >> .env
 echo "CONTAINER_NAME=$CONTAINER_NAME" >> .env
+echo "APP_URL=$APP_URL" >> .env
 
 # Levantar contenedores
 echo "Construyendo y levantando el contenedor de Docker..."
@@ -83,4 +100,5 @@ echo "La aplicación está corriendo en http://localhost:$PORT"
 echo "Base de datos y respaldos mapeados en: $DB_DIR"
 echo "Red de Docker conectada: $DOCKER_NETWORK"
 echo "Contenedor de Docker: $CONTAINER_NAME"
+echo "URL pública (enlaces de correo): ${APP_URL:-(sin definir)}"
 echo "============================================="

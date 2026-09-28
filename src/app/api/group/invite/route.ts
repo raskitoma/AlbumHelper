@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { sendEmail } from "@/lib/email";
+import { publicUrl } from "@/lib/publicUrl";
+
+// The group name is user-controlled: escape everything interpolated into the HTML body.
+const HTML_ESCAPES: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (c) => HTML_ESCAPES[c]);
+}
 
 export async function POST(req: Request) {
   try {
@@ -38,16 +45,18 @@ export async function POST(req: Request) {
     }
 
     const actualGroupName = membership.familyGroup.name;
+    // The stored code, not the raw request-body value (which may differ in case/whitespace).
+    const groupInviteCode = membership.familyGroup.inviteCode;
 
     // Send invitation email
     const subject = `Invitación para unirte al grupo "${actualGroupName}" en AlbumHelper`;
-    const inviteLink = `${new URL(req.url).origin}/login?invite=${inviteCode}`;
+    const inviteLink = publicUrl(`/login?invite=${encodeURIComponent(groupInviteCode)}`);
     const text = `¡Hola!
 
 Te han invitado a unirte al grupo familiar "${actualGroupName}" en AlbumHelper.
 
 Usa el código de invitación a continuación para unirte:
-👉 ${inviteCode}
+👉 ${groupInviteCode}
 
 O haz clic en el siguiente enlace para registrarte o iniciar sesión y unirte automáticamente:
 ${inviteLink}
@@ -58,14 +67,14 @@ ${inviteLink}
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
         <h2 style="color: #0f172a; text-align: center;">⚽ Invitación de AlbumHelper</h2>
         <p style="color: #334155; font-size: 16px; line-height: 1.5;">
-          Te han invitado a unirte al grupo familiar <strong>"${actualGroupName}"</strong> para coleccionar e intercambiar cromos del Mundial juntos en tiempo real.
+          Te han invitado a unirte al grupo familiar <strong>"${escapeHtml(actualGroupName)}"</strong> para coleccionar e intercambiar cromos del Mundial juntos en tiempo real.
         </p>
         <div style="text-align: center; margin: 30px 0; padding: 15px; background-color: #f8fafc; border-radius: 6px; border: 1px dashed #cbd5e1;">
           <span style="display: block; font-size: 14px; color: #64748b; font-weight: 600; text-transform: uppercase;">Código de Invitación</span>
-          <strong style="font-size: 28px; color: #0f172a; letter-spacing: 2px;">${inviteCode}</strong>
+          <strong style="font-size: 28px; color: #0f172a; letter-spacing: 2px;">${escapeHtml(groupInviteCode)}</strong>
         </div>
         <p style="text-align: center;">
-          <a href="${inviteLink}" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600;">Unirse al Grupo</a>
+          <a href="${escapeHtml(inviteLink)}" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600;">Unirse al Grupo</a>
         </p>
         <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;" />
         <p style="font-size: 12px; color: #64748b; text-align: center;">

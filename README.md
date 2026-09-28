@@ -53,6 +53,7 @@ We provide interactive assistant scripts that automatically detect previous conf
 The assistant will ask for:
 *   The host **port** where the application should be exposed (default is `3000`).
 *   The **host folder** where the SQLite database and backups will be stored persistently (default is `./data`).
+*   The **public URL** users reach the app at (`APP_URL`, e.g. `https://album.example.com`). It is used in the links of password-reset and group-invite emails; see Method B.
 
 ---
 
@@ -67,6 +68,7 @@ If you prefer to configure and run the container manually:
 2. Open the `.env` file and customize the values:
    *   `PORT`: Exposed host port.
    *   `DB_DIR`: Persistent host data directory (e.g. `./data` or absolute path like `/var/album_data`).
+   *   `APP_URL`: Public URL users reach the app at, scheme + host with no path (e.g. `https://album.example.com`). It is used to build the links in password-reset and group-invite emails and the logout redirect. Required when the app runs behind a reverse proxy; if left empty, those links point at `http://localhost:3000` and a warning is logged at startup. It is read at runtime, so changing it only needs a container recreate (`docker compose up -d`), not a rebuild.
 3. Build and launch the container in the background:
    ```bash
    docker compose up -d --build
