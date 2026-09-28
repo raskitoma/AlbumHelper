@@ -15,6 +15,11 @@ services:
       - NODE_ENV=production
       - DATABASE_URL=file:/app/data/figuritas.db
     restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   default:
